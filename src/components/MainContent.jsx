@@ -553,9 +553,9 @@ function ProblemRow({ problem, done, onToggle, solutionLocked }) {
           </a>
         </div>
         {problem.hint && !problem.hints && (
-          <p className="mt-1 text-xs text-ink-600 flex items-start gap-1.5">
+          <p className="mt-1 text-xs text-ink-600 flex items-start gap-1.5 [&_code]:bg-ink-100 [&_code]:px-1 [&_code]:rounded [&_code]:text-[11px] [&_code]:font-mono">
             <Lightbulb className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
-            <span>{problem.hint}</span>
+            <span dangerouslySetInnerHTML={{ __html: problem.hint }} />
           </p>
         )}
         <HintsReveal hints={problem.hints} />
@@ -715,12 +715,14 @@ export default function MainContent({
 
       {lesson.subtitle && !mockMode && (
         <div className="text-ink-600 text-base mb-4">
-          {typeof lesson.subtitle === 'string' ? lesson.subtitle : (
-            <div className="space-y-1">
-              {lesson.subtitle.en && <div className="text-ink-500 italic">{lesson.subtitle.en}</div>}
-              {lesson.subtitle.vi && <div className="text-emerald-700">{lesson.subtitle.vi}</div>}
-            </div>
-          )}
+          {typeof lesson.subtitle === 'string'
+            ? <span dangerouslySetInnerHTML={{ __html: lesson.subtitle }} />
+            : (
+              <div className="space-y-1">
+                {lesson.subtitle.en && <div className="text-ink-500 italic" dangerouslySetInnerHTML={{ __html: lesson.subtitle.en }} />}
+                {lesson.subtitle.vi && <div className="text-emerald-700" dangerouslySetInnerHTML={{ __html: lesson.subtitle.vi }} />}
+              </div>
+            )}
         </div>
       )}
 
@@ -799,12 +801,15 @@ export default function MainContent({
           <ol className="space-y-3">
             {lesson.exercises.map((ex, i) => (
               <li key={i} className="border border-ink-200 rounded-lg p-3 bg-ink-50/40">
-                <div className="text-sm font-semibold text-ink-800">Exercise {i + 1}: {ex.title}</div>
-                <p className="text-sm text-ink-700 mt-1">{ex.prompt}</p>
+                <div className="text-sm font-semibold text-ink-800">
+                  Exercise {i + 1}: <span dangerouslySetInnerHTML={{ __html: ex.title }} />
+                </div>
+                <p className="text-sm text-ink-700 mt-1 [&_code]:bg-ink-100 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[12px] [&_code]:font-mono [&_code]:text-brand-700"
+                   dangerouslySetInnerHTML={{ __html: ex.prompt }} />
                 {ex.hint && !ex.hints && (
-                  <p className="text-xs text-ink-500 mt-2 flex items-start gap-1.5">
+                  <p className="text-xs text-ink-500 mt-2 flex items-start gap-1.5 [&_code]:bg-ink-100 [&_code]:px-1 [&_code]:rounded [&_code]:text-[11px] [&_code]:font-mono">
                     <Lightbulb className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
-                    <span><strong>Hint:</strong> {ex.hint}</span>
+                    <span><strong>Hint:</strong> <span dangerouslySetInnerHTML={{ __html: ex.hint }} /></span>
                   </p>
                 )}
                 <HintsReveal hints={ex.hints} />
