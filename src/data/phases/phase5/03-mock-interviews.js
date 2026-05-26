@@ -402,11 +402,13 @@ Self-grade 1-5 per câu.`
     {
       id: 'l-5-3-plan',
       type: 'theory',
-      title: 'Closing — Your 12-Week Job-Search Plan',
+      title: 'Closing — Your 20-Week Job-Search Plan (Beginner-Friendly)',
       mentalModel: {
-        vi: `Có kiến thức KHÔNG đủ. Cần process. Đây là plan 12 tuần biến curriculum này thành offer.
+        vi: `Có kiến thức KHÔNG đủ. Cần process. Đây là plan <strong>20 tuần</strong> biến curriculum này thành offer — version <strong>beginner-friendly</strong> cho người ít luyện code và hay copy-paste AI.
 <br/><br/>
-3 phase: DEPTH (1-4) → BREADTH (5-8) → APPLY + SHARPEN (9-12).`
+4 phase: WARMUP (1-3) → FOUNDATION (4-9) → PATTERNS (10-15) → APPLY + SHARPEN (16-20).
+<br/><br/>
+<strong>Quy tắc số 1</strong>: KHÔNG paste AI bất kỳ exercise nào trong Phase 0-1. Phát hiện → restart tuần đó.`
       },
       underTheHood: {
         vi: `<h3>First Principles — Job search như marketing funnel</h3>
@@ -430,32 +432,47 @@ Sliding Window solve tuần 1 → review tuần 3 → review tuần 8. Active re
 Spreadsheet: every interview + outcome + lessons learned. Pattern emerge — bạn fail consistently ở dimension nào?`
       },
       theory: {
-        vi: `<h3>Tuần 1-4: DEPTH</h3>
+        vi: `<h3>Tuần 1-3: WARMUP (Phase 0)</h3>
 <ul>
-  <li>Hoàn thành Phase 1 + 50% Phase 2 (8 pattern: SW, TP, FS, MI, CS, REV, BFS, DFS).</li>
-  <li>Build Capstone 1 (Devlog) end-to-end. Deploy live.</li>
-  <li>Push lên GitHub với README chỉn chu (screenshot + architecture diagram).</li>
-  <li>1 LeetCode medium/ngày (KHÔNG nhìn solution &lt; 30 phút).</li>
-  <li>Mock AI 2 lần/tuần (algo).</li>
+  <li><strong>Mục tiêu</strong>: bỏ thói paste AI, build muscle memory syntax, solve 25 LeetCode easy.</li>
+  <li>Tuần 1: Module 0.1 (Syntax Essentials) + Module 0.2 (Built-in Collections) — gõ tay 3 lần mỗi exercise.</li>
+  <li>Tuần 2: Module 0.3 — solve 12-15 bài LeetCode easy (group 1, 2, 3).</li>
+  <li>Tuần 3: Còn 10 bài + revisit + Feynman note tất cả 25 bài bằng tiếng Việt.</li>
+  <li><strong>Pass gate</strong>: solve Two Sum &lt; 5 phút, gõ HashMap syntax không cần Google. Nếu không pass → repeat tuần 3.</li>
 </ul>
 
-<h3>Tuần 5-8: BREADTH</h3>
+<h3>Tuần 4-9: FOUNDATION (Phase 1)</h3>
 <ul>
-  <li>Hoàn thành Phase 2 (9 pattern còn lại: 2H, BT, BS, TopK, Graph×2, Trie, DP×2).</li>
-  <li>Build Capstone 2 (ShopCore).</li>
-  <li>Viết 3 blog post ngắn về bài học (LinkedIn / Dev.to / personal site).</li>
-  <li>Update CV với 2 capstone + metrics.</li>
-  <li>Bắt đầu reach out network: 5 contact/tuần.</li>
-  <li>Mock AI: 1 algo + 1 system design/tuần.</li>
+  <li><strong>Mục tiêu</strong>: hiểu OOP + implement DS từ scratch + sort algorithm.</li>
+  <li>Tuần 4: Module 1.1 (OOP Pillars) — 3 lessons.</li>
+  <li>Tuần 5: Module 1.2 (Arrays) + Module 1.3 (LinkedList) — DÙNG → IMPLEMENT.</li>
+  <li>Tuần 6: Module 1.4 (Stack/Queue) + Module 1.5 (HashMap) — implement from scratch.</li>
+  <li>Tuần 7: Module 1.6 (Trees/BST/Heap).</li>
+  <li>Tuần 8: Module 1.7 (Merge Sort + Quick Sort + Divide &amp; Conquer).</li>
+  <li>Tuần 9: Review Phase 1 + Feynman note tổng kết. Solve 5 LeetCode medium đầu tiên.</li>
+  <li><strong>Pass gate</strong>: implement MyArrayList + MyHashMap không nhìn solution.</li>
 </ul>
 
-<h3>Tuần 9-12: APPLY + SHARPEN</h3>
+<h3>Tuần 10-15: PATTERNS (Phase 2)</h3>
 <ul>
-  <li>Build Capstone 3 (TaskFlow) nếu có thời gian; nếu không — polish 2 cái trước.</li>
-  <li>Daily: 1 LeetCode medium + 1 mock (rotate algo/system/behavioral).</li>
-  <li>Apply 5 vị trí/ngày. Customize dòng đầu cover letter.</li>
-  <li>Track mọi interview trong spreadsheet: hỏi gì, miss gì, ôn gì lần sau.</li>
-  <li>1 paid mock với senior trước onsite quan trọng.</li>
+  <li><strong>Mục tiêu</strong>: master 17 LeetCode patterns + 186 problems.</li>
+  <li>Tuần 10: Pattern 1-3 (Sliding Window, Two Pointers, Fast/Slow). ~5 bài/pattern.</li>
+  <li>Tuần 11: Pattern 4-6 (Merge Intervals, Cyclic Sort, Reversal LL).</li>
+  <li>Tuần 12: Pattern 7-9 (Tree BFS, Tree DFS, Two Heaps).</li>
+  <li>Tuần 13: Pattern 10-12 (Backtracking, Binary Search, Top K).</li>
+  <li>Tuần 14: Pattern 13-15 (Graph traversal, Shortest path, Trie).</li>
+  <li>Tuần 15: Pattern 16-17 (DP 1D, DP 2D). KHÓ NHẤT — dành thời gian.</li>
+  <li><strong>Pass gate</strong>: solve 1 medium random &lt; 30 phút không nhìn solution.</li>
+  <li><strong>Bắt đầu apply</strong> từ tuần 15 — interview là feedback nhanh nhất.</li>
+</ul>
+
+<h3>Tuần 16-20: APPLY + SHARPEN (Phase 3-4-5)</h3>
+<ul>
+  <li>Tuần 16-17: Phase 3 (Spring Boot + Docker + Postgres). Setup môi trường, hiểu JPA, JWT.</li>
+  <li>Tuần 18-19: Capstone 1 (Devlog) end-to-end. Deploy live trên Fly.io/Render.</li>
+  <li>Tuần 20: Mock interview daily + apply 5 jobs/ngày + track everything.</li>
+  <li>Capstone 2, 3 — làm SAU khi có offer hoặc parallel với interview.</li>
+  <li>Daily: 1 LeetCode medium revisit + 1 mock (rotate algo/system/behavioral).</li>
 </ul>
 
 <h3>The "Why" — Nguyên tắc</h3>
@@ -503,15 +520,15 @@ Self-track trong notion / spreadsheet.`
       ],
       keyTakeaways: {
         vi: [
+          'Phase 0 (warmup 3 tuần) BẮT BUỘC cho ai ít luyện code — bỏ qua = struggle Phase 1.',
           'Curriculum này KHÔNG có giá trị nếu bạn copy code từ AI. Phải tự gõ.',
           'Mỗi LeetCode bạn solve KHÔNG nhìn solution = 10 bài copy từ AI.',
+          'Feynman note tiếng Việt mỗi lesson — non-negotiable.',
           'GitHub repo có code rõ + README rõ = portfolio thực.',
           'Mock interview với AI ÍT NHẤT 2 lần/tuần trong giai đoạn apply.',
-          'Track lỗi mình hay mắc trong sổ tay — review trước mỗi interview thật.',
-          'Apply EARLY (tuần 4) thay vì đợi "ready" — interview là feedback fastest.',
+          'Apply EARLY (tuần 15) thay vì đợi "ready" — interview là feedback fastest.',
           'Network &gt; cold apply. Reach out alumni, attend tech meetup.',
-          'Consistency &gt; intensity. 90 phút/ngày × 90 ngày &gt; cuối tuần marathon.',
-          'Behavioral interview quan trọng hơn bạn nghĩ — easy win nếu prepared.',
+          'Consistency &gt; intensity. 90 phút/ngày × 140 ngày &gt; cuối tuần marathon.',
           'Bạn đi đến đâu được — quyết định bằng PROCESS, không phải LUCK.'
         ]
       }

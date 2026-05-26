@@ -752,6 +752,27 @@ export default function MainContent({
         </div>
       )}
 
+      {/* ===== Phase 0 Anti-Copy-Paste Banner ===== */}
+      {phase.id === 'phase-0' && !mockMode && (
+        <div className="mb-5 rounded-xl border-2 border-rose-300 bg-gradient-to-r from-rose-50 to-amber-50 p-4 shadow-soft">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-lg bg-rose-600 text-white flex items-center justify-center flex-shrink-0">
+              <AlertCircle className="w-5 h-5" />
+            </div>
+            <div className="flex-1 text-sm">
+              <div className="font-bold text-rose-900 mb-1">🚫 PHASE 0 — Anti-Copy-Paste Rules</div>
+              <ul className="text-rose-900 list-disc pl-5 space-y-0.5">
+                <li>⛔ <strong>KHÔNG paste AI</strong> bất kỳ exercise nào. Phát hiện = restart Phase 0.</li>
+                <li>✅ Mỗi exercise <strong>gõ tay 3 lần</strong>. Lần 3 mắt nhắm (gần đúng).</li>
+                <li>✅ Mỗi LeetCode <strong>thử 20 phút KHÔNG nhìn solution</strong>.</li>
+                <li>✅ Sau khi mở solution → đóng lại → tự gõ lại từ đầu. KHÔNG copy.</li>
+                <li>✅ Viết <strong>Feynman note tiếng Việt</strong> trước khi mark complete.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ===== Hints / Solution Accordions (always available) ===== */}
       {(lesson.hints || lesson.solution) && (
         <div className="mb-5">
