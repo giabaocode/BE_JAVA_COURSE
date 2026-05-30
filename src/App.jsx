@@ -3,6 +3,12 @@ import { Menu, RotateCcw } from 'lucide-react'
 import { curriculum } from './data/curriculum.js'
 import Sidebar from './components/Sidebar.jsx'
 import MainContent from './components/MainContent.jsx'
+import ParticleBackground from './components/ParticleBackground.jsx'
+import ThemeToggle from './components/ThemeToggle.jsx'
+import XPBar from './components/XPBar.jsx'
+import StreakBadge from './components/StreakBadge.jsx'
+import { celebrate } from './lib/celebrate.js'
+import { getStreak, recordActivity } from './lib/streak.js'
 
 const STORAGE_KEY = 'java-bootcamp-progress-v1'
 const ACTIVE_KEY  = 'java-bootcamp-active-lesson-v1'
@@ -48,6 +54,7 @@ export default function App() {
   })
 
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [streak, setStreak] = useState(() => getStreak())
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(completedMap)) } catch { /* ignore */ }
@@ -65,12 +72,21 @@ export default function App() {
 
   const onToggleItem = useCallback((lessonId, itemId) => {
     const key = `${lessonId}::${itemId}`
+    let didComplete = false
     setCompletedMap(prev => {
       const next = { ...prev }
-      if (next[key]) delete next[key]
-      else next[key] = true
+      if (next[key]) {
+        delete next[key]
+      } else {
+        next[key] = true
+        didComplete = true
+      }
       return next
     })
+    if (didComplete) {
+      celebrate()
+      setStreak(recordActivity())
+    }
   }, [])
 
   const onToggleLesson = useCallback((lessonId) => {
@@ -113,64 +129,72 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex bg-ink-50">
-      <Sidebar
-        curriculum={curriculum}
-        activeLessonId={activeLessonId}
-        onSelectLesson={onSelectLesson}
-        completedMap={completedMap}
-        totalPct={totalPct}
-        totalDone={totalDone}
-        totalAll={totalAll}
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-      />
-      <main className="flex-1 min-w-0">
-        <header className="sticky top-0 z-20 bg-ink-50/80 backdrop-blur-md border-b border-brand-600/25 shadow-[0_4px_24px_-12px_rgba(0,229,255,0.5)]">
-          <div className="flex items-center justify-between px-5 py-3">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setMobileOpen(true)}
-                className="lg:hidden btn-ghost p-2"
-                aria-label="Open menu"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-              <div>
-                <div className="text-[11px] uppercase tracking-[0.2em] text-brand-600/80 font-display font-semibold">Bootcamp</div>
-                <div className="text-sm font-bold text-ink-900">{current?.phase.title}</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:block text-xs text-ink-500 tabular-nums">
-                <span className="font-semibold text-ink-800">{totalDone}</span>
-                <span className="text-ink-400"> / {totalAll}</span>
-                <span className="ml-1.5">· {totalPct}%</span>
-              </div>
-              <button
-                onClick={handleReset}
-                className="btn-ghost text-xs"
-                title="Reset all progress"
-              >
-                <RotateCcw className="w-3.5 h-3.5" /> Reset
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <MainContent
-          lesson={current?.lesson}
-          phase={current?.phase}
-          module={current?.module}
+    <div className="min-h-screen flex bg-ink-50 relative">
+      <ParticleBackground density={55} />
+      <div className="relative z-10 flex flex-1 min-w-0">
+        <Sidebar
+          curriculum={curriculum}
+          activeLessonId={activeLessonId}
+          onSelectLesson={onSelectLesson}
           completedMap={completedMap}
-          onToggleItem={onToggleItem}
-          onToggleLesson={onToggleLesson}
-          onPrev={onPrev}
-          onNext={onNext}
-          hasPrev={hasPrev}
-          hasNext={hasNext}
+          totalPct={totalPct}
+          totalDone={totalDone}
+          totalAll={totalAll}
+          mobileOpen={mobileOpen}
+          onClose={() => setMobileOpen(false)}
         />
-      </main>
+        <main className="flex-1 min-w-0">
+          <header className="sticky top-0 z-20 bg-ink-50/70 backdrop-blur-md border-b border-brand-600/25 shadow-[0_4px_24px_-12px_rgb(var(--brand-600)/0.5)]">
+            <div className="flex items-center justify-between px-5 py-3 gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <button
+                  onClick={() => setMobileOpen(true)}
+                  className="lg:hidden btn-ghost p-2"
+                  aria-label="Open menu"
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
+                <div className="min-w-0">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-brand-600/80 font-display font-semibold">Bootcamp</div>
+                  <div className="text-sm font-bold text-ink-900 truncate">{current?.phase.title}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2.5 flex-shrink-0">
+                <XPBar totalDone={totalDone} />
+                <StreakBadge streak={streak} />
+                <div className="hidden sm:block text-xs text-ink-500 tabular-nums">
+                  <span className="font-semibold text-ink-800">{totalDone}</span>
+                  <span className="text-ink-400"> / {totalAll}</span>
+                  <span className="ml-1.5">· {totalPct}%</span>
+                </div>
+                <ThemeToggle />
+                <button
+                  onClick={handleReset}
+                  className="btn-ghost text-xs"
+                  title="Reset all progress"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" /> <span className="hidden lg:inline">Reset</span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <div key={activeLessonId} className="page-enter">
+            <MainContent
+              lesson={current?.lesson}
+              phase={current?.phase}
+              module={current?.module}
+              completedMap={completedMap}
+              onToggleItem={onToggleItem}
+              onToggleLesson={onToggleLesson}
+              onPrev={onPrev}
+              onNext={onNext}
+              hasPrev={hasPrev}
+              hasNext={hasNext}
+            />
+          </div>
+        </main>
+      </div>
     </div>
   )
 }

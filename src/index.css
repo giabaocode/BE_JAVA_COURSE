@@ -2,6 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================================
+   THEME TOKENS — CSS variables consumed by tailwind.config.js color palette.
+   :root holds DARK (default). [data-theme="light"] overrides for LIGHT mode.
+   Tailwind classes (bg-ink-50, text-ink-900, etc.) resolve through these.
+   ============================================================================ */
+:root {
+  /* DARK mode — neon cyberpunk (default) */
+  --brand-50:  6   20  27;
+  --brand-100: 10  38  48;
+  --brand-200: 14  58  73;
+  --brand-300: 14  116 144;
+  --brand-400: 34  211 238;
+  --brand-500: 15  216 245;
+  --brand-600: 0   229 255;
+  --brand-700: 94  236 255;
+  --brand-800: 154 242 255;
+  --brand-900: 205 248 255;
+
+  --ink-50:  10  10  18;
+  --ink-100: 19  19  31;
+  --ink-200: 38  38  64;
+  --ink-300: 58  58  92;
+  --ink-400: 107 107 144;
+  --ink-500: 138 138 178;
+  --ink-600: 168 168 204;
+  --ink-700: 201 201 230;
+  --ink-800: 228 228 246;
+  --ink-900: 245 245 255;
+
+  --glow-color: 0 229 255;
+  --body-bg: #06060e;
+  --body-grid-color: 120 160 255;
+  --body-grid-alpha: 0.035;
+  --body-glow-1: rgba(0, 229, 255, 0.12);
+  --body-glow-2: rgba(168, 85, 247, 0.12);
+  --body-glow-3: rgba(255, 43, 214, 0.06);
+  --card-grad-top: rgba(255, 255, 255, 0.045);
+  --card-grad-bot: rgba(255, 255, 255, 0.012);
+  --card-shadow: 0 12px 34px -16px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --code-bg: #080b14;
+  --code-fg: #cfe9ff;
+  --selection-bg: rgba(0, 229, 255, 0.32);
+  --selection-fg: #f5f5ff;
+}
+
+[data-theme="light"] {
+  /* LIGHT mode — warm paper + cyan accent. Same brand "feel" but readable on white. */
+  --brand-50:  236 254 255;
+  --brand-100: 207 250 254;
+  --brand-200: 165 243 252;
+  --brand-300: 103 232 249;
+  --brand-400: 34  211 238;
+  --brand-500: 6   182 212;
+  --brand-600: 8   145 178;
+  --brand-700: 14  116 144;
+  --brand-800: 21  94  117;
+  --brand-900: 22  78  99;
+
+  --ink-50:  248 250 252;
+  --ink-100: 241 245 249;
+  --ink-200: 226 232 240;
+  --ink-300: 203 213 225;
+  --ink-400: 148 163 184;
+  --ink-500: 100 116 139;
+  --ink-600: 71  85  105;
+  --ink-700: 51  65  85;
+  --ink-800: 30  41  59;
+  --ink-900: 15  23  42;
+
+  --glow-color: 8 145 178;
+  --body-bg: #f6f7fb;
+  --body-grid-color: 30 64 175;
+  --body-grid-alpha: 0.04;
+  --body-glow-1: rgba(8, 145, 178, 0.10);
+  --body-glow-2: rgba(168, 85, 247, 0.10);
+  --body-glow-3: rgba(255, 43, 214, 0.05);
+  --card-grad-top: rgba(255, 255, 255, 0.95);
+  --card-grad-bot: rgba(255, 255, 255, 0.7);
+  --card-shadow: 0 10px 28px -14px rgba(15, 23, 42, 0.20), 0 2px 6px -2px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --code-bg: #0f172a;
+  --code-fg: #e2e8f0;
+  --selection-bg: rgba(8, 145, 178, 0.28);
+  --selection-fg: #0f172a;
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
@@ -9,26 +94,30 @@
   }
   body {
     @apply text-ink-700 font-sans;
-    background-color: #06060e;
+    background-color: var(--body-bg);
     background-image:
-      radial-gradient(55rem 55rem at 108% -12%, rgba(0, 229, 255, 0.12), transparent 60%),
-      radial-gradient(48rem 48rem at -12% 112%, rgba(168, 85, 247, 0.12), transparent 60%),
-      radial-gradient(40rem 40rem at 50% 120%, rgba(255, 43, 214, 0.06), transparent 60%),
-      linear-gradient(rgba(120, 160, 255, 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(120, 160, 255, 0.035) 1px, transparent 1px);
+      radial-gradient(55rem 55rem at 108% -12%, var(--body-glow-1), transparent 60%),
+      radial-gradient(48rem 48rem at -12% 112%, var(--body-glow-2), transparent 60%),
+      radial-gradient(40rem 40rem at 50% 120%, var(--body-glow-3), transparent 60%),
+      linear-gradient(rgb(var(--body-grid-color) / var(--body-grid-alpha)) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--body-grid-color) / var(--body-grid-alpha)) 1px, transparent 1px);
     background-size: 100% 100%, 100% 100%, 100% 100%, 42px 42px, 42px 42px;
     background-attachment: fixed;
+    transition: background-color 0.4s ease;
   }
   ::selection {
-    background: rgba(0, 229, 255, 0.32);
-    color: #f5f5ff;
+    background: var(--selection-bg);
+    color: var(--selection-fg);
   }
-  /* Tints for native form controls so checkboxes/time pickers match the theme */
   input, textarea, select {
     color-scheme: dark;
-    accent-color: #00e5ff;
+    accent-color: rgb(var(--brand-600));
   }
-  /* Text-entry controls get a dark surface by default (checkboxes/radios opt out) */
+  [data-theme="light"] input,
+  [data-theme="light"] textarea,
+  [data-theme="light"] select {
+    color-scheme: light;
+  }
   input:not([type="checkbox"]):not([type="radio"]),
   textarea,
   select {
@@ -40,18 +129,24 @@
 @layer components {
   .card {
     @apply rounded-xl border border-ink-200 backdrop-blur-sm;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
-    box-shadow:
-      0 12px 34px -16px rgba(0, 0, 0, 0.8),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: linear-gradient(180deg, var(--card-grad-top), var(--card-grad-bot));
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 42px -18px rgba(0, 0, 0, 0.9), 0 0 0 1px rgb(var(--brand-600) / 0.18), 0 0 22px -8px rgb(var(--brand-600) / 0.4);
   }
   .btn {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-150;
   }
   .btn-primary {
     @apply btn bg-brand-600 text-ink-50 font-semibold hover:bg-brand-500;
-    box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.45), 0 0 22px -6px rgba(0, 229, 255, 0.75);
+    box-shadow: 0 0 0 1px rgb(var(--brand-600) / 0.45), 0 0 22px -6px rgb(var(--brand-600) / 0.75);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 1px rgb(var(--brand-600) / 0.6), 0 0 28px -4px rgb(var(--brand-600) / 0.95);
   }
   .btn-ghost {
     @apply btn text-ink-600 hover:bg-ink-100 hover:text-ink-900;
@@ -62,38 +157,42 @@
   .chip-easy   { @apply chip bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30; }
   .chip-medium { @apply chip bg-amber-500/15  text-amber-300  ring-1 ring-amber-500/30; }
   .chip-hard   { @apply chip bg-rose-500/15   text-rose-300   ring-1 ring-rose-500/30; }
+  [data-theme="light"] .chip-easy   { @apply text-emerald-700; }
+  [data-theme="light"] .chip-medium { @apply text-amber-700; }
+  [data-theme="light"] .chip-hard   { @apply text-rose-700; }
   .prose-md p { @apply leading-relaxed text-ink-700; }
   .code-block {
     @apply font-mono text-[13px] leading-6 rounded-lg p-4 overflow-x-auto;
-    background: #080b14;
-    color: #cfe9ff;
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    box-shadow: inset 0 0 48px -24px rgba(0, 229, 255, 0.55);
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border: 1px solid rgb(var(--brand-600) / 0.2);
+    box-shadow: inset 0 0 48px -24px rgb(var(--brand-600) / 0.55);
   }
   .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.28); border-radius: 9999px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0, 229, 255, 0.5); }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgb(var(--brand-600) / 0.28); border-radius: 9999px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgb(var(--brand-600) / 0.5); }
   .scrollbar-thin::-webkit-scrollbar-track { @apply bg-transparent; }
 }
 
 @layer utilities {
   .font-display { font-family: 'Orbitron', 'Inter', ui-sans-serif, sans-serif; letter-spacing: 0.04em; }
   .neon-text {
-    color: #5eecff;
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.65), 0 0 2px rgba(0, 229, 255, 0.9);
+    color: rgb(var(--brand-700));
+    text-shadow: 0 0 10px rgb(var(--glow-color) / 0.65), 0 0 2px rgb(var(--glow-color) / 0.9);
   }
   .neon-text-magenta {
     color: #ff7ae6;
     text-shadow: 0 0 10px rgba(255, 43, 214, 0.65);
   }
   .glass {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+    background: linear-gradient(180deg, var(--card-grad-top), var(--card-grad-bot));
     backdrop-filter: blur(10px);
   }
-  .glow-border-cyan    { box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.35), 0 0 20px -8px rgba(0, 229, 255, 0.6); }
+  .glow-border-cyan    { box-shadow: 0 0 0 1px rgb(var(--glow-color) / 0.35), 0 0 20px -8px rgb(var(--glow-color) / 0.6); }
   .glow-border-purple  { box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.35), 0 0 20px -8px rgba(168, 85, 247, 0.6); }
   .glow-border-magenta { box-shadow: 0 0 0 1px rgba(255, 43, 214, 0.35), 0 0 20px -8px rgba(255, 43, 214, 0.6); }
-  /* Animated gradient accent text */
+
+  /* Animated gradient text — title accent */
   .grad-text {
     background: linear-gradient(90deg, #00e5ff, #a855f7, #ff2bd6, #00e5ff);
     background-size: 300% 100%;
@@ -104,5 +203,62 @@
   }
   @keyframes grad-shift {
     to { background-position: 300% 0; }
+  }
+
+  /* Shimmer overlay for progress bars and loading hints */
+  .shimmer-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(var(--brand-600) / 0.18) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* 3D tilt — drives the Tilt wrapper */
+  .tilt-wrap {
+    transform-style: preserve-3d;
+    perspective: 900px;
+  }
+  .tilt-inner {
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* Hover-glow accent for nav items */
+  .hover-glow:hover {
+    box-shadow: 0 0 0 1px rgb(var(--brand-600) / 0.35), 0 0 18px -6px rgb(var(--brand-600) / 0.55);
+  }
+
+  /* Smooth page enter transition — apply to lesson container on activeLessonId change */
+  .page-enter {
+    animation: page-enter 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes page-enter {
+    from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+    to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+  }
+
+  /* Subtle bg twinkle for stars */
+  .twinkle { animation: twinkle 3s ease-in-out infinite; }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; }
+    50%      { opacity: 0.9; }
   }
 }
