@@ -93,7 +93,8 @@ export default function Sidebar({
         <div className="fixed inset-0 bg-ink-900/40 z-30 lg:hidden" onClick={onClose} />
       )}
       <aside className={`
-        fixed lg:sticky top-0 left-0 h-screen w-[320px] bg-white border-r border-ink-200
+        fixed lg:sticky top-0 left-0 h-screen w-[320px] bg-ink-50/70 backdrop-blur-xl border-r border-brand-600/20
+        shadow-[8px_0_40px_-24px_rgba(0,229,255,0.6)]
         z-40 transform transition-transform duration-200
         ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         flex flex-col
@@ -101,9 +102,9 @@ export default function Sidebar({
         <div className="p-5 border-b border-ink-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">JB</div>
+              <div className="w-9 h-9 rounded-lg bg-brand-600 text-ink-50 flex items-center justify-center font-display font-bold shadow-glow">JB</div>
               <div>
-                <div className="font-bold text-ink-900 leading-tight">Java + DSA</div>
+                <div className="font-display font-bold grad-text leading-tight tracking-wide">JAVA + DSA</div>
                 <div className="text-xs text-ink-500">Zero to Hero Bootcamp</div>
               </div>
             </div>
@@ -123,7 +124,7 @@ export default function Sidebar({
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="Search lessons or problems..."
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-ink-50 border border-ink-200 focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 outline-none"
+              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-ink-100 text-ink-800 border border-ink-200 focus:bg-ink-100 focus:border-brand-500 focus:ring-2 focus:ring-brand-600/30 outline-none placeholder:text-ink-400"
             />
           </div>
         </div>
@@ -178,10 +179,10 @@ export default function Sidebar({
                                   <li key={lesson.id}>
                                     <button
                                       onClick={() => onSelectLesson(lesson.id)}
-                                      className={`w-full flex items-start gap-1.5 px-2 py-1.5 rounded text-left text-xs leading-tight transition-colors
+                                      className={`w-full flex items-start gap-1.5 px-2 py-1.5 rounded text-left text-xs leading-tight transition-colors border-l-2
                                         ${isActive
-                                          ? 'bg-brand-50 text-brand-700 font-semibold'
-                                          : 'text-ink-600 hover:bg-ink-100'}
+                                          ? 'bg-brand-50 text-brand-700 font-semibold border-brand-600 shadow-glow-sm'
+                                          : 'text-ink-600 border-transparent hover:bg-ink-100 hover:text-ink-800'}
                                       `}
                                     >
                                       {fullyDone

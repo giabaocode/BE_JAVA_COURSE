@@ -25,11 +25,11 @@ const DIFF_CLASS = {
 }
 
 const TYPE_META = {
-  theory:   { icon: BookOpen, label: 'Theory · Lý thuyết',          color: 'bg-brand-50 text-brand-700' },
-  practice: { icon: Code2,    label: 'Practice · Thực hành',        color: 'bg-emerald-50 text-emerald-700' },
-  problems: { icon: Target,   label: 'Problem Set · Bài tập',       color: 'bg-amber-50 text-amber-700' },
-  project:  { icon: Wrench,   label: 'Project · Dự án',             color: 'bg-rose-50 text-rose-700' },
-  ai:       { icon: Sparkles, label: 'AI Workflow · Quy trình AI',  color: 'bg-purple-50 text-purple-700' }
+  theory:   { icon: BookOpen, label: 'Theory · Lý thuyết',          color: 'bg-brand-600/15 text-brand-700 ring-1 ring-brand-600/40' },
+  practice: { icon: Code2,    label: 'Practice · Thực hành',        color: 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/40' },
+  problems: { icon: Target,   label: 'Problem Set · Bài tập',       color: 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/40' },
+  project:  { icon: Wrench,   label: 'Project · Dự án',             color: 'bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/40' },
+  ai:       { icon: Sparkles, label: 'AI Workflow · Quy trình AI',  color: 'bg-purple-500/15 text-purple-300 ring-1 ring-purple-500/40' }
 }
 
 const isBilingual = (v) => v && typeof v === 'object' && !Array.isArray(v) && ('en' in v || 'vi' in v)
@@ -74,7 +74,7 @@ function BilingualText({ value }) {
           <div className="text-[10px] uppercase tracking-wider font-semibold text-emerald-700 mb-1.5 inline-flex items-center gap-1">
             <Languages className="w-3 h-3" /> Tiếng Việt
           </div>
-          <div className="prose-md max-w-none text-ink-800 [&_code]:bg-ink-100 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[13px] [&_code]:font-mono [&_code]:text-brand-700 [&_strong]:text-ink-900 [&_h3]:font-semibold [&_h3]:text-ink-900 [&_h3]:mt-4 [&_h3]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_p]:mb-3 [&_p]:leading-relaxed [&_pre]:bg-ink-900 [&_pre]:text-ink-100 [&_pre]:p-3 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:text-[12px] [&_pre]:font-mono [&_pre]:my-3" dangerouslySetInnerHTML={{ __html: value.vi }} />
+          <div className="prose-md max-w-none text-ink-800 [&_code]:bg-ink-100 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[13px] [&_code]:font-mono [&_code]:text-brand-700 [&_strong]:text-ink-900 [&_h3]:font-semibold [&_h3]:text-ink-900 [&_h3]:mt-4 [&_h3]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_p]:mb-3 [&_p]:leading-relaxed [&_pre]:bg-[#080b14] [&_pre]:text-[#cfe9ff] [&_pre]:border [&_pre]:border-brand-600/20 [&_pre]:p-3 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:text-[12px] [&_pre]:font-mono [&_pre]:my-3" dangerouslySetInnerHTML={{ __html: value.vi }} />
         </div>
       )}
     </div>
@@ -84,14 +84,14 @@ function BilingualText({ value }) {
 function MentalModelCard({ value }) {
   if (!value) return null
   return (
-    <div className="mb-5 rounded-xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-violet-50 overflow-hidden shadow-soft">
-      <div className="px-5 py-3 bg-indigo-100/60 border-b border-indigo-200 flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center">
+    <div className="mb-5 rounded-xl border border-indigo-400/40 bg-indigo-500/[0.07] backdrop-blur-sm overflow-hidden glow-border-purple">
+      <div className="px-5 py-3 bg-indigo-500/10 border-b border-indigo-400/30 flex items-center gap-2">
+        <div className="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center shadow-[0_0_14px_rgba(99,102,241,0.7)]">
           <Brain className="w-5 h-5" />
         </div>
         <div>
-          <div className="font-bold text-indigo-900 leading-tight">Mental Model</div>
-          <div className="text-[11px] text-indigo-700">Luồng tư duy — hình dung trước khi code</div>
+          <div className="font-display font-bold text-indigo-200 leading-tight tracking-wide">MENTAL MODEL</div>
+          <div className="text-[11px] text-indigo-300/80">Luồng tư duy — hình dung trước khi code</div>
         </div>
       </div>
       <div className="px-5 py-4"><BilingualText value={value} /></div>
@@ -102,14 +102,14 @@ function MentalModelCard({ value }) {
 function UnderTheHoodCard({ value }) {
   if (!value) return null
   return (
-    <div className="mb-5 rounded-xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 overflow-hidden shadow-soft">
-      <div className="px-5 py-3 bg-amber-100/60 border-b border-amber-200 flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center">
+    <div className="mb-5 rounded-xl border border-amber-400/40 bg-amber-500/[0.07] backdrop-blur-sm overflow-hidden shadow-[0_0_0_1px_rgba(255,176,0,0.25),0_0_20px_-8px_rgba(255,176,0,0.6)]">
+      <div className="px-5 py-3 bg-amber-500/10 border-b border-amber-400/30 flex items-center gap-2">
+        <div className="w-8 h-8 rounded-lg bg-amber-500 text-ink-50 flex items-center justify-center shadow-[0_0_14px_rgba(255,176,0,0.7)]">
           <Cog className="w-5 h-5" />
         </div>
         <div>
-          <div className="font-bold text-amber-900 leading-tight">Under the Hood</div>
-          <div className="text-[11px] text-amber-700">Cơ chế bên dưới — hiểu sâu, không hiểu vẹt</div>
+          <div className="font-display font-bold text-amber-200 leading-tight tracking-wide">UNDER THE HOOD</div>
+          <div className="text-[11px] text-amber-300/80">Cơ chế bên dưới — hiểu sâu, không hiểu vẹt</div>
         </div>
       </div>
       <div className="px-5 py-4"><BilingualText value={value} /></div>
@@ -120,29 +120,29 @@ function UnderTheHoodCard({ value }) {
 function SocraticPromptsCard({ prompts }) {
   if (!prompts || prompts.length === 0) return null
   return (
-    <div className="mb-5 rounded-xl border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-fuchsia-50 overflow-hidden shadow-soft">
-      <div className="px-5 py-3 bg-purple-100/60 border-b border-purple-200 flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center">
+    <div className="mb-5 rounded-xl border border-purple-400/40 bg-purple-500/[0.07] backdrop-blur-sm overflow-hidden glow-border-purple">
+      <div className="px-5 py-3 bg-purple-500/10 border-b border-purple-400/30 flex items-center gap-2">
+        <div className="w-8 h-8 rounded-lg bg-purple-500 text-white flex items-center justify-center shadow-[0_0_14px_rgba(168,85,247,0.7)]">
           <MessageSquareQuote className="w-5 h-5" />
         </div>
         <div className="flex-1">
-          <div className="font-bold text-purple-900 leading-tight">Socratic AI Prompts</div>
-          <div className="text-[11px] text-purple-700">Copy-paste vào AI — bắt AI hỏi ngược bạn, KHÔNG cho đáp án</div>
+          <div className="font-display font-bold text-purple-200 leading-tight tracking-wide">SOCRATIC AI PROMPTS</div>
+          <div className="text-[11px] text-purple-300/80">Copy-paste vào AI — bắt AI hỏi ngược bạn, KHÔNG cho đáp án</div>
         </div>
       </div>
       <div className="px-5 py-4 space-y-3">
         {prompts.map((p, i) => (
-          <div key={i} className="rounded-lg bg-white border border-purple-200 overflow-hidden">
-            <div className="px-3 py-2 bg-purple-50 border-b border-purple-200 flex items-center justify-between gap-2">
-              <span className="text-sm font-semibold text-purple-900">{p.title}</span>
+          <div key={i} className="rounded-lg bg-ink-100/80 border border-purple-400/25 overflow-hidden">
+            <div className="px-3 py-2 bg-purple-500/10 border-b border-purple-400/20 flex items-center justify-between gap-2">
+              <span className="text-sm font-semibold text-purple-200">{p.title}</span>
               <button
                 onClick={() => navigator.clipboard?.writeText(p.prompt)}
-                className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded-md text-purple-700 hover:bg-purple-100"
+                className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded-md text-purple-300 hover:bg-purple-500/20"
               >
                 <Copy className="w-3.5 h-3.5" /> Copy prompt
               </button>
             </div>
-            <pre className="p-3 text-[12.5px] leading-6 text-ink-700 whitespace-pre-wrap font-mono bg-white max-h-72 overflow-y-auto scrollbar-thin">{p.prompt}</pre>
+            <pre className="p-3 text-[12.5px] leading-6 text-ink-700 whitespace-pre-wrap font-mono bg-[#0a0a14] max-h-72 overflow-y-auto scrollbar-thin">{p.prompt}</pre>
           </div>
         ))}
       </div>
@@ -177,8 +177,8 @@ function CodeBlock({ example }) {
     <div className="mt-4">
       {example.title && <div className="text-sm font-semibold text-ink-800 mb-1">{example.title}</div>}
       {example.description && <p className="text-sm text-ink-600 mb-1">{example.description}</p>}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-ink-800 text-ink-300 text-[11px] font-mono rounded-t-lg border-b border-ink-700">
-        <span>{lang}</span>
+      <div className="flex items-center justify-between px-3 py-1.5 bg-[#0c1019] text-brand-700 text-[11px] font-mono rounded-t-lg border border-b-0 border-brand-600/25">
+        <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-brand-600 shadow-glow-sm" /> {lang}</span>
         <CopyButton text={example.code} />
       </div>
       <pre className="code-block rounded-t-none whitespace-pre"><code>{example.code}</code></pre>
@@ -192,13 +192,13 @@ function CodeBlock({ example }) {
 function Accordion({ icon: Icon, title, tone = 'amber', defaultOpen = false, children, locked, lockMessage }) {
   const [open, setOpen] = useState(defaultOpen)
   const tones = {
-    amber:   { wrap: 'border-amber-300 bg-amber-50/40',     head: 'bg-amber-100/60 text-amber-900', body: 'text-amber-950' },
-    emerald: { wrap: 'border-emerald-300 bg-emerald-50/40', head: 'bg-emerald-100/60 text-emerald-900', body: 'text-emerald-950' },
-    brand:   { wrap: 'border-brand-300 bg-brand-50/40',     head: 'bg-brand-100/60 text-brand-900',   body: 'text-brand-950' }
+    amber:   { wrap: 'border-amber-400/35 bg-amber-500/[0.06]',     head: 'bg-amber-500/10 text-amber-200',     body: 'text-amber-100/90' },
+    emerald: { wrap: 'border-emerald-400/35 bg-emerald-500/[0.06]', head: 'bg-emerald-500/10 text-emerald-200', body: 'text-emerald-100/90' },
+    brand:   { wrap: 'border-brand-500/35 bg-brand-600/[0.06]',     head: 'bg-brand-600/10 text-brand-700',     body: 'text-ink-700' }
   }
   const t = tones[tone]
   return (
-    <div className={`rounded-xl border-2 mb-3 overflow-hidden ${t.wrap}`}>
+    <div className={`rounded-xl border mb-3 overflow-hidden backdrop-blur-sm ${t.wrap}`}>
       <button
         onClick={() => !locked && setOpen(o => !o)}
         className={`w-full px-4 py-2.5 flex items-center gap-2 ${t.head} text-left`}
@@ -246,29 +246,29 @@ function MockTimerCard({ seconds, running, onStart, onPause, onReset, onAddFive 
   const low = seconds <= 60
   const done = seconds === 0
   return (
-    <div className={`sticky top-16 z-10 mb-5 rounded-xl border-2 overflow-hidden shadow-card ${done ? 'border-rose-400 bg-rose-50' : low ? 'border-rose-300 bg-rose-50 animate-pulse' : 'border-ink-900 bg-ink-900 text-white'}`}>
+    <div className={`sticky top-16 z-10 mb-5 rounded-xl border overflow-hidden backdrop-blur-md ${done ? 'border-rose-500/60 bg-rose-500/15 shadow-glow-rose' : low ? 'border-rose-500/50 bg-rose-500/15 shadow-glow-rose animate-pulse' : 'border-brand-600/50 bg-ink-100/90 shadow-glow'}`}>
       <div className="px-4 py-3 flex items-center gap-3">
-        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${done || low ? 'bg-rose-600 text-white' : 'bg-white text-ink-900'}`}>
+        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${done || low ? 'bg-rose-500 text-ink-50 shadow-[0_0_14px_rgba(244,63,94,0.7)]' : 'bg-brand-600 text-ink-50 shadow-glow'}`}>
           <Timer className="w-5 h-5" />
         </div>
         <div className="flex-1">
-          <div className={`text-[10px] uppercase tracking-wider font-bold ${done || low ? 'text-rose-700' : 'text-ink-400'}`}>
+          <div className={`text-[10px] uppercase tracking-[0.2em] font-display font-bold ${done || low ? 'text-rose-300' : 'text-brand-700'}`}>
             Mock Interview Mode
           </div>
-          <div className={`text-3xl font-bold tabular-nums leading-none mt-0.5 ${done || low ? 'text-rose-700' : 'text-white'}`}>
+          <div className={`text-3xl font-display font-bold tabular-nums leading-none mt-0.5 ${done || low ? 'text-rose-300' : 'neon-text'}`}>
             {fmtTime(seconds)}
           </div>
         </div>
         <div className="flex items-center gap-1.5">
           {!running
-            ? <button onClick={onStart} disabled={done} className={`btn text-xs ${done ? 'bg-ink-300 text-ink-500 cursor-not-allowed' : 'bg-emerald-500 text-white hover:bg-emerald-600'}`}><Play className="w-3.5 h-3.5" /> Start</button>
-            : <button onClick={onPause} className="btn text-xs bg-amber-500 text-white hover:bg-amber-600"><Pause className="w-3.5 h-3.5" /> Pause</button>}
-          <button onClick={onAddFive} className="btn-ghost text-xs text-white hover:bg-white/10">+5m</button>
-          <button onClick={onReset} className="btn-ghost text-xs text-white hover:bg-white/10"><RotateCcw className="w-3.5 h-3.5" /></button>
+            ? <button onClick={onStart} disabled={done} className={`btn text-xs ${done ? 'bg-ink-200 text-ink-500 cursor-not-allowed' : 'bg-emerald-500 text-ink-50 hover:bg-emerald-400 shadow-glow-emerald'}`}><Play className="w-3.5 h-3.5" /> Start</button>
+            : <button onClick={onPause} className="btn text-xs bg-amber-500 text-ink-50 hover:bg-amber-400"><Pause className="w-3.5 h-3.5" /> Pause</button>}
+          <button onClick={onAddFive} className="btn-ghost text-xs text-ink-700 hover:bg-white/10">+5m</button>
+          <button onClick={onReset} className="btn-ghost text-xs text-ink-700 hover:bg-white/10"><RotateCcw className="w-3.5 h-3.5" /></button>
         </div>
       </div>
       {done && (
-        <div className="px-4 py-2 bg-rose-100 text-rose-900 text-xs font-semibold flex items-center gap-2 border-t border-rose-200">
+        <div className="px-4 py-2 bg-rose-500/20 text-rose-200 text-xs font-semibold flex items-center gap-2 border-t border-rose-500/30">
           <AlertCircle className="w-4 h-4" /> Hết giờ! Stop. Bây giờ review: bạn đã giải được đến đâu, miss edge case gì?
         </div>
       )}
@@ -315,14 +315,14 @@ function SettingsPopover({ open, onClose, anchorBtnRef }) {
   return (
     <>
       <div className="fixed inset-0 z-30" onClick={onClose} />
-      <div className="absolute right-0 mt-2 w-[340px] z-40 bg-white rounded-xl shadow-2xl border border-ink-200 overflow-hidden">
+      <div className="absolute right-0 mt-2 w-[340px] z-40 bg-ink-100 rounded-xl shadow-2xl border border-brand-600/30 glow-border-cyan overflow-hidden">
         <div className="px-4 py-3 bg-ink-50 border-b border-ink-200 flex items-center gap-2">
-          <Settings className="w-4 h-4 text-ink-600" />
+          <Settings className="w-4 h-4 text-brand-700" />
           <span className="font-semibold text-sm text-ink-900">Settings · Cài đặt</span>
         </div>
         <div className="p-4 space-y-3">
           {!isSupabaseEnabled() && (
-            <div className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded p-2">
+            <div className="text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded p-2">
               Cần cấu hình Supabase env để lưu settings.
             </div>
           )}
@@ -398,55 +398,55 @@ function SettingsPopover({ open, onClose, anchorBtnRef }) {
 // ============================================================================
 function StepCard({ step, idx, done, onToggle }) {
   return (
-    <div className={`border-2 rounded-xl overflow-hidden transition-colors ${done ? 'bg-emerald-50/40 border-emerald-300' : 'bg-white border-ink-200'}`}>
+    <div className={`border rounded-xl overflow-hidden transition-colors backdrop-blur-sm ${done ? 'bg-emerald-500/[0.07] border-emerald-400/40' : 'bg-ink-100/50 border-ink-200'}`}>
       <div className="p-4 flex items-start gap-3">
         <button onClick={onToggle} className="flex-shrink-0 mt-1" aria-label="Toggle">
-          {done ? <CheckCircle2 className="w-6 h-6 text-emerald-500" /> : <Circle className="w-6 h-6 text-ink-300 hover:text-ink-400" />}
+          {done ? <CheckCircle2 className="w-6 h-6 text-emerald-400" /> : <Circle className="w-6 h-6 text-ink-300 hover:text-brand-600" />}
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className="text-xs font-bold text-brand-600 tracking-wider uppercase">Step {idx + 1}</span>
+            <span className="text-xs font-display font-bold text-brand-700 tracking-[0.15em] uppercase">Step {idx + 1}</span>
             <h4 className={`font-semibold text-ink-900 ${done ? 'line-through text-ink-400' : ''}`}>{step.title}</h4>
           </div>
           {step.description && (
             <div className="text-sm leading-relaxed text-ink-700 mb-3"><BilingualText value={step.description} /></div>
           )}
           {step.mentalModel && (
-            <div className="mt-3 rounded-lg border border-indigo-200 bg-indigo-50/60 overflow-hidden">
-              <div className="px-3 py-1.5 bg-indigo-100/70 border-b border-indigo-200 text-[11px] font-semibold uppercase tracking-wider text-indigo-800 flex items-center gap-1.5">
+            <div className="mt-3 rounded-lg border border-indigo-400/30 bg-indigo-500/[0.07] overflow-hidden">
+              <div className="px-3 py-1.5 bg-indigo-500/10 border-b border-indigo-400/25 text-[11px] font-semibold uppercase tracking-wider text-indigo-200 flex items-center gap-1.5">
                 <Brain className="w-3.5 h-3.5" /> Mental Model · Luồng tư duy
               </div>
-              <div className="p-3 text-sm text-ink-800 [&_code]:bg-white [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[12px] [&_code]:font-mono [&_code]:text-indigo-700 [&_strong]:text-ink-900 [&_pre]:bg-ink-900 [&_pre]:text-ink-100 [&_pre]:p-3 [&_pre]:rounded [&_pre]:overflow-x-auto [&_pre]:text-[12px] [&_pre]:font-mono [&_pre]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_p]:mb-2">
+              <div className="p-3 text-sm text-ink-700 [&_code]:bg-ink-200 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[12px] [&_code]:font-mono [&_code]:text-indigo-300 [&_strong]:text-ink-900 [&_pre]:bg-[#080b14] [&_pre]:text-[#cfe9ff] [&_pre]:border [&_pre]:border-brand-600/20 [&_pre]:p-3 [&_pre]:rounded [&_pre]:overflow-x-auto [&_pre]:text-[12px] [&_pre]:font-mono [&_pre]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_p]:mb-2">
                 <BilingualText value={step.mentalModel} />
               </div>
             </div>
           )}
           {step.socraticPrompts && step.socraticPrompts.length > 0 && (
-            <div className="mt-3 rounded-lg border border-purple-200 bg-purple-50/60 overflow-hidden">
-              <div className="px-3 py-1.5 bg-purple-100/70 border-b border-purple-200 text-[11px] font-semibold uppercase tracking-wider text-purple-800 flex items-center gap-1.5">
+            <div className="mt-3 rounded-lg border border-purple-400/30 bg-purple-500/[0.07] overflow-hidden">
+              <div className="px-3 py-1.5 bg-purple-500/10 border-b border-purple-400/25 text-[11px] font-semibold uppercase tracking-wider text-purple-200 flex items-center gap-1.5">
                 <MessageSquareQuote className="w-3.5 h-3.5" /> Socratic Prompts · Hỏi AI trước khi code
               </div>
               <div className="p-3 space-y-2">
                 {step.socraticPrompts.map((p, i) => (
-                  <div key={i} className="rounded-md bg-white border border-purple-200 overflow-hidden">
-                    <div className="px-2.5 py-1.5 bg-purple-50 border-b border-purple-100 flex items-center justify-between gap-2">
-                      <span className="text-xs font-semibold text-purple-900">{p.title}</span>
-                      <button onClick={() => navigator.clipboard?.writeText(p.prompt)} className="text-[11px] inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-purple-700 hover:bg-purple-100">
+                  <div key={i} className="rounded-md bg-ink-100/80 border border-purple-400/25 overflow-hidden">
+                    <div className="px-2.5 py-1.5 bg-purple-500/10 border-b border-purple-400/20 flex items-center justify-between gap-2">
+                      <span className="text-xs font-semibold text-purple-200">{p.title}</span>
+                      <button onClick={() => navigator.clipboard?.writeText(p.prompt)} className="text-[11px] inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-purple-300 hover:bg-purple-500/20">
                         <Copy className="w-3 h-3" /> Copy
                       </button>
                     </div>
-                    <pre className="p-2.5 text-[12px] leading-5 text-ink-700 whitespace-pre-wrap font-mono max-h-48 overflow-y-auto scrollbar-thin">{p.prompt}</pre>
+                    <pre className="p-2.5 text-[12px] leading-5 text-ink-700 whitespace-pre-wrap font-mono bg-[#0a0a14] max-h-48 overflow-y-auto scrollbar-thin">{p.prompt}</pre>
                   </div>
                 ))}
               </div>
             </div>
           )}
           {step.hints && step.hints.length > 0 && (
-            <div className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-700 mb-1.5 flex items-center gap-1.5">
+            <div className="mt-3 rounded-lg bg-amber-500/[0.08] border border-amber-400/30 p-3">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-amber-300 mb-1.5 flex items-center gap-1.5">
                 <Lightbulb className="w-3.5 h-3.5" /> Technical Hints · Gợi ý kỹ thuật
               </div>
-              <ul className="text-sm text-amber-900 list-disc pl-5 space-y-1">
+              <ul className="text-sm text-amber-100/90 list-disc pl-5 space-y-1">
                 {step.hints.map((h, i) => <li key={i} dangerouslySetInnerHTML={{ __html: h }} />)}
               </ul>
             </div>
@@ -473,17 +473,17 @@ function HintsReveal({ hints }) {
   if (!hints || (Array.isArray(hints) && hints.length === 0)) return null
   const list = Array.isArray(hints) ? hints : [hints]
   return (
-    <div className="mt-2 rounded-md border border-amber-200 bg-amber-50/60 overflow-hidden">
+    <div className="mt-2 rounded-md border border-amber-400/30 bg-amber-500/[0.07] overflow-hidden">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full px-2.5 py-1.5 flex items-center gap-1.5 text-[11px] font-semibold text-amber-800 hover:bg-amber-100/60 text-left"
+        className="w-full px-2.5 py-1.5 flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 hover:bg-amber-500/15 text-left"
       >
         <Lightbulb className="w-3.5 h-3.5" />
         💡 Gợi ý Socratic ({list.length})
         {open ? <ChevronUp className="w-3.5 h-3.5 ml-auto" /> : <ChevronDown className="w-3.5 h-3.5 ml-auto" />}
       </button>
       {open && (
-        <ul className="px-3 py-2 text-xs text-amber-900 list-disc pl-7 space-y-1.5 border-t border-amber-200 bg-white">
+        <ul className="px-3 py-2 text-xs text-amber-100/90 list-disc pl-7 space-y-1.5 border-t border-amber-400/20 bg-ink-100/60">
           {list.map((h, i) => <li key={i} dangerouslySetInnerHTML={{ __html: h }} />)}
         </ul>
       )}
@@ -496,10 +496,10 @@ function SolutionReveal({ solution, locked, lockMessage }) {
   if (!solution) return null
   const isLocked = !!locked
   return (
-    <div className="mt-2 rounded-md border border-emerald-200 bg-emerald-50/60 overflow-hidden">
+    <div className="mt-2 rounded-md border border-emerald-400/30 bg-emerald-500/[0.07] overflow-hidden">
       <button
         onClick={() => !isLocked && setOpen(o => !o)}
-        className={`w-full px-2.5 py-1.5 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-800 text-left ${isLocked ? 'cursor-not-allowed opacity-70' : 'hover:bg-emerald-100/60'}`}
+        className={`w-full px-2.5 py-1.5 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-300 text-left ${isLocked ? 'cursor-not-allowed opacity-70' : 'hover:bg-emerald-500/15'}`}
       >
         <Check className="w-3.5 h-3.5" />
         ✅ Lời giải tham khảo
@@ -508,14 +508,14 @@ function SolutionReveal({ solution, locked, lockMessage }) {
           : (open ? <ChevronUp className="w-3.5 h-3.5 ml-auto" /> : <ChevronDown className="w-3.5 h-3.5 ml-auto" />)}
       </button>
       {open && !isLocked && (
-        <div className="border-t border-emerald-200 bg-white">
+        <div className="border-t border-emerald-400/20 bg-ink-100/60">
           {solution.explanationVi && (
-            <div className="px-3 py-2 text-xs text-ink-700 leading-relaxed border-b border-emerald-100"
+            <div className="px-3 py-2 text-xs text-ink-700 leading-relaxed border-b border-emerald-400/15"
                  dangerouslySetInnerHTML={{ __html: solution.explanationVi }} />
           )}
           {solution.code && <CodeBlock example={{ code: solution.code, lang: solution.lang || 'java' }} />}
           {solution.complexityVi && (
-            <div className="px-3 py-2 text-xs text-emerald-900 bg-emerald-50 border-t border-emerald-200 flex items-start gap-1.5">
+            <div className="px-3 py-2 text-xs text-emerald-200 bg-emerald-500/10 border-t border-emerald-400/20 flex items-start gap-1.5">
               <Cog className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
               <span><strong>Complexity:</strong> <span dangerouslySetInnerHTML={{ __html: solution.complexityVi }} /></span>
             </div>
@@ -523,7 +523,7 @@ function SolutionReveal({ solution, locked, lockMessage }) {
         </div>
       )}
       {open && isLocked && (
-        <div className="px-3 py-2 text-xs text-ink-500 italic border-t border-emerald-200 bg-white">
+        <div className="px-3 py-2 text-xs text-ink-500 italic border-t border-emerald-400/20 bg-ink-100/60">
           {lockMessage || 'Pause timer hoặc tắt Mock Mode để xem lời giải.'}
         </div>
       )}
@@ -651,7 +651,7 @@ export default function MainContent({
     <div className="max-w-4xl mx-auto px-5 sm:px-8 py-6">
 
       {/* ===== Feature Toolbar ===== */}
-      <div className="mb-5 rounded-xl border border-ink-200 bg-white p-2 flex items-center gap-1.5 flex-wrap shadow-soft">
+      <div className="card mb-5 p-2 flex items-center gap-1.5 flex-wrap">
         <ToolbarToggle
           active={mockMode}
           onClick={() => setMockMode(m => !m)}
@@ -684,7 +684,7 @@ export default function MainContent({
         <div className="relative">
           <button
             onClick={() => setSettingsOpen(o => !o)}
-            className={`btn text-xs ${settingsOpen ? 'bg-ink-900 text-white' : 'btn-ghost'}`}
+            className={`btn text-xs ${settingsOpen ? 'bg-brand-600 text-ink-50 shadow-glow' : 'btn-ghost'}`}
           >
             <Settings className="w-3.5 h-3.5" /> Settings
           </button>
@@ -707,7 +707,7 @@ export default function MainContent({
       </div>
 
       <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
-        <h1 className="text-2xl sm:text-3xl font-bold text-ink-900 tracking-tight">{lesson.title}</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-ink-900 tracking-tight [text-shadow:0_0_24px_rgba(0,229,255,0.25)]">{lesson.title}</h1>
         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ${meta.color}`}>
           <Icon className="w-3.5 h-3.5" /> {meta.label}
         </span>
@@ -746,7 +746,7 @@ export default function MainContent({
 
       {/* ===== Mock Mode notice ===== */}
       {mockMode && (
-        <div className="mb-5 rounded-lg bg-rose-50 border border-rose-200 p-3 text-sm text-rose-900 flex items-start gap-2">
+        <div className="mb-5 rounded-lg bg-rose-500/10 border border-rose-500/30 p-3 text-sm text-rose-200 flex items-start gap-2">
           <EyeOff className="w-4 h-4 mt-0.5 flex-shrink-0" />
           <span><strong>Mock Mode đang BẬT.</strong> Lý thuyết, mental model, socratic prompts đã ẩn. Tập trung giải. Bật lại khi cần.</span>
         </div>
@@ -754,14 +754,14 @@ export default function MainContent({
 
       {/* ===== Phase 0 Anti-Copy-Paste Banner ===== */}
       {phase.id === 'phase-0' && !mockMode && (
-        <div className="mb-5 rounded-xl border-2 border-rose-300 bg-gradient-to-r from-rose-50 to-amber-50 p-4 shadow-soft">
+        <div className="mb-5 rounded-xl border border-rose-500/40 bg-rose-500/[0.08] backdrop-blur-sm p-4 shadow-glow-rose">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-rose-600 text-white flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-rose-500 text-ink-50 flex items-center justify-center flex-shrink-0 shadow-[0_0_14px_rgba(244,63,94,0.7)]">
               <AlertCircle className="w-5 h-5" />
             </div>
             <div className="flex-1 text-sm">
-              <div className="font-bold text-rose-900 mb-1">🚫 PHASE 0 — Anti-Copy-Paste Rules</div>
-              <ul className="text-rose-900 list-disc pl-5 space-y-0.5">
+              <div className="font-display font-bold text-rose-200 mb-1 tracking-wide">🚫 PHASE 0 — Anti-Copy-Paste Rules</div>
+              <ul className="text-rose-100/90 list-disc pl-5 space-y-0.5">
                 <li>⛔ <strong>KHÔNG paste AI</strong> bất kỳ exercise nào. Phát hiện = restart Phase 0.</li>
                 <li>✅ Mỗi exercise <strong>gõ tay 3 lần</strong>. Lần 3 mắt nhắm (gần đúng).</li>
                 <li>✅ Mỗi LeetCode <strong>thử 20 phút KHÔNG nhìn solution</strong>.</li>
@@ -915,7 +915,7 @@ export default function MainContent({
                     <Copy className="w-3 h-3" /> Copy
                   </button>
                 </div>
-                <pre className="p-4 text-[13px] leading-6 text-ink-800 whitespace-pre-wrap font-mono bg-white max-h-96 overflow-y-auto scrollbar-thin">{p.prompt}</pre>
+                <pre className="p-4 text-[13px] leading-6 text-ink-700 whitespace-pre-wrap font-mono bg-[#0a0a14] max-h-96 overflow-y-auto scrollbar-thin">{p.prompt}</pre>
               </div>
             ))}
           </div>
@@ -931,7 +931,7 @@ export default function MainContent({
           </div>
           <button
             onClick={requestMarkComplete}
-            className={`btn ${lessonMarked ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}
+            className={`btn ${lessonMarked ? 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/40 hover:bg-emerald-500/25' : 'bg-indigo-500 text-white hover:bg-indigo-400 shadow-[0_0_18px_-4px_rgba(99,102,241,0.8)]'}`}
           >
             <Brain className="w-4 h-4" />
             {lessonMarked ? 'Đã hoàn thành · Sửa Note' : 'Viết Feynman Note & hoàn thành'}
@@ -941,9 +941,9 @@ export default function MainContent({
 
       {/* For lessons with items, offer a Feynman note option separately when all done */}
       {(lesson.problems || lesson.steps) && doneItems === totalItems && (
-        <div className="card p-4 flex items-center justify-between mb-5 flex-wrap gap-2 bg-indigo-50/50 border-indigo-200">
+        <div className="card p-4 flex items-center justify-between mb-5 flex-wrap gap-2 !border-indigo-400/40 glow-border-purple">
           <div className="text-sm text-ink-700">
-            <strong className="text-indigo-900">🎉 Hoàn thành tất cả!</strong> Khoá học hết ý nghĩa nếu bạn không tự đúc kết.
+            <strong className="text-indigo-200">🎉 Hoàn thành tất cả!</strong> Khoá học hết ý nghĩa nếu bạn không tự đúc kết.
           </div>
           <button onClick={requestMarkComplete} className="btn bg-indigo-600 text-white hover:bg-indigo-700">
             <Brain className="w-4 h-4" /> Viết Feynman Note

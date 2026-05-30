@@ -6,6 +6,7 @@
 import syntaxEssentials   from './phase0/01-syntax-essentials.js'
 import builtinCollections from './phase0/02-builtin-collections.js'
 import easyLeetcode       from './phase0/03-easy-leetcode.js'
+import consoleMiniApps    from './phase0/04-console-miniapps.js'
 
 export const phase0 = {
   id: 'phase-0',
@@ -17,6 +18,7 @@ export const phase0 = {
   modules: [
     syntaxEssentials,
     builtinCollections,
-    easyLeetcode
+    easyLeetcode,
+    consoleMiniApps
   ]
 }

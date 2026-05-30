@@ -163,31 +163,31 @@ git commit -m "describe change"
 git push       # auto-triggers GH Actions deploy
 ```
 
-## Recent decisions / current state (LAST UPDATED)
+## Recent decisions / current state (LAST UPDATED 2026-05-30)
 
-**Last action**: Added Phase 0 (warmup) + 20-week beginner pacing + anti-copy-paste UI banner. Committed `fe1c0b0` on main.
+**Last action**: Completed **Option B** — added ALL 7 Cybersoft gap-filler items in one batch. Build passes (`npx vite build` ✓). Awaiting commit.
 
-**User just shared Cybersoft full curriculum** and asked which gaps to fill. I evaluated and recommended:
+### What was added (Option B — all 7 items)
+1. ✅ **Phase 0 Module 0.4** — Console Mini-Apps (Number Guessing + Mini Bank + Retrospective) — `phase0/04-console-miniapps.js`
+2. ✅ **Phase 1 Module 1.8** — OOP Mini Projects (Student/HR/Library Management — Vietnamese CRUD) — appended to `phase1.js`
+3. ✅ **Phase 3 Module 3.0** — SQL Foundation Deep Dive (mental model, JOIN, subquery+CTE, GROUP BY, window functions) — `phase3/00-sql-foundation.js`
+4. ✅ **Phase 3.1 lesson l-3-1-4** — Database Optimization (EXPLAIN ANALYZE, composite index, batch INSERT, stored procedure) — appended to `phase3/01-docker-postgres.js`
+5. ✅ **Phase 3 Module 3.6** — Redis + RabbitMQ (mental model, Spring Data Redis, distributed lock, Spring AMQP + DLQ) — `phase3/06-redis-rabbitmq.js`. Renamed existing `06-testing-deployment.js` → `07-testing-deployment.js`
+6. ✅ **Phase 3 Module 3.8** — UML & Project Analysis (requirement analysis, use case diagram, class + sequence diagram, PlantUML) — `phase3/08-uml-analysis.js`
+7. ✅ **Phase 5 Module 5.0** — Team Skills (Git Flow + Conventional Commits, Scrum/Jira/Agile vocab, Code Review Etiquette) — `phase5/00-team-skills.js`
 
-🟢 **Already have or better**: OOP, DS, Sort, Spring Boot, JWT, Docker, Email, LeetCode patterns (Cybersoft has NO 17-pattern coverage).
+### Updated aggregators
+- `phase0.js` — added consoleMiniApps to modules
+- `phase3.js` — added sqlFoundation, redisRabbitMQ, umlAnalysis; renumbered modules (now 9 modules)
+- `phase5.js` — added teamSkills as first module; updated intro
 
-🟡 **Worth adding** (gap fillers — pending user decision):
-1. Phase 3.0 — SQL Foundation Deep Dive (JOIN, SUBQUERY, GROUP BY, window function)
-2. Phase 1.8 — OOP Mini Projects (Student/HR/Library Management — Vietnamese-style CRUD)
-3. Phase 5.0 — Team Skills + Git Workflow + Jira/Agile basics
-4. UML & Project Analysis (use case, sequence diagram) — fits Phase 3.7
-5. Redis + RabbitMQ deep dive — fits Phase 3.6.5
-6. Database optimization (stored procedure, batch, EXPLAIN ANALYZE) — Phase 3.1 lesson addition
-7. Number Guessing + Mini Bank console apps — fits Phase 0 end
+### Curriculum stats after Option B
+- **Phases**: 6 (unchanged)
+- **Modules**: 39 → **47**
+- **Lessons**: 101 → ~**125** (added ~24 new lessons)
 
-🔴 **Skipped** (legacy or not-for-backend):
-- JSP / Servlet (legacy)
-- MySQL-specific (Postgres covers it)
-- Frontend Bootstrap/animation/Carousel/Portfolio (we're backend-focused)
-- Spring Tile 3 (legacy templating)
-- Specific business projects (Insurance/Food Delivery/Shoes Shop)
-
-**Pending decision**: I proposed 3 options (A=3 modules, B=8 items, C=tối thiểu = 1 module + 2 lessons). Recommended **Option C** because user has 101 lessons already and hasn't started Phase 0.
+### Escape gotcha encountered
+JS single-quoted strings: `\\'` doesn't escape an apostrophe — it produces `\` then closes the string. Fix: use double quotes around the JS string when the content contains SQL literal quotes (e.g., `"DATE_TRUNC('month', x)"`). I hit this 5 times in SQL lessons.
 
 ## Modifications by user/linter to UI files (DO NOT revert)
 

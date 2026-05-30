@@ -194,9 +194,9 @@ function PracticeMode({ snippet, onExit }) {
     const ch = target[i]
     let cls = 'text-ink-400'
     if (i < typed.length) {
-      cls = typed[i] === ch ? 'text-emerald-500' : 'text-rose-500 bg-rose-100'
+      cls = typed[i] === ch ? 'text-emerald-400' : 'text-rose-300 bg-rose-500/30'
     } else if (i === typed.length) {
-      cls = 'text-ink-700 bg-indigo-200 animate-pulse'
+      cls = 'text-ink-900 bg-brand-500/40 animate-pulse'
     }
     const display = ch === '\n' ? '↵\n' : ch
     colored.push(<span key={i} className={cls} style={{ whiteSpace: 'pre-wrap' }}>{display}</span>)
@@ -223,7 +223,7 @@ function PracticeMode({ snippet, onExit }) {
 
       <div className="flex-1 overflow-y-auto p-4 scrollbar-thin">
         <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">Target</div>
-        <pre className="font-mono text-[13px] leading-6 bg-ink-900 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap">{colored}</pre>
+        <pre className="font-mono text-[13px] leading-6 bg-[#080b14] border border-brand-600/20 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap">{colored}</pre>
 
         <div className="mt-3 text-xs font-semibold uppercase tracking-wider text-ink-500">Your input</div>
         <textarea
@@ -231,12 +231,12 @@ function PracticeMode({ snippet, onExit }) {
           value={typed}
           onChange={handleChange}
           spellCheck={false}
-          className="w-full mt-1 h-40 p-3 font-mono text-[13px] leading-6 rounded-lg border border-ink-300 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 outline-none resize-y"
+          className="w-full mt-1 h-40 p-3 font-mono text-[13px] leading-6 rounded-lg bg-ink-50 text-ink-800 border border-ink-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-600/30 outline-none resize-y placeholder:text-ink-500"
           placeholder="Bắt đầu gõ — đừng copy. Mục tiêu: hoàn thành 100% accuracy ≥ 95%."
         />
 
         {finishedAt && (
-          <div className="mt-4 rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-sm text-emerald-900 flex items-center gap-2">
+          <div className="mt-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 p-3 text-sm text-emerald-200 flex items-center gap-2">
             <Check className="w-4 h-4" />
             <span><strong>Hoàn thành!</strong> {wpm} WPM · {accuracy}% · {errors} lỗi · {Math.round(elapsedMs / 1000)}s</span>
           </div>
@@ -248,10 +248,10 @@ function PracticeMode({ snippet, onExit }) {
 
 function Stat({ label, value, tone = 'brand' }) {
   const tones = {
-    brand: 'text-brand-700 bg-brand-50',
-    emerald: 'text-emerald-700 bg-emerald-50',
-    amber: 'text-amber-700 bg-amber-50',
-    rose: 'text-rose-700 bg-rose-50'
+    brand: 'text-brand-700 bg-brand-600/15',
+    emerald: 'text-emerald-300 bg-emerald-500/15',
+    amber: 'text-amber-300 bg-amber-500/15',
+    rose: 'text-rose-300 bg-rose-500/15'
   }
   return (
     <div className={`rounded-md px-2 py-1.5 ${tones[tone]}`}>
@@ -376,8 +376,8 @@ export function SyntaxVaultDrawer({ open, onClose }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-40 bg-ink-900/40" onClick={onClose} />
-      <aside className="fixed right-0 top-0 h-screen w-full sm:w-[560px] z-50 bg-white shadow-2xl border-l border-ink-200 flex flex-col">
+      <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <aside className="fixed right-0 top-0 h-screen w-full sm:w-[560px] z-50 bg-ink-100 shadow-2xl border-l border-brand-600/30 shadow-glow flex flex-col">
         <div className="px-5 py-4 border-b border-ink-200 flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center">
             <BookMarked className="w-5 h-5" />

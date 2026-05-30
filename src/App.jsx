@@ -126,7 +126,7 @@ export default function App() {
         onClose={() => setMobileOpen(false)}
       />
       <main className="flex-1 min-w-0">
-        <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-ink-200">
+        <header className="sticky top-0 z-20 bg-ink-50/80 backdrop-blur-md border-b border-brand-600/25 shadow-[0_4px_24px_-12px_rgba(0,229,255,0.5)]">
           <div className="flex items-center justify-between px-5 py-3">
             <div className="flex items-center gap-3">
               <button
@@ -137,7 +137,7 @@ export default function App() {
                 <Menu className="w-5 h-5" />
               </button>
               <div>
-                <div className="text-[11px] uppercase tracking-wider text-ink-500 font-semibold">Bootcamp</div>
+                <div className="text-[11px] uppercase tracking-[0.2em] text-brand-600/80 font-display font-semibold">Bootcamp</div>
                 <div className="text-sm font-bold text-ink-900">{current?.phase.title}</div>
               </div>
             </div>

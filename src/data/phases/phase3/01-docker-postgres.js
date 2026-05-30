@@ -428,6 +428,309 @@ CREATE INDEX idx_comments_post_id ON comments(post_id);`
 5. Index tốn chi phí gì? Khi nào KHÔNG tạo?`
         }
       ]
+    },
+
+    // ========================================================================
+    // l-3-1-4 — Database Optimization (EXPLAIN, stored procedure, batch INSERT)
+    // Cybersoft-style: trước khi JPA tự sinh query, phải biết DB tự tối ưu ra sao.
+    // ========================================================================
+    {
+      id: 'l-3-1-4',
+      type: 'practice',
+      title: 'Database Optimization — EXPLAIN, Stored Procedures, Batch INSERT',
+      subtitle: { vi: 'Lesson cuối module 3.1. 3 kỹ năng performance: đọc query plan, dùng stored proc khi cần, batch insert đúng cách.' },
+      mentalModel: {
+        vi: `Có 3 cấp độ tối ưu DB, mỗi cấp cao hơn 10x:
+<ul>
+  <li><strong>Index</strong>: giảm O(N) → O(log N). 90% bottleneck giải bằng index đúng.</li>
+  <li><strong>Query rewrite</strong>: cùng kết quả, viết khác → engine chọn plan tốt hơn (SELECT đặt cột thay *, JOIN order, sub vs CTE).</li>
+  <li><strong>Schema / batch / stored proc</strong>: đổi cách tương tác (1 query batch thay 1000 query single, pre-compile trong stored proc).</li>
+</ul>
+Chìa khoá là <code>EXPLAIN ANALYZE</code> — DB cho bạn xem plan + thời gian thật của từng node.`
+      },
+      underTheHood: {
+        vi: `<h3>1) EXPLAIN ANALYZE — đọc query plan</h3>
+<pre>EXPLAIN ANALYZE
+SELECT u.name, COUNT(o.id) AS cnt
+FROM users u
+LEFT JOIN orders o ON o.user_id = u.id
+WHERE u.country = 'VN'
+GROUP BY u.id, u.name
+HAVING COUNT(o.id) &gt; 5;</pre>
+
+Output mẫu:
+<pre>HashAggregate  (cost=1234.56..1300.00 rows=100 width=64) (actual time=45.123..47.456 rows=87 loops=1)
+  Group Key: u.id, u.name
+  Filter: (count(o.id) &gt; 5)
+  -&gt; Hash Right Join  (cost=...) (actual time=10.5..40.2 rows=15000)
+        Hash Cond: (o.user_id = u.id)
+        -&gt; Seq Scan on orders o  (cost=...) (actual time=0.1..5.3 rows=20000)
+        -&gt; Hash  (cost=...) (actual time=2.0..2.0 rows=500)
+              -&gt; Index Scan using idx_users_country on users u  (rows=500)
+                    Index Cond: (country = 'VN')
+Planning Time: 0.5 ms
+Execution Time: 47.8 ms</pre>
+
+Đọc plan:
+<ul>
+  <li><strong>Đọc TỪ DƯỚI LÊN</strong>: leaf nodes (Seq Scan, Index Scan) chạy trước.</li>
+  <li><strong>Seq Scan</strong> = full table scan. Bad cho bảng lớn.</li>
+  <li><strong>Index Scan</strong> = dùng index. Good.</li>
+  <li><strong>Hash Join</strong> tốt cho bảng lớn; <strong>Nested Loop</strong> tốt cho bảng nhỏ.</li>
+  <li><strong>actual time</strong> = thời gian thật. Cost là estimate (đơn vị tự định nghĩa).</li>
+  <li><strong>rows</strong> estimate vs actual lệch nhiều → statistics outdated → <code>ANALYZE table_name;</code>.</li>
+</ul>
+
+<h3>2) Stored Procedure — khi nào dùng?</h3>
+Postgres function (PL/pgSQL):
+<pre>CREATE OR REPLACE FUNCTION transfer_funds(
+  from_id INT, to_id INT, amount NUMERIC
+) RETURNS VOID AS $$
+BEGIN
+  UPDATE accounts SET balance = balance - amount WHERE id = from_id;
+  UPDATE accounts SET balance = balance + amount WHERE id = to_id;
+
+  IF (SELECT balance FROM accounts WHERE id = from_id) &lt; 0 THEN
+    RAISE EXCEPTION 'Insufficient funds';
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Gọi: SELECT transfer_funds(1, 2, 100);</pre>
+
+Khi nào DÙNG:
+<ul>
+  <li>Atomic operation phức tạp cần nhiều UPDATE — giảm round trip.</li>
+  <li>Business logic cần consistency dưới load cao + đảm bảo race-free.</li>
+  <li>Heavy ETL: 1M row transformations.</li>
+</ul>
+Khi nào KHÔNG dùng:
+<ul>
+  <li>Logic dễ thay đổi — code Java dễ test/version hơn PL/pgSQL.</li>
+  <li>Logic depend on external service (gọi API trong stored proc = anti-pattern).</li>
+  <li>Test khó — không có JUnit cho PL/pgSQL (có plpgunit, nhưng adoption thấp).</li>
+</ul>
+
+<h3>3) Batch INSERT — 100× nhanh hơn từng cái</h3>
+<pre>-- BAD: 1000 INSERT separate (1000 round trips)
+INSERT INTO orders (user_id, amount) VALUES (1, 100);
+INSERT INTO orders (user_id, amount) VALUES (2, 200);
+-- ...
+
+-- GOOD: 1 INSERT với nhiều VALUES
+INSERT INTO orders (user_id, amount)
+VALUES (1, 100), (2, 200), (3, 300), ...;
+-- 1 round trip, parse 1 lần.
+
+-- GREAT: COPY (10× nhanh hơn INSERT batch)
+COPY orders (user_id, amount) FROM STDIN;
+1\\t100
+2\\t200
+\\.</pre>
+
+Java code (JDBC batch):
+<pre>String sql = "INSERT INTO orders (user_id, amount) VALUES (?, ?)";
+try (PreparedStatement ps = conn.prepareStatement(sql)) {
+    for (Order o : orders) {
+        ps.setLong(1, o.userId());
+        ps.setBigDecimal(2, o.amount());
+        ps.addBatch();
+    }
+    ps.executeBatch();   // 1 round trip cho cả batch
+}</pre>
+
+JPA batch (application.yml):
+<pre>spring.jpa.properties.hibernate.jdbc.batch_size: 50
+spring.jpa.properties.hibernate.order_inserts: true
+spring.jpa.properties.hibernate.order_updates: true</pre>
+
+<h3>Pitfalls</h3>
+<ul>
+  <li><strong>Index trên cột thấp selectivity</strong> (status chỉ 2 giá trị): index không giúp, tốn disk.</li>
+  <li><strong>Quên ANALYZE sau bulk insert</strong>: statistics outdated → optimizer chọn plan kém.</li>
+  <li><strong>Stored proc thay vì JPA query đơn giản</strong>: over-engineering.</li>
+  <li><strong>Batch size quá lớn</strong> (10000+): consume memory + lock dài. 50-500 là sweet spot.</li>
+  <li><strong>EXPLAIN không ANALYZE</strong>: chỉ estimate, không chạy. Production tránh ANALYZE trên UPDATE/DELETE (sẽ chạy thật!) hoặc wrap trong transaction + ROLLBACK.</li>
+</ul>`
+      },
+      exercises: [
+        {
+          title: 'EXPLAIN — phát hiện missing index',
+          prompt: 'Bảng <code>orders(id PK, user_id, status, created_at)</code> có 1M row, KHÔNG có index ngoài PK. Query: <code>SELECT * FROM orders WHERE user_id = 12345</code> mất 3 giây. Viết: (1) lệnh EXPLAIN ANALYZE, (2) lệnh tạo index, (3) lệnh kiểm tra plan đã đổi.',
+          hints: [
+            'Trước index: plan sẽ là Seq Scan.',
+            '<code>CREATE INDEX idx_orders_user_id ON orders(user_id);</code>',
+            'Sau index, EXPLAIN lại → plan đổi thành Index Scan.'
+          ],
+          solution: {
+            code: `-- (1) Đọc plan hiện tại
+EXPLAIN ANALYZE
+SELECT * FROM orders WHERE user_id = 12345;
+-- Output: Seq Scan on orders (cost=0..21345.00 rows=10 width=...)
+--          Filter: (user_id = 12345)
+--          Rows Removed by Filter: 999990
+--          Execution Time: 3000+ ms
+
+-- (2) Tạo index
+CREATE INDEX idx_orders_user_id ON orders(user_id);
+
+-- (3) ANALYZE để optimizer biết
+ANALYZE orders;
+
+-- (4) Kiểm tra plan mới
+EXPLAIN ANALYZE
+SELECT * FROM orders WHERE user_id = 12345;
+-- Output: Index Scan using idx_orders_user_id (cost=0.43..8.45 rows=10)
+--          Index Cond: (user_id = 12345)
+--          Execution Time: 0.5 ms`,
+            lang: 'sql',
+            complexityVi: 'Trước: O(N) full scan. Sau: O(log N) B-Tree lookup.',
+            explanationVi: 'Seq Scan đọc TẤT CẢ 1M row, filter giữ ~10. Index Scan đi B-Tree → tìm 10 row trong ~log₂(1M) ≈ 20 bước. Tốc độ chênh 1000×. ANALYZE sau CREATE INDEX để statistics fresh — optimizer cần biết index distribution.'
+          }
+        },
+        {
+          title: 'Composite index — thứ tự cột',
+          prompt: "Query thường xuyên: <code>SELECT * FROM orders WHERE user_id = ? AND status = 'PAID' ORDER BY created_at DESC</code>. Tạo index tối ưu. Vì sao thứ tự cột quan trọng?",
+          hints: [
+            'Thứ tự: cột equality trước, sort cuối.',
+            'Cột selectivity cao (user_id 1M giá trị) trước cột selectivity thấp (status 3 giá trị).'
+          ],
+          solution: {
+            code: `CREATE INDEX idx_orders_user_status_date
+ON orders(user_id, status, created_at DESC);
+
+-- Test:
+EXPLAIN ANALYZE
+SELECT * FROM orders
+WHERE user_id = 12345 AND status = 'PAID'
+ORDER BY created_at DESC
+LIMIT 20;
+
+-- Output: Index Scan using idx_orders_user_status_date
+--   Index Cond: ((user_id = 12345) AND (status = 'PAID'))
+--   Execution Time: < 1ms`,
+            lang: 'sql',
+            complexityVi: 'O(log N) lookup + O(K) scan với K = số match.',
+            explanationVi: 'Quy tắc composite index: (1) cột equality trước (=), (2) cột range/sort sau. user_id và status đều equality → đặt user_id trước vì selectivity cao hơn (1M vs 3 giá trị). created_at DESC để ORDER BY match index → engine bỏ qua sort step. Nếu đảo thứ tự (status, user_id) → index vẫn dùng được nhưng kém hiệu quả với query này.'
+          }
+        },
+        {
+          title: 'Batch INSERT 10000 row',
+          prompt: 'Java: insert 10000 Order objects. So sánh 3 cách: (a) loop INSERT từng cái, (b) JDBC executeBatch, (c) Postgres COPY. Viết code cho (b).',
+          hints: [
+            'PreparedStatement.addBatch() + executeBatch().',
+            'Transaction wrap: autoCommit false → commit ở cuối.'
+          ],
+          solution: {
+            code: `// JDBC batch INSERT
+String sql = "INSERT INTO orders (user_id, amount, status) VALUES (?, ?, ?)";
+try (Connection conn = dataSource.getConnection()) {
+    conn.setAutoCommit(false);
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        int count = 0;
+        for (Order o : orders) {
+            ps.setLong(1, o.userId());
+            ps.setBigDecimal(2, o.amount());
+            ps.setString(3, o.status());
+            ps.addBatch();
+            if (++count % 500 == 0) {
+                ps.executeBatch();   // flush every 500
+            }
+        }
+        ps.executeBatch();   // remaining
+        conn.commit();
+    } catch (SQLException e) {
+        conn.rollback();
+        throw e;
+    }
+}
+
+// Benchmark expected (10000 rows):
+// (a) Loop:        ~5 seconds
+// (b) Batch 500:   ~150 ms     (33×)
+// (c) COPY:        ~50 ms      (100×)`,
+            lang: 'java',
+            complexityVi: 'Network round-trip giảm từ N xuống N/batch_size.',
+            explanationVi: 'Chia batch 500 để tránh OOM + giữ memory ổn. Wrap transaction để atomic — fail giữa chừng rollback hết. COPY nhanh nhất nhưng skip Hibernate/triggers. JPA setting <code>hibernate.jdbc.batch_size=50</code> tự enable batch khi EntityManager.flush().'
+          }
+        },
+        {
+          title: 'Stored procedure — transfer atomic',
+          prompt: 'Tạo PostgreSQL function <code>transfer(from_id, to_id, amount)</code> thực hiện chuyển tiền giữa 2 account. Phải: (1) atomic (cả 2 update OR cả 2 rollback), (2) reject nếu balance &lt; amount, (3) reject nếu account không tồn tại.',
+          hints: [
+            'PL/pgSQL function với BEGIN ... END.',
+            'RAISE EXCEPTION sẽ tự rollback.',
+            'PERFORM dùng cho query không cần result.'
+          ],
+          solution: {
+            code: `CREATE OR REPLACE FUNCTION transfer(
+  from_id BIGINT,
+  to_id BIGINT,
+  amount NUMERIC(18,2)
+) RETURNS VOID AS $$
+DECLARE
+  from_balance NUMERIC(18,2);
+BEGIN
+  IF amount <= 0 THEN
+    RAISE EXCEPTION 'Amount must be positive';
+  END IF;
+
+  -- Lock row for update (tránh race condition)
+  SELECT balance INTO from_balance
+  FROM accounts WHERE id = from_id
+  FOR UPDATE;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'From account % not found', from_id;
+  END IF;
+
+  IF from_balance < amount THEN
+    RAISE EXCEPTION 'Insufficient funds: % < %', from_balance, amount;
+  END IF;
+
+  -- Check to_id exists
+  PERFORM 1 FROM accounts WHERE id = to_id FOR UPDATE;
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'To account % not found', to_id;
+  END IF;
+
+  UPDATE accounts SET balance = balance - amount WHERE id = from_id;
+  UPDATE accounts SET balance = balance + amount WHERE id = to_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test:
+SELECT transfer(1, 2, 100.50);   -- success
+SELECT transfer(1, 2, 99999);    -- raises Insufficient funds
+-- Whole function atomic — exception → both UPDATE rollback.`,
+            lang: 'sql',
+            complexityVi: 'O(1) cho mỗi UPDATE với index PK.',
+            explanationVi: '<code>FOR UPDATE</code> lock row → tránh concurrent transfer race. RAISE EXCEPTION trigger ROLLBACK toàn function. PL/pgSQL exception-safe by default — không cần BEGIN/EXCEPTION/END block trừ khi muốn catch. <em>Trade-off</em>: logic này có thể viết trong Java với @Transactional + repository — dễ test hơn. Stored proc tốt khi traffic cao + cần tránh round-trip.'
+          }
+        }
+      ],
+      socraticPrompts: [
+        {
+          title: 'Performance debugging mindset',
+          prompt: `Khách báo: "Query danh sách đơn hàng chậm — 5 giây". KHÔNG hỏi code, KHÔNG đoán. Hỏi tôi:
+1. Bạn lấy EXPLAIN ANALYZE TRƯỚC khi đoán nguyên nhân chưa?
+2. Plan có Seq Scan trên bảng &gt; 100k rows? → likely missing index.
+3. rows estimate vs actual lệch &gt; 10×? → ANALYZE outdated.
+4. Index có nhưng không dùng? → cột bị wrap trong function (vd <code>WHERE LOWER(email) = ...</code>) → expression index.
+5. JOIN order kỳ lạ? → set <code>join_collapse_limit</code> hoặc <code>SET random_page_cost</code>.
+6. Đôi khi không phải DB — bottleneck ở network, serialization, application code.
+Đừng "tạo index thử xem sao" — đo, đọc plan, hành động có dữ liệu.`
+        }
+      ],
+      keyTakeaways: {
+        vi: [
+          'EXPLAIN ANALYZE đọc TỪ DƯỚI LÊN. Seq Scan trên bảng lớn = đỏ.',
+          'Composite index: equality trước, sort cuối. Selectivity cao trước.',
+          'Batch INSERT 100× nhanh hơn loop. JDBC executeBatch / JPA batch_size=50.',
+          'Stored proc cho atomic complex + traffic cao. KHÔNG cho logic dễ đổi.',
+          'ANALYZE sau bulk insert/update để optimizer fresh.'
+        ]
+      }
     }
   ]
 }
