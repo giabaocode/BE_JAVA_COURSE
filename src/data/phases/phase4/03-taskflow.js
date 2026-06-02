@@ -75,6 +75,70 @@ STOMP protocol over WebSocket. Client subscribe topic /workspaces/{id}. Server p
   <li><strong>403 vs 404 nhầm</strong> — leak resource existence. 404 cho "không thuộc workspace" an toàn hơn 403.</li>
   <li><strong>WebSocket không auth</strong> → ai cũng subscribe được. Verify JWT trong handshake.</li>
 </ul>`
+      },
+      socraticPrompts: [
+        {
+          title: '[TaskFlow] Self-quiz multi-tenant isolation',
+          prompt: `Tôi sắp bắt đầu capstone TaskFlow (Jira-lite: workspace/project/task, multi-tenant).
+
+TUYỆT ĐỐI KHÔNG viết code, KHÔNG cho schema, KHÔNG cho boilerplate.
+
+Đóng vai senior. Hỏi tôi 7 câu để verify hiểu multi-tenant TRƯỚC khi gõ:
+1. 3 cách isolate tenant (separate DB / separate schema / shared table với tenant_id) — TaskFlow chọn cách nào, tradeoff?
+2. tenant_id column nằm ở BẢNG NÀO trong TaskFlow? Mọi bảng đều có? Có denormalize không?
+3. Request đến cần biết workspace_id — lấy từ đâu (header, path, JWT claim)? Pros/cons mỗi cách?
+4. Service method nhận workspace_id qua argument vs context propagation (ThreadLocal/Spring scope) — cái nào ít lỗi quên?
+5. Nếu QUÊN filter tenant_id trong 1 query — hậu quả? Có cách nào enforce ở compile time / DB level?
+6. Hibernate filter @Filter có giải quyết tận gốc không, hay vẫn cần defense in depth?
+7. Integration test: làm sao verify endpoint A của workspace 1 KHÔNG trả data của workspace 2?
+
+Đợi reply từng câu. Câu sai → hỏi dẫn dắt. Cuối: gap chỗ nào tôi cần đọc thêm.`
+        },
+        {
+          title: '[TaskFlow] Design role matrix Socratically',
+          prompt: `Tôi cần design authorization matrix cho TaskFlow (4 role: OWNER, ADMIN, MEMBER, VIEWER × N resource).
+
+TUYỆT ĐỐI KHÔNG cho tôi matrix luôn. KHÔNG suggest @PreAuthorize string.
+
+Đóng vai senior. Hỏi tôi từng bước:
+1. Liệt kê resources cần authorize (workspace, project, task, comment, member, file) + actions (read/create/edit/delete/transfer).
+2. Với mỗi (role × resource × action) — tôi vẽ ra ô đó cho phép gì. OWNER có ALL, sao về VIEWER?
+3. Phân biệt "own" vs "any": MEMBER edit task — chỉ task họ tạo hay mọi task trong project?
+4. Resource ownership cross workspace: 1 user là OWNER workspace A nhưng MEMBER workspace B — query phải context-aware như thế nào?
+5. Hard-code matrix trong code (@PreAuthorize) vs DB-driven (role_permissions table) — khi nào chọn cái nào?
+6. Edge case: OWNER bị remove khỏi workspace → ai sở hữu? Transfer flow ra sao?
+7. Audit: ai làm gì với resource nào — log structure thế nào để query "ai delete task X" trong 1s?
+
+Tôi self-design từng câu. Kết: review matrix tôi vẽ, point ra mâu thuẫn nếu có.`
+        },
+        {
+          title: '[TaskFlow] Code review cross-tenant leak',
+          prompt: `Tôi vừa implement endpoint <code>GET /tasks?status=DOING</code> cho TaskFlow.
+
+TUYỆT ĐỐI KHÔNG xem code tôi viết. KHÔNG cho query đáp án.
+
+Đóng vai security auditor. Hỏi tôi:
+1. Endpoint này filter tenant_id ở đâu — JPQL where clause? Hibernate @Filter? Spring Specification? Application code post-filter?
+2. Nếu user A của workspace 1 gọi <code>GET /tasks?status=DOING</code> mà QUÊN gắn workspace_id — response trả gì? 400? 401? Hay data workspace khác?
+3. JOIN sang bảng comments/labels — phải filter tenant_id ở TỪNG join không, hay filter task là đủ?
+4. Pagination cursor có thể leak existence không? <code>cursor=2024-01-01_42</code> — user đoán cursor cross-workspace có lấy được data?
+5. 403 vs 404 cho "task không thuộc workspace của bạn" — cái nào leak resource existence?
+6. Integration test: viết test gì để CATCH cross-tenant leak nếu future dev quên filter? Test này có chạy CI không?
+7. Hibernate <code>session.enableFilter("tenantFilter")</code> — verify nó active ở mọi request, fail-closed nếu chưa set?
+
+Tôi self-explain từng câu. KHÔNG dạy đáp án.`
+        }
+      ],
+      keyTakeaways: {
+        vi: [
+          'TaskFlow chọn <strong>shared table + tenant_id column</strong> — simplest, cheapest, đổi lại mọi query MUST filter tenant_id (1 lần quên = cross-tenant leak).',
+          'Tenant context propagation qua filter + ThreadLocal (hoặc Spring request scope) — KHÔNG để service tự lấy workspace_id từ argument (dễ quên).',
+          'Authorization matrix: 4 role × N resource × M action. Centralize bằng @PreAuthorize / AOP; KHÔNG scatter check trong từng controller.',
+          'Activity feed bằng <strong>@TransactionalEventListener(AFTER_COMMIT)</strong> insert audit row → decouple business logic khỏi log; KHÔNG log rolled-back action.',
+          'Cursor pagination <code>WHERE (created_at, id) &lt; (last_seen_at, last_seen_id)</code> — composite cursor break tie khi cùng timestamp; OFFSET sẽ chậm với 1M rows.',
+          '403 vs 404: trả 404 cho "không thuộc workspace" — an toàn hơn 403 (không leak resource existence).',
+          'WebSocket BẮT BUỘC auth ở handshake (verify JWT trong CONNECT frame). Cấp subscription topic theo workspace_id — KHÔNG broadcast cross-tenant.'
+        ]
       }
     },
     {

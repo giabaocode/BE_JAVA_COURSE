@@ -77,6 +77,68 @@ Schema versioned trong git. Mọi instance app start chạy migration tự độ
   <li><strong>JWT secret hard-code trong code</strong> → leak khi push git.</li>
   <li><strong>findAll() trong endpoint public</strong> → DoS. Luôn paginate.</li>
 </ul>`
+      },
+      socraticPrompts: [
+        {
+          title: '[Devlog] Self-quiz scope + layered architecture',
+          prompt: `Tôi sắp bắt đầu capstone Devlog (blog REST API: register/login/post/comment/like).
+
+TUYỆT ĐỐI KHÔNG viết code, KHÔNG vẽ diagram, KHÔNG cho boilerplate.
+
+Đóng vai senior reviewer. Hỏi tôi 7 câu để verify tôi hiểu scope + design TRƯỚC khi gõ dòng đầu tiên:
+1. Liệt kê 6 endpoints chính + HTTP method. Endpoint nào cần auth, endpoint nào public?
+2. Vẽ luồng request từ curl tới Postgres và ngược lại — gồm những layer/component nào?
+3. Vì sao tách Controller / Service / Repository? Service gọi Controller được không?
+4. Entity vs DTO khác nhau ở đâu? Convert ở layer nào? Vì sao KHÔNG trả Entity trực tiếp?
+5. JWT lưu gì? Server lưu session không? Logout làm sao?
+6. Flyway thay <code>hibernate.ddl-auto=update</code> như thế nào trong production?
+7. Khi nào dùng @Transactional? Khi nào KHÔNG cần?
+
+Đợi tôi trả lời từng câu. Câu sai → hỏi tiếp dẫn dắt, KHÔNG sửa thẳng. Cuối: liệt kê tôi nắm vững gì, gap chỗ nào.`
+        },
+        {
+          title: '[Devlog] Stuck giữa step — debug Socratic',
+          prompt: `Tôi đang implement Devlog step [X] (paste step description). Stuck ở [DESCRIBE BLOCKER].
+
+Đã thử: [LIỆT KÊ những gì đã thử].
+Lỗi/symptom: [PASTE error / behavior].
+
+TUYỆT ĐỐI KHÔNG cho tôi code fix. KHÔNG nói "thêm @Transactional" hay "sửa method X".
+
+Hỏi tôi:
+1. Symptom xảy ra ở đâu trong request flow (controller? service? repo?)
+2. Tôi đoán root cause là gì? Bằng chứng nào support đoán đó?
+3. Để confirm/disprove đoán đó, tôi nên log gì, query gì, test gì?
+4. Nếu đoán đúng, fix ở layer nào là proper (vs quick fix)?
+5. Bug này dạy tôi pattern gì để tránh lần sau?
+
+Đợi reply từng câu. Khi tôi đã có root cause, hỏi câu cuối: tôi sẽ viết test gì để bug này KHÔNG quay lại?`
+        },
+        {
+          title: '[Devlog] Self-review owner-only authorization',
+          prompt: `Tôi vừa implement endpoint <code>PUT /posts/{id}</code> cho Devlog với rule: chỉ owner hoặc ADMIN được update.
+
+TUYỆT ĐỐI KHÔNG xem code tôi viết. KHÔNG đề xuất implementation.
+
+Đóng vai security auditor. Hỏi tôi:
+1. Check authorization ở đâu — @PreAuthorize, manual if, hay AOP filter? Vì sao chọn cách đó?
+2. Có thể nào response 200 OK NHƯNG actually không update không? (silent failure pattern)
+3. User A có thể guess endpoint <code>PUT /posts/999</code> rồi bị fail 403 hay 404? Cái nào leak thông tin hơn?
+4. Nếu user gửi field <code>{ "ownerId": "B" }</code> trong body — code tôi có cho phép change ownerId không? Test case verify?
+5. Race condition: 2 request cùng update post — outcome ra sao? Optimistic lock chưa?
+
+Tôi self-explain từng câu. KHÔNG dạy tôi đáp án — dẫn tôi đi tới.`
+        }
+      ],
+      keyTakeaways: {
+        vi: [
+          'Layered architecture strict 1 chiều: Controller → Service → Repository. Test dễ, đổi 1 layer không phá layer khác.',
+          'JWT = stateless auth. Server KHÔNG lưu session — scale ngang dễ. Đổi lại: logout phức tạp (cần blacklist hoặc short-lived token + refresh).',
+          'Entity (DB mapping) ≠ DTO (wire format). Convert ở Service layer. Trả Entity trực tiếp = leak password_hash + N+1 lazy load.',
+          'Flyway versioned schema trong git → mọi instance start đều migrate giống nhau. <code>ddl-auto=update</code> production = drift không kiểm soát.',
+          'Hash password BẮT BUỘC BCrypt/Argon2. SHA256/MD5 quá nhanh → brute force trong giờ.',
+          'Mọi endpoint trả list MUST paginate. <code>findAll()</code> public = DoS chờ ngày bị exploit.'
+        ]
       }
     },
     {

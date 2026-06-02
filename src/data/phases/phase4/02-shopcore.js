@@ -96,6 +96,69 @@ Vì sao phase=AFTER_COMMIT? — Email gửi SAU khi DB commit. Nếu transaction
   <li><strong>Email gửi TRONG @Transactional</strong> → fail email rollback order. Tách AFTER_COMMIT.</li>
   <li><strong>Pay endpoint không idempotent</strong> → user charged 2 lần khi network retry.</li>
 </ul>`
+      },
+      socraticPrompts: [
+        {
+          title: '[ShopCore] Self-quiz money + concurrent stock',
+          prompt: `Tôi sắp bắt đầu capstone ShopCore (e-commerce: catalog/cart/checkout/order/shipped).
+
+TUYỆT ĐỐI KHÔNG viết code, KHÔNG cho schema SQL, KHÔNG cho boilerplate.
+
+Đóng vai senior reviewer. Hỏi tôi 7 câu để verify tôi hiểu các "khái niệm khó" TRƯỚC khi gõ dòng đầu tiên:
+1. Vì sao KHÔNG dùng double cho tiền? Cho 1 ví dụ cụ thể bug.
+2. BIGINT cents vs NUMERIC(19,4) — khi nào chọn cái nào? Tradeoff?
+3. Order_items lưu unit_price_cents — vì sao KHÔNG join lại products để lấy price?
+4. Race condition oversold xảy ra như thế nào? Vẽ timeline 2 user A, B với stock=1.
+5. Optimistic (@Version) vs pessimistic (FOR UPDATE) — chọn cái nào khi nào? Throughput vs simplicity?
+6. State machine: tại sao encode <code>Map&lt;Status, Set&lt;Status&gt;&gt;</code> thay vì để service tùy ý <code>setStatus()</code>?
+7. Email "Your order shipped" — vì sao phase=AFTER_COMMIT, KHÔNG inside transaction?
+
+Đợi tôi reply từng câu. Câu sai → hỏi tiếp dẫn dắt. Cuối: liệt kê tôi nắm vững gì, gap chỗ nào.`
+        },
+        {
+          title: '[ShopCore] Idempotency-Key — mock interview',
+          prompt: `Đóng vai interviewer senior. Hỏi tôi về idempotency cho payment endpoint của ShopCore.
+
+TUYỆT ĐỐI KHÔNG cho đáp án. KHÔNG nói "dùng UUID làm key" hay tương tự.
+
+Hỏi tôi theo thứ tự, đợi reply giữa các câu:
+1. Vì sao endpoint Pay cần idempotent? Cho 1 scenario user/network thực tế.
+2. Client gửi <code>Idempotency-Key</code> hay server generate? Tradeoff?
+3. Server lưu <code>(key, response)</code> ở đâu — DB, Redis, memory? Lifetime bao lâu?
+4. Khi client retry với cùng key NHƯNG body khác (sửa amount) — server xử lý sao?
+5. 2 request cùng key tới SONG SONG — race condition: cả 2 cùng check "chưa thấy key" rồi cùng charge? Fix bằng gì?
+6. Nếu lần đầu charge SUCCESS nhưng response timeout, client retry → idempotency phải trả gì?
+7. Edge case: key TTL hết, user retry sau 25h — happen gì? Đúng/sai về business?
+
+Khi tôi đã trả lời hết, scor 1-10 từng câu, nói tôi cần đọc gì.`
+        },
+        {
+          title: '[ShopCore] Self-review transactional email pattern',
+          prompt: `Tôi vừa implement: khi order → SHIPPED, gửi email với tracking number.
+
+TUYỆT ĐỐI KHÔNG xem code tôi viết. KHÔNG đề xuất giải pháp.
+
+Đóng vai senior reviewer. Hỏi tôi để verify tôi tránh các pitfalls:
+1. Gửi email Ở ĐÂU trong code — trong service method? @EventListener? @TransactionalEventListener? Khác nhau gì?
+2. Nếu DB commit thành công NHƯNG email service down — outcome? User confused?
+3. Nếu email gửi xong NHƯNG DB rollback (foreign key constraint fail) — outcome? User nhận email "shipped" mà order chưa shipped?
+4. phase=AFTER_COMMIT vs AFTER_COMPLETION — khác nhau ở rollback case? Chọn cái nào cho email?
+5. Email gửi sync hay async? Nếu sync thì user click "Mark Shipped" phải đợi SMTP — UX ra sao?
+6. Email service rate-limit khi 100 order shipped cùng lúc — pattern nào (queue, retry, batch)?
+7. Test: làm sao verify email được gửi đúng MÀ không thực sự gửi trong unit test?
+
+Tôi self-explain. KHÔNG dạy đáp án — dẫn tôi đi tới.`
+        }
+      ],
+      keyTakeaways: {
+        vi: [
+          'Tiền: KHÔNG bao giờ <code>double</code>. BIGINT cents (default) hoặc BigDecimal với NUMERIC(19,4) (cho currency nhiều digit).',
+          'order_items lưu snapshot unit_price_cents — admin đổi price sau đó KHÔNG ảnh hưởng order cũ. Đây là vì sao tách order_items.',
+          'Race condition oversold: 2 user cùng SELECT stock=1 → cùng UPDATE → bán 2 cho 1 unit. Fix bằng pessimistic (<code>FOR UPDATE</code>) hoặc optimistic (<code>@Version</code>).',
+          'State machine encode trong code (<code>Map&lt;Status, Set&lt;Status&gt;&gt; ALLOWED</code>). Mọi state change đi qua <code>transitionTo()</code> — KHÔNG để service tùy ý <code>setStatus()</code>.',
+          'Email khi SHIPPED: publish <code>OrderShippedEvent</code> → <code>@TransactionalEventListener(phase=AFTER_COMMIT)</code>. KHÔNG send email trong @Transactional — rollback sẽ leave user confused.',
+          'Idempotency key cho payment: client gửi <code>Idempotency-Key</code> header → server cache <code>(key, response)</code>. Retry cùng key trả response cũ, KHÔNG charge lại.'
+        ]
       }
     },
     {
