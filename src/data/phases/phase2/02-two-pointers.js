@@ -67,6 +67,14 @@ while (left < right) {
     }
   ],
 
+  takeaways: [
+    'Khi nào: array sorted, palindrome, dedup in-place, pair/triplet với sum target.',
+    '2 variant: <strong>convergent</strong> (l, r từ 2 đầu thu hẹp) và <strong>same-direction</strong> (slow-fast).',
+    'Bài sum target trên sorted array → O(n) thay vì O(n log n) (binary search) hoặc O(n²) (brute).',
+    'Skip duplicates pattern: <code>while (l &lt; r &amp;&amp; nums[l] == nums[l+1]) l++</code>.',
+    'Pitfall: quên sort trước; off-by-one ở <code>l &lt; r</code> vs <code>l &lt;= r</code>.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Two Sum II — Input Array Is Sorted', difficulty: 'Medium', url: LC('two-sum-ii-input-array-is-sorted'),

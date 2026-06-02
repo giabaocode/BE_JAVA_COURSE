@@ -60,6 +60,14 @@ for (int n : nums) {
     }
   ],
 
+  takeaways: [
+    '2 approach: <strong>MinHeap size K</strong> (cho top K largest), <strong>MaxHeap size K</strong> (cho top K smallest).',
+    'Quickselect O(n) trung bình, worst O(n²) — nhanh hơn heap khi đủ memory; heap tốt cho stream.',
+    'Use cases: K largest/smallest, K closest points, K frequent elements, K-th element.',
+    'Heap-of-K time = O(n log k). Pick K nhỏ.',
+    'Pitfall: comparator ngược chiều với mục đích; quên poll khi heap quá K size; nhầm K-th largest với top K largest.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Kth Largest Element in an Array', difficulty: 'Medium', url: LC('kth-largest-element-in-an-array'),

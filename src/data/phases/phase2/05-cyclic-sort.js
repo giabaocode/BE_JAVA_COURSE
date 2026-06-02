@@ -65,6 +65,14 @@ while (i < nums.length) {
     }
   ],
 
+  takeaways: [
+    'Điều kiện áp dụng: array chứa số trong range <code>[0..n-1]</code> hoặc <code>[1..n]</code>.',
+    'Algorithm: place each <code>nums[i]</code> ở index đúng = <code>nums[i]</code> (hoặc <code>nums[i]-1</code>). Swap khi sai.',
+    'Time O(n), Space O(1) — tốt hơn HashSet O(n) space.',
+    'Use cases: find missing number, find duplicate, first missing positive, all missing/duplicate.',
+    'Pitfall: nhầm với sort thường (cyclic CHỈ work khi range bound bởi n); infinite loop nếu swap condition sai.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Missing Number', difficulty: 'Easy', url: LC('missing-number'),

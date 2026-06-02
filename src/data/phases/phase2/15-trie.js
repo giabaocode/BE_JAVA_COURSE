@@ -85,6 +85,14 @@ KHÔNG bao giờ chỉ check "có path không" → phân biệt "word" vs "prefi
     }
   ],
 
+  takeaways: [
+    'Node: <code>Map&lt;Character, TrieNode&gt;</code> (flexible) hoặc <code>TrieNode[26]</code> (alphabet only). Flag <code>isEnd</code> đánh dấu word.',
+    'Insert/Search: O(m), m = length of word.',
+    'Use cases: autocomplete, longest common prefix, word search II (kết hợp DFS grid), replace words, IP routing.',
+    'Space: trie có thể to (mỗi prefix branch). Compressed trie/radix tree khi memory critical.',
+    'Pitfall: <code>[26]</code> giả sử lowercase only — case-sensitive/unicode → dùng Map; quên đánh dấu <code>isEnd</code> → <code>apple</code> mất khi insert <code>applet</code>.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Implement Trie', difficulty: 'Medium', url: LC('implement-trie-prefix-tree'),

@@ -72,6 +72,14 @@ double median() {
     }
   ],
 
+  takeaways: [
+    'Pattern: <strong>MaxHeap (smaller half)</strong> + <strong>MinHeap (larger half)</strong> để find median trong stream.',
+    'Invariant: <code>|maxHeap.size - minHeap.size| &lt;= 1</code>. Median = top maxHeap, hoặc avg 2 tops.',
+    'Insert O(log n), find median O(1).',
+    'Use cases: median of data stream, find right interval, IPO (maximize capital).',
+    'Pitfall: quên reverse comparator cho MaxHeap (<code>(a,b) -&gt; b-a</code>); rebalance sai khi size lệch &gt; 1.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Find Median from Data Stream', difficulty: 'Hard', url: LC('find-median-from-data-stream'),

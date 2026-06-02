@@ -65,6 +65,14 @@ Dẫn tôi từ sort tới heap.`
     }
   ],
 
+  takeaways: [
+    'Workflow: sort theo start → duyệt → merge nếu <code>current.start &lt;= prev.end</code>, else push prev.',
+    'Khi gặp: meeting rooms, free time, insert interval, calendar booking.',
+    'Variant <strong>Sweep Line</strong>: events (start +1, end -1) sort theo time → quét count, max concurrent meetings.',
+    'Open vs closed endpoints quan trọng: <code>[1,3]</code> và <code>[3,5]</code> overlap hay không? Đọc đề kỹ.',
+    'Pitfall: quên sort; merge sai khi <code>prev.end &lt; curr.start</code> nhưng vẫn merge.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Merge Intervals', difficulty: 'Medium', url: LC('merge-intervals'),

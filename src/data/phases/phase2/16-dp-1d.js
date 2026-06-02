@@ -78,6 +78,15 @@ return prev1;`,
     }
   ],
 
+  takeaways: [
+    'Pattern: subproblem indexed bởi 1 chiều (i hoặc j). State = <code>dp[i]</code> = optimal cho prefix i.',
+    'Identify: <strong>optimal substructure</strong> + <strong>overlapping subproblems</strong>. Vẽ recursion tree thấy lặp → memoize.',
+    'Top-down (recursive + memo) vs bottom-up (iterative + table). Bottom-up thường nhanh hơn (không stack overhead).',
+    'Examples: fib, climb stairs, house robber, jump game, longest increasing subseq, coin change.',
+    '<strong>Space optimize</strong>: nếu <code>dp[i]</code> chỉ phụ thuộc <code>dp[i-1], dp[i-2]</code> → dùng 2 biến thay vì array.',
+    'Pitfall: base case sai (return 0 hay -1?); off-by-one ở boundary; quên modulo khi đề nói return mod 1e9+7.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Climbing Stairs', difficulty: 'Easy', url: LC('climbing-stairs'),

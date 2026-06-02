@@ -74,6 +74,15 @@ return dp[m][n];`,
     }
   ],
 
+  takeaways: [
+    'Pattern: subproblem indexed bởi 2 chiều — thường 2 strings (LCS, edit distance) hoặc grid (i, j).',
+    'State design: <strong>số thông số tự do</strong> của subproblem = số chiều. Liệt kê hết trước khi viết.',
+    'Examples: LCS, edit distance, knapsack 0/1, unique paths, regex match, longest palindromic substring.',
+    'Order traversal quan trọng: từ <code>dp[0][0]</code> ra hay từ <code>dp[n][m]</code> vào? Depends transition direction.',
+    'Space optimize: nếu <code>dp[i][j]</code> chỉ phụ thuộc row <code>i-1</code> → rolling 2 rows → O(min(m,n)).',
+    'Pitfall: dimension off-by-one (length vs index); transition formula thiếu case; init row/col 0 sai.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Unique Paths', difficulty: 'Medium', url: LC('unique-paths'),

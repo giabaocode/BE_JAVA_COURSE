@@ -21,9 +21,9 @@ import trie               from './phase2/15-trie.js'
 import dp1D               from './phase2/16-dp-1d.js'
 import dp2D               from './phase2/17-dp-2d.js'
 
-// Transformer: each pattern file exports { id, title, mental, under, theory, code, prompts, problems }
+// Transformer: each pattern file exports { id, title, mental, under, theory, code, prompts, problems, takeaways? }
 // We wrap it into the module/lessons shape MainContent expects.
-const toModule = ({ id, title, mental, under, theory, code, prompts, problems }) => ({
+const toModule = ({ id, title, mental, under, theory, code, prompts, problems, takeaways }) => ({
   id: `mod-2-${id}`,
   title,
   lessons: [
@@ -35,7 +35,8 @@ const toModule = ({ id, title, mental, under, theory, code, prompts, problems })
       underTheHood: { vi: under },
       theory: { vi: theory },
       codeExamples: code ? [{ code }] : undefined,
-      socraticPrompts: prompts
+      socraticPrompts: prompts,
+      keyTakeaways: takeaways ? { vi: takeaways } : undefined
     },
     {
       id: `l-2-${id}-problems`,

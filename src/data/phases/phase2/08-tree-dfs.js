@@ -70,6 +70,14 @@ int height(TreeNode n) {
     }
   ],
 
+  takeaways: [
+    '3 thứ tự duyệt: <strong>preorder</strong> (root→L→R), <strong>inorder</strong> (L→root→R, BST = sorted), <strong>postorder</strong> (L→R→root, cần result từ con trước).',
+    '2 style recursion: <strong>top-down</strong> (truyền state xuống), <strong>bottom-up</strong> (return từ con lên rồi tổng hợp).',
+    'Khi gặp: path sum, root-to-leaf paths, max depth, LCA, validate BST, serialize tree.',
+    'DFS dùng O(h) space (h = height). Skewed tree = O(n) → risk stack overflow.',
+    'Pitfall: nhầm pre/in/post; quên return ở base case; modify shared list mà không backtrack ở path problems.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Maximum Depth of Binary Tree', difficulty: 'Easy', url: LC('maximum-depth-of-binary-tree'),

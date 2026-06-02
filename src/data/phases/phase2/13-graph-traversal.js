@@ -88,6 +88,14 @@ class UnionFind {
     }
   ],
 
+  takeaways: [
+    'Đại diện: <strong>adjacency list</strong> (sparse), adjacency matrix (dense). Visited Set hoặc <code>boolean[]</code> để tránh infinite loop.',
+    'BFS: shortest path UNweighted, level info. DFS: connected components, topological sort, cycle detect.',
+    'Topological sort: DFS post-order reversed, hoặc thuật toán Kahn (BFS với in-degree).',
+    'Bidirectional BFS: khi có cả source + target → giảm complexity từ <code>O(b^d)</code> xuống <code>O(b^(d/2))</code>.',
+    'Pitfall: quên mark visited TRƯỚC khi enqueue (BFS) → cùng node enqueue nhiều lần; revisit cycle.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Number of Islands', difficulty: 'Medium', url: LC('number-of-islands'),

@@ -65,6 +65,14 @@ return false;`,
     }
   ],
 
+  takeaways: [
+    'Mục đích chính: detect cycle in LinkedList, find middle node, độ dài cycle.',
+    'Thuật toán Floyd: slow đi 1, fast đi 2 → gặp nhau trong cycle vì khoảng cách thu hẹp 1 mỗi step.',
+    'Find cycle start: sau khi gặp, reset 1 pointer về head, cùng đi tốc độ 1 → gặp lại = cycle start.',
+    'Generalize sang functional graph: Happy Number (chain square sum), Find Duplicate Number.',
+    'Pitfall: null check <code>fast != null &amp;&amp; fast.next != null</code> TRƯỚC khi advance <code>fast.next.next</code>.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Linked List Cycle', difficulty: 'Easy', url: LC('linked-list-cycle'),

@@ -69,6 +69,14 @@ return lo;`,
     }
   ],
 
+  takeaways: [
+    'Template chuẩn: <code>l=0, r=n-1, while (l &lt;= r) { mid = l + (r-l)/2; ... }</code>. <code>l + (r-l)/2</code> tránh int overflow.',
+    'Variant: rotated sorted, find peak, search 2D, infinite array, find K-th smallest.',
+    '<strong>Binary search the answer</strong>: tìm min/max <code>x</code> sao cho <code>predicate(x)</code> true — Capacity to Ship, Koko Bananas.',
+    '3 câu hỏi quyết định template: <code>&lt;=</code> hay <code>&lt;</code> ở while? mid trả luôn hay cut bên nào? Có equal case không?',
+    'Pitfall: infinite loop khi <code>l == r</code> mà cập nhật không tiến (luôn check pointer di chuyển); off-by-one ở boundary.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Binary Search', difficulty: 'Easy', url: LC('binary-search'),

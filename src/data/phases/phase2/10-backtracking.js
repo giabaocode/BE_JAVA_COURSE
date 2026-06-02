@@ -67,6 +67,14 @@ Mỗi recursive call kết thúc, state phải về ORIGINAL như trước call.
     }
   ],
 
+  takeaways: [
+    'Template: try → recurse → <strong>undo (state restore)</strong>. Mỗi level chọn 1 option → đệ quy → revert.',
+    'Khi gặp: permutations, combinations, subsets, N-Queens, Sudoku, word search, partition string.',
+    '<strong>Prune</strong>: kiểm tra constraint TRƯỚC khi recurse — early-exit branches không thể thành solution.',
+    'Time O(branch^depth) — phải prune mạnh. Space O(depth) cho stack.',
+    'Pitfall: push reference thay vì copy → list bị mutate sau recursion. Dùng <code>new ArrayList&lt;&gt;(current)</code>; quên undo state sau recurse.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Subsets', difficulty: 'Medium', url: LC('subsets'),

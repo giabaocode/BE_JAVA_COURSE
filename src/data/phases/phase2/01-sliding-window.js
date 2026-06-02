@@ -80,6 +80,14 @@ Dẫn tôi đến template.`
     }
   ],
 
+  takeaways: [
+    'Áp dụng khi: subarray/substring LIÊN TỤC + ràng buộc monotonic về size/sum/count.',
+    '2 variant: <strong>fixed-size</strong> (slide đều, state delta) và <strong>variable-size</strong> (expand right, shrink left khi vi phạm).',
+    'Invariant cốt lõi: <strong>left không bao giờ lùi</strong> → O(n) thay vì O(n²).',
+    '<strong>Longest valid</strong>: update best NGOÀI while shrink. <strong>Shortest valid</strong>: update best TRONG while.',
+    'KHÔNG dùng cho subsequence (không liên tục) — switch sang DP/backtracking.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Maximum Subarray', difficulty: 'Easy', url: LC('maximum-subarray'),

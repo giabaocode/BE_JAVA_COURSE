@@ -76,6 +76,14 @@ while (!pq.isEmpty()) {
     }
   ],
 
+  takeaways: [
+    'Dijkstra: weights ≥ 0, MinHeap, O((V+E) log V). KHÔNG work với weight âm.',
+    'Bellman-Ford: handle weight âm, detect negative cycle, O(VE).',
+    'A*: Dijkstra + heuristic <code>h(n)</code> → guided search, dùng cho pathfinding game/map.',
+    'MST: <strong>Kruskal</strong> (sort edges + UnionFind, O(E log E)) hoặc <strong>Prim</strong> (greedy + heap, O((V+E) log V)).',
+    'Pitfall: dùng Dijkstra với negative weight → silent wrong; quên relax check (chỉ update khi dist mới &lt; dist cũ).'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Network Delay Time', difficulty: 'Medium', url: LC('network-delay-time'),

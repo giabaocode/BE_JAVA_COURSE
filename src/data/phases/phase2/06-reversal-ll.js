@@ -66,6 +66,14 @@ return prev;`,
     }
   ],
 
+  takeaways: [
+    'Template 3 pointer: <code>prev = null, curr = head, next</code>. Mỗi step: save next → đảo <code>curr.next</code> → tiến prev, curr.',
+    'Variant: reverse sub-list <code>[m..n]</code> — tách head + tail, reverse middle, ráp lại.',
+    'Recursive: O(n) time + O(n) stack. Iterative: O(n) time + O(1) space → ưu tiên iterative.',
+    'Liên quan: rotate list, swap pairs, reverse k-group, palindrome LL.',
+    'Pitfall: lose reference next (quên save); null pointer khi không check tail; nhầm prev/curr ở edge case.'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Reverse Linked List', difficulty: 'Easy', url: LC('reverse-linked-list'),

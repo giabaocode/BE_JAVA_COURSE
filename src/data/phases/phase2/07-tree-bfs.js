@@ -65,6 +65,14 @@ while (!q.isEmpty()) {
     }
   ],
 
+  takeaways: [
+    'Template: Queue + <code>int size = queue.size()</code> ở đầu loop để đánh dấu level boundary.',
+    'Khi gặp: level order, zigzag, right side view, average per level, min depth.',
+    'BFS tốt hơn DFS cho <strong>first/minimum queries</strong> (gặp leaf đầu tiên = answer).',
+    'Space O(width of tree) — worst case complete tree = O(n/2).',
+    'Pitfall: quên null check khi enqueue; nhầm size cập nhật trong loop (phải capture trước).'
+  ],
+
   problems: [
     {
       id: 'p1', title: 'Binary Tree Level Order Traversal', difficulty: 'Medium', url: LC('binary-tree-level-order-traversal'),
