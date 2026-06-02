@@ -163,11 +163,35 @@ git commit -m "describe change"
 git push       # auto-triggers GH Actions deploy
 ```
 
-## Recent decisions / current state (LAST UPDATED 2026-05-30)
+## Recent decisions / current state (LAST UPDATED 2026-06-02)
 
-**Last action**: Completed **Option B** — added ALL 7 Cybersoft gap-filler items in one batch. Build passes (`npx vite build` ✓). Awaiting commit.
+**Status**: Pending commit — Phase 1 refactor complete, build passes, awaiting user commit.
 
-### What was added (Option B — all 7 items)
+### Recent commits (newest first)
+1. `ecc5169` **UI polish** — light/dark toggle, particles, XP bar, streak, confetti. Touched the user-customized UI files (App.jsx, Sidebar.jsx, MainContent.jsx, ProgressBar.jsx, index.css, tailwind.config.js etc.) — these are part of the intentional theme work, don't revert.
+2. `d1a28a4` **Option B** — 7 Cybersoft gap-filler modules (SQL/Redis/UML/Git etc.) — see breakdown below.
+3. `ed43608` docs: add CLAUDE.md for AI assistant context handoff
+4. `fe1c0b0` feat: Phase 0 warm-up + 20-week beginner pacing + anti-copy-paste UI
+
+### Pending: Phase 1 refactor (2026-06-02)
+Split `phase1.js` (3313 lines, single-file outlier) → aggregator + 8 module files under `phase1/`. Same multi-file pattern as phase0/3/4/5. Zero runtime change; build verified, lesson count parity confirmed (8 modules, 20 lessons, 11 project steps).
+
+```
+phase1.js                       (35 lines — aggregator, imports + modules array)
+phase1/
+├── 01-oop-pillars.js           (713 lines, 4 lessons)
+├── 02-arrays-dynamic.js        (285 lines, 2 lessons)
+├── 03-linked-lists.js          (378 lines, 2 lessons)
+├── 04-stack-queue.js           (344 lines, 2 lessons)
+├── 05-hashmap-hashset.js       (196 lines, 1 lesson)
+├── 06-trees-bst-heap.js        (319 lines, 2 lessons)
+├── 07-sorting.js               (712 lines, 4 lessons)
+└── 08-oop-mini-projects.js     (353 lines, 3 lessons + 11 project steps)
+```
+
+**Gotcha during refactor**: inter-module gap is normally 5 lines (blank + 3 comment + open `{`), but between modules 1.6→1.7 and 1.7→1.8 there were 7 lines (extra blank lines in the original). Initial slice over-extracted by 2 lines into modules 6 and 7; vite build caught it as `Expected ';', got ','`. Fix: trim last 2 lines + re-strip trailing comma. If future refactors slice by line range, scan the actual close `},` rather than computing from next-module-open.
+
+### What was added (Option B — all 7 items, commit d1a28a4)
 1. ✅ **Phase 0 Module 0.4** — Console Mini-Apps (Number Guessing + Mini Bank + Retrospective) — `phase0/04-console-miniapps.js`
 2. ✅ **Phase 1 Module 1.8** — OOP Mini Projects (Student/HR/Library Management — Vietnamese CRUD) — appended to `phase1.js`
 3. ✅ **Phase 3 Module 3.0** — SQL Foundation Deep Dive (mental model, JOIN, subquery+CTE, GROUP BY, window functions) — `phase3/00-sql-foundation.js`
@@ -176,18 +200,19 @@ git push       # auto-triggers GH Actions deploy
 6. ✅ **Phase 3 Module 3.8** — UML & Project Analysis (requirement analysis, use case diagram, class + sequence diagram, PlantUML) — `phase3/08-uml-analysis.js`
 7. ✅ **Phase 5 Module 5.0** — Team Skills (Git Flow + Conventional Commits, Scrum/Jira/Agile vocab, Code Review Etiquette) — `phase5/00-team-skills.js`
 
-### Updated aggregators
+### Aggregators updated for Option B
 - `phase0.js` — added consoleMiniApps to modules
 - `phase3.js` — added sqlFoundation, redisRabbitMQ, umlAnalysis; renumbered modules (now 9 modules)
 - `phase5.js` — added teamSkills as first module; updated intro
 
-### Curriculum stats after Option B
-- **Phases**: 6 (unchanged)
-- **Modules**: 39 → **47**
-- **Lessons**: 101 → ~**125** (added ~24 new lessons)
+### Curriculum stats (current)
+- **Phases**: 6
+- **Modules**: ~**47**
+- **Lessons**: ~**125**
 
-### Escape gotcha encountered
-JS single-quoted strings: `\\'` doesn't escape an apostrophe — it produces `\` then closes the string. Fix: use double quotes around the JS string when the content contains SQL literal quotes (e.g., `"DATE_TRUNC('month', x)"`). I hit this 5 times in SQL lessons.
+### Gotchas to remember
+- **JS single-quote escape**: `\\'` doesn't escape an apostrophe inside a `'…'` string — it produces `\` then closes the string. Use double quotes around the JS string when the content contains SQL literal quotes (e.g., `"DATE_TRUNC('month', x)"`). Hit this 5× in SQL lessons.
+- **UI file ownership**: Light/dark toggle + particles + XP + streak + confetti now live in the existing UI files (not separate components). When adding non-cosmetic features, still prefer NEW components, but cosmetic tweaks to existing UI files are fair game now.
 
 ## Modifications by user/linter to UI files (DO NOT revert)
 
