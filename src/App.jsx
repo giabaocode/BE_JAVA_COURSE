@@ -130,7 +130,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex bg-ink-50 relative">
-      <ParticleBackground density={55} />
+      <ParticleBackground density={35} />
       <div className="relative z-10 flex flex-1 min-w-0">
         <Sidebar
           curriculum={curriculum}
