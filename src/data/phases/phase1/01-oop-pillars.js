@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-1',
       title: 'OOP Pillars — Encapsulation, Inheritance, Polymorphism, Abstraction',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 0</strong>. Đã viết được class đơn giản, hiểu method/field.' },
       lessons: [
 
         // ----- l-1-1-1 -----

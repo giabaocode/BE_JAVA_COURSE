@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'dp1',
   title: 'Pattern 16 — Dynamic Programming (1D)',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 1 + 12 pattern đầu Phase 2</strong>. Đã quen recursion + state thinking.' },
   mental: `DP = <strong>brute force recursion + memoization</strong>. 4 bước:
 <ol>
 <li>Định nghĩa state: <code>dp[i]</code> nghĩa là gì?</li>

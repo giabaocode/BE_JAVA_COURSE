@@ -3,6 +3,7 @@
 export default {
   id: 'mod-0-4',
   title: 'Console Mini-Apps — Number Guessing & Mini Bank (Tổng hợp Phase 0)',
+  prerequisites: { vi: 'Hoàn thành <code>Module 0.1, 0.2</code>. Đã giới thiệu <code>Scanner</code>, <code>switch</code>, basic exception.' },
   lessons: [
     {
       id: 'l-0-4-1',

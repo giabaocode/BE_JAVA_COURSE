@@ -171,6 +171,26 @@ function KeyTakeawaysCard({ value }) {
   )
 }
 
+function PrerequisitesBanner({ value }) {
+  if (!value) return null
+  const text = typeof value === 'string' ? value : (value.vi || value.en)
+  if (!text) return null
+  return (
+    <div className="mb-5 rounded-xl border border-amber-400/50 bg-amber-500/[0.08] px-4 py-3 flex items-start gap-2.5">
+      <Lightbulb className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+      <div>
+        <div className="text-[11px] uppercase tracking-wider font-semibold text-amber-700 mb-0.5">
+          Prerequisites · Cần biết trước
+        </div>
+        <div
+          className="text-sm text-ink-800 [&_code]:bg-ink-100 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[12px] [&_code]:font-mono [&_code]:text-brand-700"
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
+      </div>
+    </div>
+  )
+}
+
 function ReferencesCard({ refs }) {
   if (!refs || refs.length === 0) return null
   return (
@@ -830,6 +850,7 @@ export default function MainContent({
       )}
 
       {/* ===== Theory sections (hidden in Mock Mode) ===== */}
+      {showTheorySections && <PrerequisitesBanner value={module?.prerequisites} />}
       {showTheorySections && <MentalModelCard value={lesson.mentalModel} />}
       {showTheorySections && <UnderTheHoodCard value={lesson.underTheHood} />}
 

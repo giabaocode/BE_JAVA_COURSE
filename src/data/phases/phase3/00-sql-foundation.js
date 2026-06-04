@@ -3,6 +3,7 @@
 export default {
   id: 'mod-3-0',
   title: 'SQL Foundation Deep Dive — Hiểu SQL trước khi JPA ẩn nó đi',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 0+1</strong>. Có kiến thức cơ bản về database (table, row, column).' },
   lessons: [
     {
       id: 'l-3-0-1',

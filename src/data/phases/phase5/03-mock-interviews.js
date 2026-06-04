@@ -2,6 +2,7 @@
 export default {
   id: 'mod-5-3',
   title: 'Mock Interview with AI & 20-Week Job Search Plan',
+  prerequisites: { vi: 'Hoàn thành <strong>toàn bộ curriculum</strong> (Phase 0–4) hoặc đang chuẩn bị phỏng vấn trong 4–12 tuần tới.' },
   lessons: [
     {
       id: 'l-5-3-algo',

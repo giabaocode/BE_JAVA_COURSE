@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'tp',
   title: 'Pattern 2 — Two Pointers',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.2</code> (arrays). Đã xong <code>Pattern 1 — Sliding Window</code> recommend.' },
   mental: `Hai con trỏ chạy NGƯỢC NHAU (từ 2 đầu vào giữa) hoặc CÙNG CHIỀU (đọc + ghi). Áp dụng khi:
 <ul>
 <li>Mảng đã sort — tìm cặp/ba số thỏa sum.</li>

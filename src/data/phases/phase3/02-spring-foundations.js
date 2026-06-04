@@ -2,6 +2,7 @@
 export default {
   id: 'mod-3-2',
   title: 'Spring Boot — IoC, REST, Validation, Exception Handling',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 1</strong> (Java OOP solid) + <code>Module 3.1</code> (Docker setup).' },
   lessons: [
     {
       id: 'l-3-2-1',

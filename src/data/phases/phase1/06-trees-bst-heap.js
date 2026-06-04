@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-6',
       title: 'Trees, BST & PriorityQueue (Heap)',
+  prerequisites: { vi: 'Hoàn thành <code>Module 1.3</code> (linked list). Hiểu recursion cơ bản từ <code>l-1-3-2</code>.' },
       lessons: [
         {
           id: 'l-1-6-1',

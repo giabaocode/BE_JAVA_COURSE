@@ -2,6 +2,7 @@
 export default {
   id: 'mod-3-4',
   title: 'Spring Security 6 & JWT Authentication',
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.2 (Spring Boot REST), 3.3 (JPA)</code>. Hiểu @RestController, repository.' },
   lessons: [
     {
       id: 'l-3-4-1',

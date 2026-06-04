@@ -3,6 +3,7 @@
 export default {
   id: 'mod-3-8',
   title: 'UML & Project Analysis — Vẽ trước, code sau',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 1 (OOP)</strong>. Tốt nhất đã xong <code>Module 1.8</code> (OOP mini projects).' },
   lessons: [
     {
       id: 'l-3-8-1',

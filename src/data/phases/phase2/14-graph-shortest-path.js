@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'g2',
   title: 'Pattern 14 — Graph: Dijkstra & MST',
+  prerequisites: { vi: 'Hoàn thành <code>Pattern 13 — Graph Traversal</code>. Hiểu adjacency list + visited set.' },
   mental: `Graph có trọng số dương, shortest path? → <strong>Dijkstra</strong> với min-heap. O((V+E) log V).
 <br/><br/>
 Cây bao trùm chi phí tối thiểu (MST)? → <strong>Kruskal</strong> (sort edges + Union-Find) hoặc <strong>Prim</strong> (như Dijkstra, "thêm node gần nhất chưa có").`,

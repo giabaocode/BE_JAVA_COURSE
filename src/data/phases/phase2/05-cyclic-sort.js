@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'cs',
   title: 'Pattern 5 — Cyclic Sort',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.2</code>. Hiểu swap in-place.' },
   mental: `Mảng chứa số trong dải BIẾT TRƯỚC (vd: 1..n hoặc 0..n)? <strong>Đặt mỗi giá trị vào đúng INDEX</strong> qua swap liên tục. Sau xong, index nào sai = số bị thiếu/lặp.
 <br/><br/>
 O(n) time, O(1) space — vượt trội so với sort thường.`,

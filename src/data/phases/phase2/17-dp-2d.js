@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'dp2',
   title: 'Pattern 17 — Dynamic Programming (2D)',
+  prerequisites: { vi: 'Hoàn thành <code>Pattern 16 — DP 1D</code>. Đã viết được fib + house robber bottom-up.' },
   mental: `2D DP xuất hiện khi:
 <ul>
 <li>Lưới (grid path counting/sum).</li>

@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-2',
       title: 'Arrays & Dynamic Array (ArrayList) — Memory & Resize',
+  prerequisites: { vi: 'Hoàn thành <code>Module 1.1 — OOP Pillars</code>. Hiểu generics <code>&lt;T&gt;</code>.' },
       lessons: [
         {
           id: 'l-1-2-1',

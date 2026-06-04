@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'mod-0-3',
   title: '25 LeetCode Warm-up — 24 Easy + 1 Medium intro (KHÔNG paste AI, 20p tự thử trước)',
+  prerequisites: { vi: 'Hoàn thành <code>Module 0.1, 0.2</code>. Đã quen <code>int[]</code>, <code>HashMap</code>, <code>for</code>, <code>while</code>.' },
   lessons: [
     {
       id: 'l-0-3-1',

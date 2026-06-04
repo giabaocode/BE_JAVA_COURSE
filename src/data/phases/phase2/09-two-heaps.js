@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: '2h',
   title: 'Pattern 9 — Two Heaps',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.6</code> (PriorityQueue). Hiểu MinHeap vs MaxHeap comparator.' },
   mental: `Cần truy cập NHANH cả MIN và MAX của hai nửa dữ liệu? → <strong>Max-heap cho nửa nhỏ + Min-heap cho nửa lớn</strong>. Median = top heap lớn hơn (nếu lệch) hoặc trung bình 2 top.`,
 
   under: `<h3>First Principles</h3>

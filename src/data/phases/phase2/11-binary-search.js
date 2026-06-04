@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'bs',
   title: 'Pattern 11 — Modified Binary Search',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.2</code>. Đã làm <code>Climbing Stairs</code> + classic binary search.' },
   mental: `Binary Search KHÔNG chỉ cho sorted array. Bất cứ khi nào có <strong>monotonic predicate</strong> (TRUE từ một điểm trở đi, hoặc ngược lại), binary search trên <strong>không gian đáp án</strong>.
 <br/><br/>
 Template: tìm "x nhỏ nhất sao cho <code>predicate(x)</code> đúng".`,

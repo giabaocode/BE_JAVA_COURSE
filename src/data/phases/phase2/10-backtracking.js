@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'bt',
   title: 'Pattern 10 — Subsets & Backtracking',
+  prerequisites: { vi: 'Hoàn thành <code>Pattern 8 — Tree DFS</code>. Đã quen recursion + state restore.' },
   mental: `Backtracking = <strong>thử mọi nhánh quyết định</strong>. Tại mỗi bước: CHOOSE → EXPLORE (recurse) → UN-CHOOSE. Cây quyết định.
 <br/><br/>
 Áp dụng: subsets, permutations, combinations, N-Queens, sudoku, word search.`,

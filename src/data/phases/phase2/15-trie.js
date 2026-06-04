@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'trie',
   title: 'Pattern 15 — Trie (Prefix Tree)',
+  prerequisites: { vi: 'Hoàn thành <code>Pattern 8 — Tree DFS</code>. Trie là generalization của n-ary tree.' },
   mental: `Trie = cây mà mỗi <strong>edge là 1 ký tự</strong>. Đi từ root xuống = ghép thành string. Mỗi node có flag "end-of-word".
 <br/><br/>
 Mạnh cho: autocomplete, prefix search, spell check, word games. Operations O(L) với L = độ dài word.`,

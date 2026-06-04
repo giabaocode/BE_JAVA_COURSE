@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'mi',
   title: 'Pattern 4 — Merge Intervals',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.2</code>. Đã quen sort + custom <code>Comparator</code>.' },
   mental: `Bài về <strong>interval</strong> (lịch họp, calendar, đoạn thẳng)? → <strong>Sort theo start, sweep qua, merge nếu overlap</strong>.
 <br/><br/>
 Hai interval <code>[a, b]</code> và <code>[c, d]</code> overlap khi <code>a ≤ d AND c ≤ b</code>. Sau sort theo start, chỉ cần check <code>currentEnd ≥ nextStart</code>.`,

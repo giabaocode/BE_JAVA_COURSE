@@ -2,6 +2,7 @@
 export default {
   id: 'mod-0-1',
   title: 'Java Syntax Essentials — Gõ Tay 3 Lần Mỗi Exercise',
+  prerequisites: { vi: 'Cài đặt JDK 21 + IDE (IntelliJ hoặc VS Code). Không cần biết gì về Java trước đó.' },
   lessons: [
     {
       id: 'l-0-1-1',

@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'g1',
   title: 'Pattern 13 — Graph: BFS/DFS & Union-Find',
+  prerequisites: { vi: 'Hoàn thành <code>Pattern 7, 8</code> (Tree BFS/DFS). Tree là special case của graph.' },
   mental: `Đồ thị (graph) — 2 cách biểu diễn:
 <ul>
 <li><strong>Adjacency list</strong>: <code>List&lt;List&lt;Integer&gt;&gt; adj</code> — tốt cho sparse.</li>

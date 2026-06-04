@@ -2,6 +2,7 @@
 export default {
   id: 'mod-0-2',
   title: 'Built-in Collections — DÙNG trước khi Implement',
+  prerequisites: { vi: 'Hoàn thành <code>Module 0.1 — Syntax Essentials</code> (biến, vòng lặp, method).' },
   lessons: [
     {
       id: 'l-0-2-1',

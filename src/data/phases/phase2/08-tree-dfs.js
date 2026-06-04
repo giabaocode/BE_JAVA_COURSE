@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'dfs',
   title: 'Pattern 8 — Tree DFS',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.6</code> + <code>Pattern 7 — Tree BFS</code>. Hiểu recursion từ tree.' },
   mental: `Mỗi bài DFS dạng: "<strong>kết quả node = kết hợp kết quả của left + right + giá trị node</strong>". Đây là post-order recursion.
 <br/><br/>
 Truyền context xuống (vd: lo/hi cho BST) — pass parameter. Cần "global" answer (vd: max path sum) — instance variable hoặc <code>int[]{result}</code>.`,

@@ -3,6 +3,7 @@
 export default {
   id: 'mod-3-6',
   title: 'Redis + RabbitMQ — Caching & Message Broker',
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.2, 3.3</code>. Bonus: đã deploy Postgres qua Docker thành công.' },
   lessons: [
     {
       id: 'l-3-6-1',

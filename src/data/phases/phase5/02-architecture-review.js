@@ -2,6 +2,7 @@
 export default {
   id: 'mod-5-2',
   title: 'AI for Architecture & Code Review',
+  prerequisites: { vi: 'Hoàn thành <strong>ít nhất 1 capstone Phase 4</strong>. Có codebase Spring Boot để review.' },
   lessons: [
     {
       id: 'l-5-2-arch',

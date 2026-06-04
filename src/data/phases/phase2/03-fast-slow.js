@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'fs',
   title: 'Pattern 3 — Fast & Slow Pointers',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.3</code> (linked list). Hiểu pointer manipulation và null check.' },
   mental: `Hai con trỏ trên cùng cấu trúc (linked list hoặc index sequence), <strong>fast tiến 2 bước, slow tiến 1 bước</strong>. Nếu có chu trình → chúng GẶP NHAU bên trong. Nếu không → fast tới null/biên.
 <br/><br/>
 Ứng dụng:

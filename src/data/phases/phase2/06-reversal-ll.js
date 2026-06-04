@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'rev',
   title: 'Pattern 6 — In-place Reversal of Linked List',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.3</code> + <code>Pattern 3 — Fast/Slow</code> để nắm null-check.' },
   mental: `Pattern <strong>ba con trỏ</strong> (prev, curr, next): tại mỗi bước, lưu next TRƯỚC khi đảo <code>curr.next = prev</code>, rồi tiến prev và curr.
 <br/><br/>
 Mọi biến thể (reverse sublist, reverse k-group, swap pairs, reorder, rotate) đều là pattern này với phần "tách-nối" bổ sung.`,

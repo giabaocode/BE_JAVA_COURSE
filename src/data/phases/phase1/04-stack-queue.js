@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-4',
       title: 'Stack, Queue & Circular Buffer',
+  prerequisites: { vi: 'Hoàn thành <code>Module 1.2, 1.3</code>. Đã quen pointer manipulation.' },
       lessons: [
         {
           id: 'l-1-4-1',

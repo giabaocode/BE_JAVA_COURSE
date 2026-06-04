@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-7',
       title: 'Advanced Sorting & Divide and Conquer (Merge Sort + Quick Sort)',
+  prerequisites: { vi: 'Hoàn thành <code>Module 1.2 (arrays), 1.6 (recursion + trees)</code>. Trải nghiệm nhiều với recursion.' },
       lessons: [
 
         // ----- l-1-7-1: D&C foundations -----

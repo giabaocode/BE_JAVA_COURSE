@@ -2,6 +2,7 @@
 export default {
   id: 'mod-3-7',
   title: 'Testing, Containerize App & Production Hygiene',
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.2, 3.3, 3.4</code>. Đã có 1 REST endpoint hoạt động để viết test.' },
   lessons: [
     {
       id: 'l-3-7-1',

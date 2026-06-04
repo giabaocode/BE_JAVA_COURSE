@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'bfs',
   title: 'Pattern 7 — Tree BFS',
+  prerequisites: { vi: 'Hoàn thành <code>Phase 1 Module 1.6</code> (trees). Hiểu <code>TreeNode</code> structure.' },
   mental: `Xử lý cây <strong>theo từng tầng</strong> (level): zigzag, right-side view, min depth, connect next pointer? → BFS với Queue.
 <br/><br/>
 <strong>Bí quyết</strong>: dùng <code>int size = queue.size()</code> đầu mỗi tầng để biết tầng có bao nhiêu node. Loop <code>size</code> lần là 1 level.`,

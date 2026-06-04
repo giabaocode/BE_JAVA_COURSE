@@ -2,6 +2,7 @@
 export default {
   id: 'mod-3-1',
   title: 'Docker & PostgreSQL — Dựng hạ tầng local',
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.0 — SQL Foundation</code>. Đã cài Docker Desktop.' },
   lessons: [
     {
       id: 'l-3-1-1',

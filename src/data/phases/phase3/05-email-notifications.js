@@ -3,6 +3,7 @@
 export default {
   id: 'mod-3-5',
   title: 'Email Notification System — Spring Mail + @Scheduled Cron',
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.2 (Spring foundations)</code>. Hiểu @Service và dependency injection.' },
   lessons: [
     {
       id: 'l-3-5-1',

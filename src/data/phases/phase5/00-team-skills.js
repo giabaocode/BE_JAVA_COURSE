@@ -3,6 +3,7 @@
 export default {
   id: 'mod-5-0',
   title: 'Team Skills — Git Workflow, Jira/Agile, Code Review Etiquette',
+  prerequisites: { vi: 'Hoàn thành <strong>ít nhất 1 capstone Phase 4</strong>. Đã có git history thực để luyện workflow.' },
   lessons: [
     {
       id: 'l-5-0-1',

@@ -3,6 +3,7 @@
 export default {
   id: 'mod-4-2',
   title: 'Capstone 2 — ShopCore: E-commerce Backend',
+  prerequisites: { vi: 'Hoàn thành <code>Capstone 1 — Devlog</code> hoặc đã rất thành thạo Spring Boot + JPA + Security.' },
   lessons: [
     {
       id: 'l-4-2-overview',

@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-8',
       title: 'OOP Mini Projects — Student / HR / Library Management Console',
+  prerequisites: { vi: 'Hoàn thành <strong>toàn bộ Phase 1 Module 1.1–1.7</strong>. Đây là project capstone OOP.' },
       lessons: [
         {
           id: 'l-1-8-1',

@@ -51,6 +51,7 @@ for (int n : nums) {
   prompts: [
     {
       title: 'Vì sao MIN-heap cho top K LARGEST?',
+  prerequisites: { vi: 'Hoàn thành <code>Pattern 9 — Two Heaps</code>. Hiểu heap operations O(log n).' },
       prompt: `Sai lầm phổ biến. KHÔNG cho đáp án. Hỏi tôi:
 1. Max-heap size = n, pop K lần — time?
 2. Max-heap size = K, đẩy giá trị lớn vào — làm sao biết khi nào pop?

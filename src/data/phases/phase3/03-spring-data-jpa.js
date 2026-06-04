@@ -2,6 +2,7 @@
 export default {
   id: 'mod-3-3',
   title: 'Spring Data JPA & Hibernate — Behind the Scenes',
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.0 (SQL), 3.1 (Docker+Postgres), 3.2 (Spring foundations)</code>.' },
   lessons: [
     {
       id: 'l-3-3-1',

@@ -2,6 +2,7 @@
 export default {
   id: 'mod-4-1',
   title: 'Capstone 1 — Devlog: Blog & Comment REST API',
+  prerequisites: { vi: 'Hoàn thành <strong>toàn bộ Phase 3</strong> (Module 3.0–3.7). Đã có setup Spring Boot + Postgres + Docker working.' },
   lessons: [
     {
       id: 'l-4-1-overview',

@@ -4,6 +4,7 @@ const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 export default {
   id: 'sw',
   title: 'Pattern 1 — Sliding Window',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 1</strong>. Quen với <code>int[]</code>, <code>HashMap</code>, two-pointer thinking.' },
   mental: `Bài hỏi về <strong>subarray/substring LIÊN TỤC</strong> với tính chất nào đó (max sum, longest valid, shortest with X)? → Sliding window.
 <br/><br/>
 Hai con trỏ <code>left</code> và <code>right</code> bao quanh "cửa sổ". EXPAND bằng cách tăng <code>right</code>, SHRINK bằng cách tăng <code>left</code>. Mỗi index thăm tối đa 2 lần → O(n).

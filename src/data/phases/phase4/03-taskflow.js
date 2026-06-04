@@ -2,6 +2,7 @@
 export default {
   id: 'mod-4-3',
   title: 'Capstone 3 — TaskFlow: Multi-tenant Project Manager',
+  prerequisites: { vi: 'Hoàn thành <code>Capstone 1 + 2</code>. Đây là capstone NẶNG NHẤT — multi-tenant + WebSocket.' },
   lessons: [
     {
       id: 'l-4-3-overview',

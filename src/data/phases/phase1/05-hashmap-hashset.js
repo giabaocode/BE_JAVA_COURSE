@@ -6,6 +6,7 @@ export default
     {
       id: 'mod-1-5',
       title: 'HashMap & HashSet — How Collisions Really Work',
+  prerequisites: { vi: 'Hoàn thành <code>Module 1.2</code>. Hiểu <code>equals()</code>, <code>hashCode()</code> từ OOP Pillars.' },
       lessons: [
         {
           id: 'l-1-5-1',

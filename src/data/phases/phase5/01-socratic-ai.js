@@ -2,6 +2,7 @@
 export default {
   id: 'mod-5-1',
   title: 'AI as Socratic Mentor — Anti-Copy-Paste Workflows',
+  prerequisites: { vi: 'Hoàn thành <strong>Phase 0–3</strong>. Có kinh nghiệm dùng ChatGPT/Claude trong quá trình học.' },
   lessons: [
     {
       id: 'l-5-1-socratic',
