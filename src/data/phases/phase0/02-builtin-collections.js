@@ -59,49 +59,52 @@ grid[0].length                     // 4 (số cột)</pre>
       },
       exercises: [
         {
-          title: 'Sum array',
-          prompt: 'Cho int[], return tổng các phần tử.',
-          hints: ['For-each loop.', 'Accumulator <code>int sum = 0</code>.'],
+          title: 'Tổng doanh thu trong ngày',
+          prompt: 'Cho <code>long[] orderTotalsCents</code> (giá trị từng order trong ngày, đơn vị xu để tránh double precision). Return tổng doanh thu.',
+          hints: ['For-each loop accumulator.', 'Dùng <code>long</code> KHÔNG dùng <code>int</code> — tiền có thể overflow int khi tổng vượt 21 triệu (2^31 / 100).'],
           solution: {
-            code: `public class SumArr {
-    public static int sum(int[] arr) {
-        int total = 0;
-        for (int x : arr) total += x;
+            code: `public class DailyRevenue {
+    public static long totalRevenue(long[] orderTotalsCents) {
+        long total = 0L;
+        for (long cents : orderTotalsCents) total += cents;
         return total;
     }
 
     public static void main(String[] args) {
-        int[] arr = {1, 2, 3, 4, 5};
-        System.out.println(sum(arr));  // 15
+        // 5 đơn hàng: 50k, 120k, 80k, 200k, 30k VND
+        long[] orders = {5_000_000L, 12_000_000L, 8_000_000L, 20_000_000L, 3_000_000L};
+        System.out.println(totalRevenue(orders) / 100);  // 480000 (đơn vị đồng)
     }
 }`,
             lang: 'java',
             complexityVi: 'Time O(n) · Space O(1).',
-            explanationVi: 'For-each clean. Long nếu nghi overflow.'
+            explanationVi: 'For-each clean. <strong>BẮT BUỘC <code>long</code> cho tiền</strong> — Phase 3+4 sẽ dạy chi tiết về Money pattern (BIGINT cents). Đây là warm-up cho thói quen đó.'
           }
         },
         {
-          title: 'Find max in array',
-          prompt: 'Return phần tử lớn nhất. Edge case: empty array → throw IllegalArgumentException.',
-          hints: ['Khởi tạo max = arr[0] (hoặc Integer.MIN_VALUE).', 'Loop check < arr.length.'],
+          title: 'Order lớn nhất trong ngày',
+          prompt: 'Cho <code>long[] orderTotalsCents</code>, return giá trị order CAO NHẤT. Edge case: mảng rỗng → throw <code>IllegalArgumentException("Không có order nào")</code>.',
+          hints: ['Khởi tạo <code>max = arr[0]</code> (KHÔNG dùng <code>Long.MIN_VALUE</code> trừ khi handle empty trước).', 'Loop từ <code>i = 1</code>.'],
           solution: {
-            code: `public class MaxArr {
-    public static int max(int[] arr) {
-        if (arr.length == 0) throw new IllegalArgumentException("Empty");
-        int max = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > max) max = arr[i];
+            code: `public class TopOrder {
+    public static long maxOrder(long[] orderTotalsCents) {
+        if (orderTotalsCents.length == 0)
+            throw new IllegalArgumentException("Không có order nào");
+        long max = orderTotalsCents[0];
+        for (int i = 1; i < orderTotalsCents.length; i++) {
+            if (orderTotalsCents[i] > max) max = orderTotalsCents[i];
         }
         return max;
     }
 
     public static void main(String[] args) {
-        System.out.println(max(new int[]{3, 7, 1, 5, 9, 2}));  // 9
+        long[] today = {5_000_000L, 12_000_000L, 8_000_000L, 20_000_000L};
+        System.out.println(maxOrder(today) / 100);  // 200000 đồng = order 200k cao nhất
     }
 }`,
             lang: 'java',
             complexityVi: 'Time O(n) · Space O(1).',
-            explanationVi: 'Track max so far. Start i = 1 vì max init = arr[0]. Hoặc dùng Math.max trong loop.'
+            explanationVi: 'Track max so far. Start <code>i = 1</code> vì max init = <code>arr[0]</code>. Bài này dùng nguyên xi cho dashboard "đơn cao nhất hôm nay".'
           }
         },
         {
@@ -130,15 +133,17 @@ grid[0].length                     // 4 (số cột)</pre>
           }
         },
         {
-          title: 'Count even numbers',
-          prompt: 'Đếm số phần tử CHẴN trong int[].',
-          hints: ['<code>x % 2 == 0</code> = chẵn.'],
+          title: 'Đếm order "premium" (≥ 1 triệu VND)',
+          prompt: 'Cho <code>long[] orderTotalsCents</code>, đếm số order có giá trị ≥ 100_000_000 xu (= 1 triệu VND). Đây là pattern PHỔ BIẾN trong dashboard analytics.',
+          hints: ['Threshold constant: <code>final long PREMIUM_CENTS = 100_000_000L</code>.', 'For-each + if + count++.'],
           solution: {
-            code: `public class CountEven {
-    public static int countEven(int[] arr) {
+            code: `public class PremiumOrderCount {
+    private static final long PREMIUM_CENTS = 100_000_000L;  // 1 triệu VND
+
+    public static int countPremium(long[] orderTotalsCents) {
         int count = 0;
-        for (int x : arr) {
-            if (x % 2 == 0) count++;
+        for (long cents : orderTotalsCents) {
+            if (cents >= PREMIUM_CENTS) count++;
         }
         return count;
     }
@@ -438,32 +443,35 @@ Map&lt;String, Integer&gt; m2 = Map.of("a", 1, "b", 2);  // IMMUTABLE</pre>
       exercises: [
         {
           title: 'Two Sum (warm-up)',
-          prompt: 'Cho int[] nums và int target. Return [i, j] sao cho <code>nums[i] + nums[j] == target</code>. Mỗi input đúng 1 đáp án. KHÔNG dùng cùng index 2 lần.',
-          hints: ['HashMap: value → index.', 'Khi duyệt nums[i], check map có <code>target - nums[i]</code> chưa.', 'Đây là LeetCode #1 — bài cơ bản nhất.'],
+          prompt: 'Tìm 2 khách hàng có tổng chi tiêu bằng <code>target</code>. Cho <code>long[] customerSpendingCents</code> và <code>long targetCents</code>. Return <code>int[]{i, j}</code> sao cho <code>customerSpendingCents[i] + customerSpendingCents[j] == targetCents</code>. Giả định đúng 1 cặp. KHÔNG dùng cùng index 2 lần. (Pattern Two Sum kinh điển — Phase 2 sẽ học sâu.)',
+          hints: ['HashMap: spending value → customer index.', 'Khi duyệt <code>spending[i]</code>, check map có <code>target - spending[i]</code> chưa.', 'Đây là LeetCode #1 — bài cơ bản nhất, framed cho domain backend.'],
           solution: {
             code: `import java.util.*;
 
-public class TwoSum {
-    public static int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> seen = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            int need = target - nums[i];
+public class FindCustomerPair {
+    public static int[] findPair(long[] customerSpendingCents, long targetCents) {
+        Map<Long, Integer> seen = new HashMap<>();
+        for (int i = 0; i < customerSpendingCents.length; i++) {
+            long need = targetCents - customerSpendingCents[i];
             if (seen.containsKey(need)) {
                 return new int[]{seen.get(need), i};
             }
-            seen.put(nums[i], i);
+            seen.put(customerSpendingCents[i], i);
         }
         return new int[]{-1, -1};
     }
 
     public static void main(String[] args) {
-        System.out.println(java.util.Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9)));
-        // [0, 1]
+        // 4 khách hàng VIP: 2tr, 7tr, 11tr, 15tr (đơn vị xu)
+        long[] vipSpending = {2_00_000_000L, 7_00_000_000L, 11_00_000_000L, 15_00_000_000L};
+        // Tìm 2 customer có tổng 9tr
+        System.out.println(java.util.Arrays.toString(findPair(vipSpending, 9_00_000_000L)));
+        // [0, 1]  (customer 0 spend 2tr + customer 1 spend 7tr = 9tr)
     }
 }`,
             lang: 'java',
             complexityVi: 'Time O(n) · Space O(n).',
-            explanationVi: 'One-pass: tại mỗi i, check xem <code>target - nums[i]</code> đã seen chưa. Brute force O(n²). HashMap reduce O(n).'
+            explanationVi: 'One-pass: tại mỗi customer i, check xem <code>target - spending[i]</code> đã seen chưa. Brute force O(n²) (nested loop). HashMap reduce O(n). Real-world use: tìm pair của loyalty rewards (2 user chung tổng để combine voucher).'
           }
         },
         {

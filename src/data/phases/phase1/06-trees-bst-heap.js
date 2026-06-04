@@ -267,24 +267,30 @@ PriorityQueue<Integer> built = new PriorityQueue<>(Arrays.asList(5, 3, 8, 1));`
           ],
           exercises: [
             {
-              title: 'Kth Largest in Array',
-              prompt: 'Tìm phần tử lớn thứ K. <em>Bonus: O(n log k) thay vì O(n log n) sort.</em>',
+              title: 'Top K sản phẩm bán chạy nhất (Best Sellers)',
+              prompt: 'Cho <code>int[] soldQuantities</code> (số đã bán của N sản phẩm) + <code>int k</code>. Return số lượng của sản phẩm xếp hạng K trong top bán chạy. <em>Optimize O(n log k) thay vì sort O(n log n) — vì k rất nhỏ (vd top 10) so với n (1M sản phẩm).</em> Pattern này dùng cho widget "Best Sellers" trên homepage e-commerce.',
               hints: [
-                'Câu hỏi 1: MIN-heap size K — vì sao MIN cho LARGEST? Top heap là gì sau khi xong?',
-                'Câu hỏi 2: Khi heap size vượt K, làm gì?'
+                'Câu hỏi 1: MIN-heap size K — vì sao MIN cho TOP-K largest? Top heap là gì sau khi xong?',
+                'Câu hỏi 2: Khi heap size vượt K, làm gì?',
+                'Câu hỏi 3: Vì sao O(n log k) tốt hơn O(n log n) khi k = 10, n = 1M?'
               ],
               solution: {
-                code: `public int findKthLargest(int[] nums, int k) {
+                code: `public int kthBestSeller(int[] soldQuantities, int k) {
+    // MinHeap size K — top heap là smallest trong top-K → đẩy ra khi gặp value lớn hơn
     PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    for (int n : nums) {
-        minHeap.offer(n);
-        if (minHeap.size() > k) minHeap.poll();    // loại NHỎ NHẤT
+    for (int sold : soldQuantities) {
+        minHeap.offer(sold);
+        if (minHeap.size() > k) minHeap.poll();    // loại sản phẩm bán ít nhất trong top-K hiện tại
     }
-    return minHeap.peek();    // K phần tử lớn nhất còn lại, peek = K-th
-}`,
+    return minHeap.peek();    // heap chứa K best sellers; peek = K-th
+}
+
+// Demo: 1M sản phẩm, lấy top 10 best seller
+// soldQuantities = {523, 12, 8421, 45, 67, ...} (1M items)
+// kthBestSeller(soldQuantities, 10) → trả về số lượng của top-10 bán chạy`,
                 lang: 'java',
-                complexityVi: 'Time O(n log k) — n lần offer/poll, mỗi O(log k). Space O(k).',
-                explanationVi: 'Min-heap top = min trong group. Khi value mới &gt; top, swap. Cuối cùng heap chứa K phần tử lớn nhất; peek = K-th largest. Better than sort khi k &lt;&lt; n.'
+                complexityVi: 'Time O(n log k) — n lần offer/poll, mỗi O(log k). Space O(k). Với n=1M, k=10: ~1M × log₂10 ≈ 3.3M ops vs sort 1M × log₂(1M) = 20M ops. Nhanh hơn 6×.',
+                explanationVi: 'Min-heap top = smallest trong top-K. Khi sản phẩm bán nhiều hơn top, swap. Cuối: heap chứa K best sellers; peek = K-th best (giới hạn của top). Real-world: query "top 10 sản phẩm hot tuần này" trên 100k sản phẩm — Quickselect O(n) thậm chí nhanh hơn nhưng heap đơn giản + work cho stream data (sản phẩm bán liên tục).'
               }
             },
             {

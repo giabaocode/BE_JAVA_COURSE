@@ -596,34 +596,35 @@ Dẫn tôi qua từng case.`
               }
             },
             {
-              title: 'Quickselect — Kth Largest in O(n) average',
-              prompt: 'Tìm K-th largest. Heap O(n log k). Quickselect O(n) average bằng partition. Vd: [3,2,1,5,6,4], k=2 → 5.',
+              title: 'Quickselect — Top-K nhân viên lương cao nhất',
+              prompt: 'Cho <code>long[] salariesCents</code> (lương net theo xu) của N nhân viên + <code>int k</code>. Return mức lương của nhân viên xếp hạng K từ cao xuống (vd k=1 = lương cao nhất, k=5 = top 5). Brute: sort O(n log n). <strong>Quickselect O(n) average</strong> qua partition. Vd: <code>[30M, 20M, 10M, 50M, 60M, 40M]</code>, k=2 → 50M (lương cao thứ 2). Pattern này dùng cho "leaderboard top earners" trong HR dashboard.',
               hints: [
                 'Câu hỏi 1: Sau 1 lần partition, pivot ở đúng chỗ final. Nếu chỉ số đó = (n - k), pivot CHÍNH LÀ k-th largest. Vì sao?',
                 'Câu hỏi 2: Nếu pivotIdx < n-k, recurse vào nửa NÀO? Vì sao chỉ recurse 1 nửa, không cả hai?'
               ],
               solution: {
-                code: `public int findKthLargest(int[] nums, int k) {
-    int target = nums.length - k;   // index nếu sort ASC
-    int lo = 0, hi = nums.length - 1;
+                code: `public long findKthHighestSalary(long[] salariesCents, int k) {
+    int target = salariesCents.length - k;   // index nếu sort ASC
+    int lo = 0, hi = salariesCents.length - 1;
     Random rng = new Random();
     while (lo <= hi) {
-        int p = partition(nums, lo, hi, rng);
-        if (p == target) return nums[p];
+        int p = partition(salariesCents, lo, hi, rng);
+        if (p == target) return salariesCents[p];
         if (p < target) lo = p + 1;
         else            hi = p - 1;
     }
-    return -1;     // unreachable nếu k valid
+    throw new IllegalArgumentException("k vượt số nhân viên");
 }
 
-private int partition(int[] arr, int lo, int hi, Random rng) {
+private int partition(long[] arr, int lo, int hi, Random rng) {
     int pivotIdx = lo + rng.nextInt(hi - lo + 1);
-    int tmp = arr[pivotIdx]; arr[pivotIdx] = arr[hi]; arr[hi] = tmp;
-    int pivot = arr[hi], i = lo - 1;
+    long tmp = arr[pivotIdx]; arr[pivotIdx] = arr[hi]; arr[hi] = tmp;
+    long pivot = arr[hi];
+    int i = lo - 1;
     for (int j = lo; j < hi; j++) {
         if (arr[j] < pivot) {
             i++;
-            int t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+            long t = arr[i]; arr[i] = arr[j]; arr[j] = t;
         }
     }
     i++;
@@ -632,7 +633,7 @@ private int partition(int[] arr, int lo, int hi, Random rng) {
 }`,
                 lang: 'java',
                 complexityVi: 'Time: average O(n) — T(n) = T(n/2) + O(n) = O(n) by Master Theorem (a=1, b=2, c=1 → case 3). Worst O(n²) cực hiếm với random pivot. Space O(1) extra.',
-                explanationVi: 'Quickselect = Quick Sort nhưng CHỈ recurse vào 1 nửa (nửa chứa target). Vì T(n) = T(n/2) + O(n), không phải 2T(n/2) + O(n) → giảm từ n log n xuống n. Đây là cách <code>nth_element</code> của C++ STL và <code>numpy.partition</code> implement.'
+                explanationVi: 'Quickselect = Quick Sort nhưng CHỈ recurse vào 1 nửa (nửa chứa target). Vì T(n) = T(n/2) + O(n), không phải 2T(n/2) + O(n) → giảm từ n log n xuống n. Đây là cách <code>nth_element</code> của C++ STL và <code>numpy.partition</code> implement. Real-world: HR system query "top 10 earners" trên 100k records — chậm nếu sort hết, nhanh với Quickselect.'
               }
             }
           ],
