@@ -1,9 +1,9 @@
-// Module 0.3 — 25 LeetCode Easy Warm-up
+// Module 0.3 — 25 LeetCode Warm-up (24 Easy + 1 Medium intro)
 const LC = (slug) => `https://leetcode.com/problems/${slug}/`
 
 export default {
   id: 'mod-0-3',
-  title: '25 LeetCode Easy — Warm-up (KHÔNG paste AI, 20p tự thử trước)',
+  title: '25 LeetCode Warm-up — 24 Easy + 1 Medium intro (KHÔNG paste AI, 20p tự thử trước)',
   lessons: [
     {
       id: 'l-0-3-1',

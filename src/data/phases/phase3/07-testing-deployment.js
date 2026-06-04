@@ -1,10 +1,10 @@
-// Module 3.6 — Testing, Containerize App & Production Hygiene
+// Module 3.7 — Testing, Containerize App & Production Hygiene
 export default {
-  id: 'mod-3-6',
+  id: 'mod-3-7',
   title: 'Testing, Containerize App & Production Hygiene',
   lessons: [
     {
-      id: 'l-3-6-1',
+      id: 'l-3-7-1',
       type: 'theory',
       title: 'Test Pyramid — Unit, Slice, Integration',
       mentalModel: {
@@ -191,7 +191,7 @@ class PostIntegrationTest {
     },
 
     {
-      id: 'l-3-6-2',
+      id: 'l-3-7-2',
       type: 'practice',
       title: 'Dockerize Spring Boot App',
       mentalModel: {
@@ -349,7 +349,7 @@ volumes:
     },
 
     {
-      id: 'l-3-6-3',
+      id: 'l-3-7-3',
       type: 'theory',
       title: 'Actuator, Observability & Production Logging',
       mentalModel: {

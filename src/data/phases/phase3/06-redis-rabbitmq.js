@@ -222,14 +222,18 @@ public class CronJobService {
             try {
                 doWork();
             } finally {
-                // Chỉ release nếu token vẫn của mình (tránh release lock người khác)
-                String current = redis.opsForValue().get(lockKey);
-                if (token.equals(current)) {
-                    redis.delete(lockKey);
-                }
+                // Release ATOMIC qua Lua script — KHÔNG dùng GET-then-DEL (race condition:
+                // lock có thể expire giữa GET và DEL → ta xóa nhầm lock của instance khác).
+                redis.execute(UNLOCK_SCRIPT, List.of(lockKey), token);
             }
         }
     }
+
+    // Lua chạy atomic trên Redis server: check-and-delete trong 1 step
+    private static final RedisScript<Long> UNLOCK_SCRIPT = new DefaultRedisScript<>(
+        "if redis.call('get', KEYS[1]) == ARGV[1] " +
+        "then return redis.call('del', KEYS[1]) else return 0 end",
+        Long.class);
 }</pre>
 
 <strong>Trade-off của distributed lock</strong>: nếu work mất &gt; 5 phút → lock expire → instance khác cũng vào. Solution: hoặc tăng TTL, hoặc periodically renew (Redisson library tự làm).
@@ -344,21 +348,22 @@ public class HourlyReportJob {
             log.info("Acquired lock, sending report");
             reports.generateAndSend();
         } finally {
-            // Release: chỉ DELETE nếu lock vẫn của mình
-            // (nếu work quá TTL, lock đã expire + instance khác lấy → KHÔNG xóa)
-            String current = redis.opsForValue().get(LOCK_KEY);
-            if (token.equals(current)) {
-                redis.delete(LOCK_KEY);
-                log.info("Released lock");
-            } else {
-                log.warn("Lock no longer owned, skip release");
-            }
+            // Release ATOMIC qua Lua script — check-and-delete trong 1 round-trip,
+            // KHÔNG race như GET-then-DEL khi lock expire giữa 2 lệnh.
+            Long deleted = redis.execute(UNLOCK_SCRIPT, List.of(LOCK_KEY), token);
+            if (deleted == 1L) log.info("Released lock");
+            else log.warn("Lock no longer owned, skip release");
         }
     }
+
+    private static final RedisScript<Long> UNLOCK_SCRIPT = new DefaultRedisScript<>(
+        "if redis.call('get', KEYS[1]) == ARGV[1] " +
+        "then return redis.call('del', KEYS[1]) else return 0 end",
+        Long.class);
 }`,
             lang: 'java',
-            complexityVi: 'SET NX + DEL: 2 round-trip Redis ~ 2ms.',
-            explanationVi: 'setIfAbsent map sang Redis command <code>SET key value NX EX ttl</code> — atomic SET-if-not-exists với expiry. Token UUID để release đúng instance — race-safe khi lock expire mid-work. Production: dùng <code>Redisson</code> library cho lock có auto-renew + reentrant.'
+            complexityVi: 'SET NX (1 RTT) + Lua eval (1 RTT) = 2 round-trip Redis ~2ms.',
+            explanationVi: 'setIfAbsent map sang Redis command <code>SET key value NX EX ttl</code> — atomic SET-if-not-exists với expiry. <strong>Release qua Lua script</strong> — đảm bảo check-and-delete atomic, KHÔNG race khi lock expire giữa GET và DEL (kịch bản: instance A lock 5p → work 5p1s → lock auto-expire → instance B acquire → A "release" sẽ xóa nhầm lock của B). Lua chạy trên Redis server single-threaded, không có race. Production-grade: dùng <code>Redisson</code> library có lock auto-renew + reentrant + redlock cho multi-node.'
           }
         },
         {

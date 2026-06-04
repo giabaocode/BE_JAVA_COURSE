@@ -1,7 +1,7 @@
 // Module 5.3 — Mock Interview with AI + Career Plan
 export default {
   id: 'mod-5-3',
-  title: 'Mock Interview with AI & 12-Week Job Search Plan',
+  title: 'Mock Interview with AI & 20-Week Job Search Plan',
   lessons: [
     {
       id: 'l-5-3-algo',

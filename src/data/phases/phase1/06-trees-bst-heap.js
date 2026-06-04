@@ -246,7 +246,8 @@ PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
 
 // Custom comparator cho object
-PriorityQueue<int[]> byFreq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+// Dùng Integer.compare — KHÔNG dùng a[1] - b[1] (overflow khi giá trị âm lớn)
+PriorityQueue<int[]> byFreq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
 
 // Build heap O(n) từ collection
 PriorityQueue<Integer> built = new PriorityQueue<>(Arrays.asList(5, 3, 8, 1));`

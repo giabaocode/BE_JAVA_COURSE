@@ -251,7 +251,7 @@ LinkedBlockingQueue, ArrayBlockingQueue — thread-safe với lock. Producer/con
           exercises: [
             {
               title: 'Resizable circular queue',
-              prompt: 'Mở rộng CircularQueue: thay vì return false khi full, double capacity.',
+              prompt: 'Mở rộng CircularQueue: thay vì return false khi full, double capacity. <strong>Lưu ý</strong>: bỏ <code>final</code> khỏi field <code>data</code> để cho phép reassign.',
               hints: [
                 'Câu hỏi 1: Khi resize, head có thể KHÔNG ở vị trí 0. Làm sao copy data theo đúng thứ tự logical?',
                 'Câu hỏi 2: Sau resize, head và tail nên đặt lại thế nào?'

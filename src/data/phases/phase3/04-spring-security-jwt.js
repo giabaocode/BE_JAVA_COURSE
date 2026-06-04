@@ -39,6 +39,9 @@ Spring Security lưu authenticated user trong ThreadLocal — mỗi request có 
 </ul>
 Server VERIFY signature → biết payload chưa bị sửa. <strong>JWT KHÔNG mã hóa</strong> — ai cũng decode được payload. KHÔNG bỏ password vào JWT.
 <br/><br/>
+<strong>JWS vs JWE — "JWT" là tên chung</strong>
+"JWT" trong 95% bài viết thực ra là <strong>JWS (JSON Web Signature)</strong> — chỉ SIGN, payload base64 decode được. Còn <strong>JWE (JSON Web Encryption)</strong> encrypt payload nữa, chỉ holder của decryption key đọc được. jjwt 0.12+ hỗ trợ cả hai (xem <code>Jwts.builder().encryptWith(...)</code>). Khi nào dùng JWE? — payload có PII (email, số CMND) phải đi qua bên thứ ba. Còn data thường (user id, roles) → JWS đủ. Lesson này dạy JWS.
+<br/><br/>
 <strong>4) JWT secret</strong>
 KHÔNG commit secret. Tối thiểu 256-bit cho HS256. Sinh: <code>openssl rand -base64 32</code>. Trong K8s: dùng Secret object. Trong dev: env var.
 <br/><br/>
@@ -73,6 +76,10 @@ KHÔNG bao giờ lưu plaintext. Cũng KHÔNG dùng SHA256/MD5 (quá nhanh — b
   <li><strong>Không verify signature</strong> — attacker sửa payload (role = ADMIN). Luôn verify trước khi trust.</li>
   <li><strong>alg: none attack</strong> — old libs accept "no signature". Thư viện modern (jjwt) tránh.</li>
   <li><strong>Trả 200 cho "user not found"</strong> trong /login — leak username. Trả 401 generic "Invalid credentials" cho cả 2 case.</li>
+  <li><strong>Default JWT secret trong application.yml</strong> — junior commit lên git, secret thật bị leak. <strong>BẮT BUỘC</strong> env var, fail-fast nếu thiếu: <code>\${JWT_SECRET:?JWT_SECRET env var required}</code>.</li>
+  <li><strong>Không rate-limit /login</strong> — attacker brute-force 100 password/giây. Phải có rate-limit (Bucket4j) + account lockout sau N lần fail.</li>
+  <li><strong>Không config AuthenticationEntryPoint</strong> — Spring default trả HTML trắng cho 401, SPA/mobile không parse được. Phải custom ra ProblemDetail JSON (RFC 7807).</li>
+  <li><strong>Catch JwtException ignored trong filter</strong> — token sai/hết hạn thì silent fail, request đi tiếp như chưa auth. Tốt hơn: log + set 401 thẳng với ProblemDetail.</li>
 </ul>`
       },
       codeExamples: [
@@ -258,11 +265,12 @@ public class JwtService {
     }
 }
 
-// application.yml:
+// application.yml — KHÔNG default secret. Fail-fast nếu thiếu env var:
 // app:
 //   jwt:
-//     secret: \${JWT_SECRET:Y291cnNlLWphdmEtZGV2LXNlY3JldC0yMDI0LXNvbWUtbG9uZy1iYXNlNjQ=}
-//     ttlMinutes: 30`
+//     secret: \${JWT_SECRET:?JWT_SECRET env var required — generate by: openssl rand -base64 32}
+//     ttlMinutes: 30
+//     refreshTtlDays: 7`
         }
       ],
       socraticPrompts: [
@@ -335,6 +343,299 @@ public class AuthController {
           }
         }
       ]
+    },
+
+    {
+      id: 'l-3-4-3',
+      type: 'practice',
+      title: 'Production Hardening — Refresh Token, Rate Limit, AuthenticationEntryPoint, Swagger',
+      mentalModel: {
+        vi: `Lesson 1+2 dạy JWT auth CƠ BẢN. Production-ready cần 4 thứ nữa mà junior thường BỎ QUA:
+<ol>
+<li><strong>Refresh token</strong> — access token TTL 15p + refresh token 7d. Leak access = damage 15p, không phải 24h.</li>
+<li><strong>AuthenticationEntryPoint + AccessDeniedHandler</strong> — return ProblemDetail JSON 401/403 (RFC 7807) thay vì HTML default. SPA/mobile cần JSON để parse.</li>
+<li><strong>Rate limit + account lockout</strong> — chặn brute-force <code>/login</code>. Bucket4j 10 req/phút per IP, lockout sau 5 lần fail liên tục.</li>
+<li><strong>Swagger bearer auth + CORS</strong> — UI test JWT endpoint từ Swagger, SPA call cross-origin.</li>
+</ol>
+Bài này là <strong>checklist trước khi deploy</strong>. Skip = backend hoạt động được trên Postman nhưng SPA gọi sẽ vỡ.`
+      },
+      underTheHood: {
+        vi: `<h3>First Principles</h3>
+
+<strong>1) Refresh token rotation</strong>
+<ul>
+<li><strong>Access token</strong> (JWT, 15-30 phút) — gửi trong header mỗi request, stateless verify.</li>
+<li><strong>Refresh token</strong> (opaque random string, 7-30 ngày) — lưu trong DB hashed (như password). Khi access hết hạn, client gửi refresh → server cấp access mới + cấp refresh MỚI + revoke refresh CŨ. Pattern này gọi là <em>rotation</em>.</li>
+</ul>
+Vì sao rotation? — Nếu attacker steal refresh, dùng 1 lần → server cấp refresh mới cho attacker. Khi nạn nhân dùng refresh cũ → server detect "refresh đã rotate" → invalidate cả family → buộc re-login. Đây là detection mechanism cho token theft.
+<br/><br/>
+<strong>2) AuthenticationEntryPoint vs AccessDeniedHandler</strong>
+<ul>
+<li><strong>EntryPoint</strong>: chạy khi request CHƯA auth (chưa có SecurityContext). Trả <strong>401</strong>.</li>
+<li><strong>AccessDeniedHandler</strong>: chạy khi ĐÃ auth nhưng KHÔNG có quyền (vd USER gọi endpoint ADMIN). Trả <strong>403</strong>.</li>
+</ul>
+Default Spring trả HTML trắng. Override để trả ProblemDetail (RFC 7807) JSON.
+<br/><br/>
+<strong>3) Rate limit — Bucket4j</strong>
+Algorithm <em>Token Bucket</em>: bucket có capacity N tokens, refill rate R/giây. Mỗi request tiêu 1 token. Hết → 429 Too Many Requests. Per-IP filter trước SecurityFilterChain.
+<br/><br/>
+<strong>4) Account lockout</strong>
+Trường <code>failedLoginCount</code>, <code>lockedUntil</code> trên user. Login fail → increment. Đạt 5 → set lockedUntil = now() + 15 phút. Login success → reset count. Lockout per-user khác rate-limit per-IP — kết hợp cả hai.
+<br/><br/>
+<strong>5) Swagger bearer auth</strong>
+springdoc-openapi tự generate OpenAPI 3.1 spec. Annotation <code>@SecurityScheme</code> ở app class + <code>@SecurityRequirement</code> ở method để UI Swagger có nút "Authorize" → paste token → test endpoint protected.
+<br/><br/>
+<strong>6) CORS cho SPA</strong>
+Browser block cross-origin request mặc định. SPA <code>http://localhost:5173</code> gọi API <code>http://localhost:8080</code> → preflight OPTIONS. Spring Security xử lý qua <code>CorsConfigurationSource</code> bean — KHÔNG dùng <code>@CrossOrigin</code> annotation (chỉ work ở controller, bị filter chain block trước).`
+      },
+      theory: {
+        vi: `<h3>The "Why" — Vì sao 4 thứ này KHÔNG optional?</h3>
+<ul>
+  <li><strong>Refresh token</strong>: bài interview backend hỏi PHỔ BIẾN. Không có = "junior chỉ đọc tutorial".</li>
+  <li><strong>ProblemDetail 401/403 JSON</strong>: SPA/mobile parse response thì cần JSON. HTML trắng = UX vỡ, error generic.</li>
+  <li><strong>Rate limit</strong>: bot scan endpoint <code>/login</code> 10k req/giây. Không có = service down hoặc account bị brute-force.</li>
+  <li><strong>Swagger + CORS</strong>: dev team frontend dùng Swagger để discover API. Không có CORS = SPA dev call fail với CORS error, dev phải config proxy thủ công.</li>
+</ul>
+
+<h3>Junior Pitfalls</h3>
+<ul>
+  <li><strong>Refresh token = JWT</strong> — refresh phải opaque + hashed trong DB để revoke được. JWT stateless KHÔNG revoke được.</li>
+  <li><strong>Refresh không rotate</strong> — cấp 1 refresh dùng nhiều lần. Leak = compromise persistent. Mỗi lần refresh CẤP MỚI + REVOKE CŨ.</li>
+  <li><strong>Cùng endpoint /refresh nhận cả access + refresh</strong> — client gửi nhầm access vào /refresh → leak access trong request body. Tách biệt: refresh chỉ qua endpoint /auth/refresh với refresh token only.</li>
+  <li><strong>Rate-limit chỉ per-IP</strong> — attacker xài 1000 IP (botnet). Kết hợp per-IP + per-username lockout.</li>
+  <li><strong>AccessDeniedHandler không set Content-Type: application/problem+json</strong> — client không nhận biết là RFC 7807 ProblemDetail.</li>
+  <li><strong>CORS allow * với credentials</strong> — browser reject. Phải liệt kê origin cụ thể nếu cho credentials.</li>
+  <li><strong>@CrossOrigin trên controller cho Spring Security app</strong> — không work, filter chain block trước. Phải dùng CorsConfigurationSource bean.</li>
+</ul>`
+      },
+      codeExamples: [
+        {
+          title: 'Refresh token entity + rotation flow',
+          code: `@Entity @Table(name = "refresh_tokens")
+public class RefreshToken {
+    @Id @GeneratedValue private Long id;
+    @Column(nullable = false, unique = true) private String tokenHash;  // SHA-256 hash, KHÔNG plaintext
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(nullable = false) private User user;
+    @Column(nullable = false) private Instant expiresAt;
+    @Column(nullable = false) private boolean revoked;
+    @Column private Long replacedBy;  // ID của refresh mới (để detect reuse)
+    // getters/setters/constructors omitted
+}
+
+@Service
+@RequiredArgsConstructor
+public class RefreshTokenService {
+    private final RefreshTokenRepository repo;
+    private static final SecureRandom RNG = new SecureRandom();
+
+    public TokenPair issuePair(User user, JwtService jwt) {
+        String accessToken = jwt.issue(toUserDetails(user));
+        String refreshPlain = generateOpaqueToken();
+        RefreshToken rt = new RefreshToken();
+        rt.setTokenHash(sha256(refreshPlain));
+        rt.setUser(user);
+        rt.setExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS));
+        repo.save(rt);
+        return new TokenPair(accessToken, refreshPlain);
+    }
+
+    @Transactional
+    public TokenPair rotate(String refreshPlain, JwtService jwt) {
+        RefreshToken old = repo.findByTokenHash(sha256(refreshPlain))
+            .orElseThrow(() -> new BadCredentialsException("Invalid refresh token"));
+
+        if (old.isRevoked()) {
+            // REUSE detected — invalidate cả family (mọi token của user này)
+            repo.revokeAllForUser(old.getUser().getId());
+            throw new BadCredentialsException("Refresh token reuse detected — re-login required");
+        }
+        if (old.getExpiresAt().isBefore(Instant.now())) {
+            throw new BadCredentialsException("Refresh token expired");
+        }
+
+        TokenPair pair = issuePair(old.getUser(), jwt);
+        old.setRevoked(true);
+        old.setReplacedBy(repo.findByTokenHash(sha256(pair.refresh())).get().getId());
+        return pair;
+    }
+
+    private String generateOpaqueToken() {
+        byte[] bytes = new byte[32];
+        RNG.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+    private String sha256(String s) {
+        try {
+            byte[] h = MessageDigest.getInstance("SHA-256").digest(s.getBytes(StandardCharsets.UTF_8));
+            return HexFormat.of().formatHex(h);
+        } catch (NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
+    }
+}
+
+public record TokenPair(String access, String refresh) {}`
+        },
+        {
+          title: 'AuthenticationEntryPoint + AccessDeniedHandler (ProblemDetail JSON)',
+          code: `@Component
+public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
+    private final ObjectMapper om;
+    public JwtAuthEntryPoint(ObjectMapper om) { this.om = om; }
+
+    @Override
+    public void commence(HttpServletRequest req, HttpServletResponse resp,
+                         AuthenticationException ex) throws IOException {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        pd.setTitle("Unauthorized");
+        pd.setDetail(ex.getMessage());
+        pd.setInstance(URI.create(req.getRequestURI()));
+
+        resp.setStatus(401);
+        resp.setContentType("application/problem+json");
+        om.writeValue(resp.getWriter(), pd);
+    }
+}
+
+@Component
+public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+    private final ObjectMapper om;
+    public JwtAccessDeniedHandler(ObjectMapper om) { this.om = om; }
+
+    @Override
+    public void handle(HttpServletRequest req, HttpServletResponse resp,
+                       AccessDeniedException ex) throws IOException {
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        pd.setTitle("Forbidden");
+        pd.setDetail("You don't have permission to access this resource");
+        pd.setInstance(URI.create(req.getRequestURI()));
+
+        resp.setStatus(403);
+        resp.setContentType("application/problem+json");
+        om.writeValue(resp.getWriter(), pd);
+    }
+}
+
+// Trong SecurityConfig:
+.exceptionHandling(eh -> eh
+    .authenticationEntryPoint(jwtAuthEntryPoint)
+    .accessDeniedHandler(jwtAccessDeniedHandler))`
+        },
+        {
+          title: 'Rate limit (Bucket4j) + Swagger bearer + CORS',
+          code: `// build.gradle: implementation 'com.bucket4j:bucket4j-core:8.10.1'
+
+@Component
+public class LoginRateLimitFilter extends OncePerRequestFilter {
+    private final ConcurrentHashMap<String, Bucket> buckets = new ConcurrentHashMap<>();
+
+    private Bucket resolveBucket(String ip) {
+        return buckets.computeIfAbsent(ip, k -> Bucket.builder()
+            .addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1))))
+            .build());
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp,
+                                    FilterChain chain) throws ServletException, IOException {
+        if (!req.getRequestURI().endsWith("/auth/login")) {
+            chain.doFilter(req, resp); return;
+        }
+        String ip = req.getRemoteAddr();
+        if (resolveBucket(ip).tryConsume(1)) {
+            chain.doFilter(req, resp);
+        } else {
+            resp.setStatus(429);
+            resp.setContentType("application/problem+json");
+            resp.getWriter().write("""
+                {"status":429,"title":"Too Many Requests","detail":"Login rate limit exceeded (10/min)"}""");
+        }
+    }
+}
+
+// CORS — KHÔNG dùng @CrossOrigin, dùng CorsConfigurationSource bean:
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration cfg = new CorsConfiguration();
+    cfg.setAllowedOrigins(List.of("http://localhost:5173", "https://app.example.com"));
+    cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+    cfg.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    cfg.setAllowCredentials(true);
+    cfg.setMaxAge(3600L);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/api/**", cfg);
+    return source;
+}
+
+// Swagger bearer auth — main app class:
+@OpenAPIDefinition(
+    info = @Info(title = "Devlog API", version = "v1"),
+    security = @SecurityRequirement(name = "bearerAuth"))
+@SecurityScheme(
+    name = "bearerAuth", type = SecuritySchemeType.HTTP,
+    scheme = "bearer", bearerFormat = "JWT")
+@SpringBootApplication
+public class DevlogApplication { ... }
+// build.gradle: implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+// Truy cập: http://localhost:8080/swagger-ui/index.html`
+        }
+      ],
+      exercises: [
+        {
+          title: 'POST /auth/refresh — token rotation endpoint',
+          prompt: 'Build endpoint <code>POST /api/v1/auth/refresh</code> nhận <code>{refreshToken: "..."}</code>, validate qua RefreshTokenService.rotate(), trả về <code>TokenPair</code> mới. Handle 401 nếu invalid/expired/reused.',
+          hints: [
+            'Câu 1: Endpoint /refresh có cần JWT trong Authorization header không? Vì sao có / vì sao không?',
+            'Câu 2: Reuse detection logic ở đâu — controller, service, hay repository? Vì sao tách như thế?',
+            'Câu 3: Response shape giống /login (access + refresh + expiresIn) hay khác?'
+          ],
+          solution: {
+            code: `public record RefreshRequest(@NotBlank String refreshToken) {}
+
+@PostMapping("/refresh")
+public AuthResponse refresh(@Valid @RequestBody RefreshRequest req) {
+    TokenPair pair = refreshTokenService.rotate(req.refreshToken(), jwtService);
+    return new AuthResponse(pair.access(), pair.refresh(), "Bearer", 15 * 60);
+}
+
+// Bổ sung shape AuthResponse:
+public record AuthResponse(String accessToken, String refreshToken,
+                           String tokenType, long expiresIn) {}
+
+// SecurityConfig: /refresh phải permitAll() vì chưa có access token hợp lệ:
+.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()`,
+            lang: 'java',
+            complexityVi: 'Time: 1 query DB (find refresh by hash) + 1 insert (cấp mới) + 1 update (revoke cũ). ~10ms total. Space O(1).',
+            explanationVi: '/refresh KHÔNG cần Authorization header — client chưa có access hợp lệ, đó là lý do gọi refresh. Reuse detection nằm trong RefreshTokenService.rotate() (line 33 code example trên) — khi gặp refresh đã revoked = attacker dùng lại token đã rotate → invalidate cả family. Response shape khác /login: phải có CẢ access và refresh mới.'
+          }
+        }
+      ],
+      socraticPrompts: [
+        {
+          title: 'Refresh token theft scenario',
+          prompt: `KHÔNG cho đáp án. Hỏi tôi:
+1. Attacker steal được 1 refresh token. Họ dùng /refresh → server cấp pair mới cho attacker. Nạn nhân vẫn dùng refresh cũ. Chuyện gì xảy ra?
+2. "Family invalidation" sau khi detect reuse — implement ra sao trong DB? Câu SQL nào revoke hết refresh của user?
+3. Nạn nhân bị force re-login. Họ có biết tài khoản từng bị xâm phạm không? Notification ra sao?
+4. Trade-off: rotation strict (mỗi /refresh cấp mới) vs sliding (extend cùng refresh) — production nên chọn cái nào?`
+        },
+        {
+          title: 'Rate limit design',
+          prompt: `KHÔNG cho đáp án. Hỏi tôi:
+1. Rate-limit per-IP — attacker dùng 1000 IP. Làm sao chặn?
+2. Rate-limit per-username — attacker biết tên user, lock user vô tội bằng login fail 5 lần. Đây gọi là attack gì?
+3. CAPTCHA sau N lần fail vs lockout 15 phút — chọn cái nào, lúc nào?
+4. Distributed system 10 instance app — Bucket4j in-memory không share state. Dùng gì để share rate limit cross-instance?`
+        }
+      ],
+      keyTakeaways: {
+        vi: [
+          'Access token (JWT, 15-30p) + refresh token (opaque, 7d hashed DB). Rotation: mỗi /refresh cấp mới + revoke cũ. Detect reuse → invalidate cả family.',
+          'AuthenticationEntryPoint cho 401, AccessDeniedHandler cho 403. Trả <code>application/problem+json</code> (RFC 7807) để SPA/mobile parse được.',
+          'Rate limit /login: Bucket4j per-IP (10 req/phút) + account lockout per-username (5 fail → khóa 15p). Combo hai layer chặn cả botnet và targeted brute-force.',
+          'CORS cho SPA: <code>CorsConfigurationSource</code> bean, KHÔNG <code>@CrossOrigin</code>. Liệt kê origin cụ thể, KHÔNG <code>*</code> khi <code>allowCredentials=true</code>.',
+          'Swagger bearer: <code>@SecurityScheme(scheme="bearer", bearerFormat="JWT")</code> ở app class → Swagger UI có nút Authorize để test endpoint protected.',
+          'Distributed rate-limit: Bucket4j in-memory KHÔNG share cross-instance. Production dùng Redis backend (<code>bucket4j-redis</code>) hoặc API gateway (Spring Cloud Gateway).'
+        ]
+      }
     }
   ]
 }
