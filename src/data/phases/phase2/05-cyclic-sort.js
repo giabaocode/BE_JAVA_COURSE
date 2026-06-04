@@ -304,5 +304,10 @@ while (i < nums.length) {
         explanationVi: 'XOR all. <code>a ^ a = 0</code>, <code>a ^ 0 = a</code>. Mọi pair triệt tiêu, single number còn lại. Elegant nhất trong CS classic.'
       }
     }
+  ],
+  references: [
+    { title: 'LeetCode Cyclic Sort discuss', url: 'https://leetcode.com/discuss/study-guide/2188531/Cyclic-sort-pattern' },
+    { title: 'Find Missing Number (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Find_first_set' }
   ]
+
 }

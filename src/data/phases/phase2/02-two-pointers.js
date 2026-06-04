@@ -382,5 +382,10 @@ private void swap(int[] a, int i, int j) { int t = a[i]; a[i] = a[j]; a[j] = t; 
         explanationVi: 'Generalize kSum: cố định k-2 phần tử (n^(k-2) lựa chọn), two-pointer cho 2 phần tử cuối. Đối với 4Sum: O(n²) × O(n) = O(n³). Dùng <code>long</code> tránh overflow khi nums lên đến 10^9.'
       }
     }
+  ],
+  references: [
+    { title: 'LeetCode Two Pointers tag', url: 'https://leetcode.com/tag/two-pointers/' },
+    { title: 'Two Pointers technique guide', url: 'https://www.geeksforgeeks.org/two-pointers-technique/' }
   ]
+
 }

@@ -532,5 +532,12 @@ public class OrderService {
         }
       ]
     }
+  ],
+  references: [
+    { title: 'JUnit 5 User Guide', url: 'https://junit.org/junit5/docs/current/user-guide/' },
+    { title: 'Mockito Documentation', url: 'https://site.mockito.org/' },
+    { title: 'Testcontainers Java', url: 'https://java.testcontainers.org/' },
+    { title: 'Spring Boot Testing Reference', url: 'https://docs.spring.io/spring-boot/docs/3.3.x/reference/html/features.html#features.testing' }
   ]
+
 }

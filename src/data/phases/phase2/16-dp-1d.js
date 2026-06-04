@@ -371,5 +371,10 @@ private int robLinear(int[] nums, int lo, int hi) {
         explanationVi: 'Track min giá so far. Mỗi ngày tính profit hypothetical (bán hôm đó). Max profit toàn cục.'
       }
     }
+  ],
+  references: [
+    { title: 'DP intro (CP-Algorithms)', url: 'https://cp-algorithms.com/dynamic_programming/intro-to-dp.html' },
+    { title: 'DP patterns guide (LC discuss)', url: 'https://leetcode.com/discuss/general-discussion/458695/dynamic-programming-patterns' }
   ]
+
 }

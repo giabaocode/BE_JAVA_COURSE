@@ -670,5 +670,11 @@ private void sendReminderSafe(User u) {
         }
       ]
     }
+  ],
+  references: [
+    { title: 'Spring Mail Reference', url: 'https://docs.spring.io/spring-framework/reference/integration/email.html' },
+    { title: 'Spring @Scheduled Reference', url: 'https://docs.spring.io/spring-framework/reference/integration/scheduling.html' },
+    { title: 'Spring TransactionalEventListener', url: 'https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/event/TransactionalEventListener.html' }
   ]
+
 }

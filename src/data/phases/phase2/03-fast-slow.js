@@ -375,5 +375,10 @@ private int next(int[] nums, int i, boolean forward) {
         explanationVi: 'Floyd với 2 ràng buộc thêm: (1) cùng hướng — break nếu đổi sign; (2) length &gt; 1 — break nếu self loop. Modulo cẩn thận xử lý số âm.'
       }
     }
+  ],
+  references: [
+    { title: 'Floyd Cycle Finding (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Cycle_detection' },
+    { title: 'LeetCode Linked List Cycle', url: 'https://leetcode.com/problems/linked-list-cycle/' }
   ]
+
 }

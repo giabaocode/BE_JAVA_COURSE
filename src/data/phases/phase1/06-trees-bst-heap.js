@@ -316,5 +316,11 @@ PriorityQueue<Integer> built = new PriorityQueue<>(Arrays.asList(5, 3, 8, 1));`
             }
           ]
         }
-      ]
+      ],
+  references: [
+    { title: 'PriorityQueue JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/PriorityQueue.html' },
+    { title: 'TreeMap JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/TreeMap.html' },
+    { title: 'CLRS Chapter 6 -Heapsort (lecture notes)', url: 'https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/' }
+  ]
+
     }

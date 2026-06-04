@@ -260,5 +260,11 @@ Không có self-honesty thì 20 tuần tới sẽ thành chuyến chu du qua tut
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Scanner JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Scanner.html' },
+    { title: 'Java I/O Tutorial', url: 'https://docs.oracle.com/javase/tutorial/essential/io/' },
+    { title: 'BigDecimal JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/math/BigDecimal.html' }
   ]
+
 }

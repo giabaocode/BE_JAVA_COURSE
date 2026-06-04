@@ -732,5 +732,11 @@ SELECT transfer(1, 2, 99999);    -- raises Insufficient funds
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Docker Get Started', url: 'https://docs.docker.com/get-started/' },
+    { title: 'PostgreSQL official Docker image', url: 'https://hub.docker.com/_/postgres' },
+    { title: 'PostgreSQL EXPLAIN ANALYZE', url: 'https://www.postgresql.org/docs/16/using-explain.html' }
   ]
+
 }

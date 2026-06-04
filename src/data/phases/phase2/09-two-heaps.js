@@ -356,5 +356,10 @@ double median() {
         explanationVi: 'Sort efficiency DESC. Tại mỗi i, i là min efficiency. Min-heap of speeds — drop smallest khi size &gt; k. Track best performance.'
       }
     }
+  ],
+  references: [
+    { title: 'Median of Stream -LeetCode', url: 'https://leetcode.com/problems/find-median-from-data-stream/' },
+    { title: 'Two Heaps pattern guide', url: 'https://emre.me/coding-patterns/two-heaps/' }
   ]
+
 }

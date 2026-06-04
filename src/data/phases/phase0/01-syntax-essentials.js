@@ -870,5 +870,11 @@ public class CountWords {
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Oracle Java Language Basics tutorial', url: 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/' },
+    { title: 'JLS 21 -Primitive Types and Values', url: 'https://docs.oracle.com/javase/specs/jls/se21/html/jls-4.html' },
+    { title: 'Google Java Style Guide', url: 'https://google.github.io/styleguide/javaguide.html' }
   ]
+
 }

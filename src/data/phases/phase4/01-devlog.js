@@ -760,5 +760,12 @@ Mỗi env var cần CHÍNH XÁC. CI/CD sau này sẽ override SPRING_DATASOURCE_
         '@Scheduled cron daily cleanup expired refresh tokens.'
       ]
     }
+  ],
+  references: [
+    { title: 'Spring Boot 3.3 Reference', url: 'https://docs.spring.io/spring-boot/docs/3.3.x/reference/html/' },
+    { title: 'Flyway Documentation', url: 'https://documentation.red-gate.com/fd/' },
+    { title: 'springdoc-openapi', url: 'https://springdoc.org/' },
+    { title: 'RFC 7807 -Problem Details', url: 'https://datatracker.ietf.org/doc/html/rfc7807' }
   ]
+
 }

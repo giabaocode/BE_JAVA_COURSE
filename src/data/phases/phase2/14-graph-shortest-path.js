@@ -452,5 +452,11 @@ private int find(int[] p, int x) {
         explanationVi: 'BFS classic + skip restricted. Adj list cho tree undirected. Count nodes BFS reach được.'
       }
     }
+  ],
+  references: [
+    { title: 'Dijkstra algorithm (CP-Algorithms)', url: 'https://cp-algorithms.com/graph/dijkstra.html' },
+    { title: 'Bellman-Ford (CP-Algorithms)', url: 'https://cp-algorithms.com/graph/bellman_ford.html' },
+    { title: 'MST: Kruskal vs Prim', url: 'https://cp-algorithms.com/graph/mst_kruskal.html' }
   ]
+
 }

@@ -981,5 +981,11 @@ public class CharFreq {
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Java Collections Framework Tutorial', url: 'https://docs.oracle.com/javase/tutorial/collections/index.html' },
+    { title: 'ArrayList JavaDoc (Java 21)', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html' },
+    { title: 'HashMap JavaDoc (Java 21)', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html' }
   ]
+
 }

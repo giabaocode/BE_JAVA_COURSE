@@ -473,5 +473,11 @@ sequenceDiagram
         ]
       }
     }
+  ],
+  references: [
+    { title: 'UML 2.5.1 Specification (OMG)', url: 'https://www.omg.org/spec/UML/2.5.1/' },
+    { title: 'PlantUML Documentation', url: 'https://plantuml.com/' },
+    { title: 'Use Case Diagram tutorial', url: 'https://www.uml-diagrams.org/use-case-diagrams.html' }
   ]
+
 }

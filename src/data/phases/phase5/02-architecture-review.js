@@ -317,5 +317,12 @@ Self-audit từng câu.`
         }
       ]
     }
+  ],
+  references: [
+    { title: 'ADR (Michael Nygard original)', url: 'https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions' },
+    { title: 'OWASP Top 10 (2021)', url: 'https://owasp.org/Top10/' },
+    { title: 'Spring Framework Code Style', url: 'https://github.com/spring-projects/spring-framework/wiki/Code-Style' },
+    { title: 'Joel on Software -Code Reviews', url: 'https://www.joelonsoftware.com/2007/03/22/seven-steps-to-remarkable-customer-service/' }
   ]
+
 }

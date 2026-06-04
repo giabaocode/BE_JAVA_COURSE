@@ -370,5 +370,10 @@ private TreeNode deserializeHelper(Deque<String> tokens) {
         explanationVi: 'Preorder + null marker — đủ để khôi phục tree duy nhất (KHÔNG cần inorder phụ). Deserialize: consume token theo cùng thứ tự preorder.'
       }
     }
+  ],
+  references: [
+    { title: 'DFS on trees -LeetCode', url: 'https://leetcode.com/tag/depth-first-search/' },
+    { title: 'Binary tree traversals visualization', url: 'https://visualgo.net/en/bst' }
   ]
+
 }

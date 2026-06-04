@@ -719,5 +719,12 @@ ORDER BY month;`,
         ]
       }
     }
+  ],
+  references: [
+    { title: 'PostgreSQL 16 -SELECT', url: 'https://www.postgresql.org/docs/16/sql-select.html' },
+    { title: 'Use The Index, Luke (SQL indexing)', url: 'https://use-the-index-luke.com/' },
+    { title: 'SQL JOIN visual explanation', url: 'https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/' },
+    { title: 'Window Functions (PostgreSQL docs)', url: 'https://www.postgresql.org/docs/16/tutorial-window.html' }
   ]
+
 }

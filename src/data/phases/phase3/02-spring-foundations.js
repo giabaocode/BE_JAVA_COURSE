@@ -368,5 +368,11 @@ public class GlobalExceptionHandler {
         }
       ]
     }
+  ],
+  references: [
+    { title: 'Spring Boot 3.3 Reference', url: 'https://docs.spring.io/spring-boot/docs/3.3.x/reference/html/' },
+    { title: 'Spring Framework 6 Reference', url: 'https://docs.spring.io/spring-framework/reference/' },
+    { title: 'Spring IoC & DI', url: 'https://docs.spring.io/spring-framework/reference/core/beans.html' }
   ]
+
 }

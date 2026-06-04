@@ -281,5 +281,11 @@ public T remove(int index) {
             }
           ]
         }
-      ]
+      ],
+  references: [
+    { title: 'Arrays JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html' },
+    { title: 'ArrayList source (OpenJDK)', url: 'https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/ArrayList.java' },
+    { title: 'Cache-locality: What every programmer should know about memory', url: 'https://people.freebsd.org/~lstewart/articles/cpumemory.pdf' }
+  ]
+
     }

@@ -493,5 +493,10 @@ private Node dfs(Node n, Map<Node, Node> map) {
         explanationVi: 'HashMap memoize: original Node → clone. DFS traversal đảm bảo mỗi node clone 1 lần. Recursive trên neighbors.'
       }
     }
+  ],
+  references: [
+    { title: 'BFS/DFS on graphs (CP-Algorithms)', url: 'https://cp-algorithms.com/graph/breadth-first-search.html' },
+    { title: 'Topological sort', url: 'https://cp-algorithms.com/graph/topological-sort.html' }
   ]
+
 }

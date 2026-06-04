@@ -413,5 +413,11 @@ CREATE INDEX idx_posts_published_created_at ON posts(published, created_at DESC)
         }
       ]
     }
+  ],
+  references: [
+    { title: 'Spring Data JPA Reference', url: 'https://docs.spring.io/spring-data/jpa/reference/' },
+    { title: 'Hibernate 6.5 User Guide', url: 'https://docs.jboss.org/hibernate/orm/6.5/userguide/html_single/Hibernate_User_Guide.html' },
+    { title: 'Vlad Mihalcea -JPA persistence context', url: 'https://vladmihalcea.com/jpa-persistence-context/' }
   ]
+
 }

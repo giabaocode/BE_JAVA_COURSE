@@ -637,5 +637,13 @@ public record AuthResponse(String accessToken, String refreshToken,
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Spring Security 6.3 Reference', url: 'https://docs.spring.io/spring-security/reference/6.3/' },
+    { title: 'jjwt 0.12 GitHub', url: 'https://github.com/jwtk/jjwt' },
+    { title: 'RFC 7519 -JSON Web Token', url: 'https://datatracker.ietf.org/doc/html/rfc7519' },
+    { title: 'RFC 7807 -Problem Details for HTTP APIs', url: 'https://datatracker.ietf.org/doc/html/rfc7807' },
+    { title: 'OWASP Authentication Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html' }
   ]
+
 }

@@ -454,5 +454,10 @@ private void backtrack(int row, int n, char[][] board, Set<Integer> cols, Set<In
         explanationVi: 'Place queens row by row. 3 sets check conflict O(1). r-c constant cho 1 diagonal, r+c constant cho diagonal khác. Backtrack: add → recurse → remove.'
       }
     }
+  ],
+  references: [
+    { title: 'Backtracking template (LeetCode discuss)', url: 'https://leetcode.com/problems/permutations/solutions/18239/' },
+    { title: 'Backtracking (CLRS / Wikipedia)', url: 'https://en.wikipedia.org/wiki/Backtracking' }
   ]
+
 }

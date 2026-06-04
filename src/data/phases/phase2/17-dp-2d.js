@@ -399,5 +399,10 @@ private int expand(String s, int l, int r) {
         explanationVi: 'Tricky: "*" sau char. dp[0][j] cẩn thận empty s với pattern có *. Match 0 hay 1+ — 2 cases OR.'
       }
     }
+  ],
+  references: [
+    { title: 'LCS / Edit Distance (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Longest_common_subsequence_problem' },
+    { title: 'Knapsack problem (CP-Algorithms)', url: 'https://cp-algorithms.com/dynamic_programming/knapsack.html' }
   ]
+
 }

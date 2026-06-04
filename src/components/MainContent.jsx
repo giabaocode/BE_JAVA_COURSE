@@ -171,6 +171,35 @@ function KeyTakeawaysCard({ value }) {
   )
 }
 
+function ReferencesCard({ refs }) {
+  if (!refs || refs.length === 0) return null
+  return (
+    <Block>
+      <h3 className="font-semibold text-ink-900 mb-3 flex items-center gap-2">
+        <BookMarked className="w-4 h-4 text-indigo-600" /> Tham khảo · References (nguồn chính thống)
+      </h3>
+      <ul className="space-y-1.5">
+        {refs.map((r, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm">
+            <ExternalLink className="w-3.5 h-3.5 text-ink-400 mt-1 flex-shrink-0" />
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-700 hover:text-brand-600 hover:underline break-all"
+            >
+              {r.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p className="text-[11px] text-ink-500 mt-3 italic">
+        Kiểm tra trực tiếp doc chính thức — đừng tin AI hay blog. AI có thể lỗi thời / hallucinate.
+      </p>
+    </Block>
+  )
+}
+
 function CodeBlock({ example }) {
   const lang = example.lang || 'java'
   return (
@@ -813,6 +842,7 @@ export default function MainContent({
 
       {showTheorySections && <SocraticPromptsCard prompts={lesson.socraticPrompts} />}
       {showTheorySections && <KeyTakeawaysCard value={lesson.keyTakeaways} />}
+      {showTheorySections && <ReferencesCard refs={module?.references} />}
 
       {showTheorySections && lesson.exercises && lesson.exercises.length > 0 && (
         <Block>

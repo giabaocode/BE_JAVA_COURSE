@@ -531,5 +531,12 @@ Em đề xuất:
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Conventional Commits 1.0', url: 'https://www.conventionalcommits.org/en/v1.0.0/' },
+    { title: 'Pro Git Book (free, official)', url: 'https://git-scm.com/book/en/v2' },
+    { title: 'Scrum Guide 2020 (official)', url: 'https://scrumguides.org/scrum-guide.html' },
+    { title: 'GitHub Flow', url: 'https://docs.github.com/en/get-started/using-github/github-flow' }
   ]
+
 }

@@ -853,5 +853,13 @@ public class WelcomeEmailListener {
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Redis Commands Reference', url: 'https://redis.io/commands/' },
+    { title: 'Spring Data Redis Reference', url: 'https://docs.spring.io/spring-data/redis/reference/' },
+    { title: 'RabbitMQ Tutorials (Java)', url: 'https://www.rabbitmq.com/tutorials' },
+    { title: 'Spring AMQP Reference', url: 'https://docs.spring.io/spring-amqp/reference/' },
+    { title: 'Redis Distributed Locks (official guide)', url: 'https://redis.io/docs/latest/develop/use/patterns/distributed-locks/' }
   ]
+
 }

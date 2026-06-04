@@ -374,5 +374,11 @@ ConcurrentLinkedDeque trong Java dùng lock-free với CAS — phức tạp. Đa
             }
           ]
         }
-      ]
+      ],
+  references: [
+    { title: 'LinkedList JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedList.html' },
+    { title: 'LinkedList source (OpenJDK)', url: 'https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/LinkedList.java' },
+    { title: 'LRU Cache implementation reference', url: 'https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU' }
+  ]
+
     }

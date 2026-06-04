@@ -706,5 +706,12 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
         'Refund flow: tạo refund payment record, trigger email refund confirmation.'
       ]
     }
+  ],
+  references: [
+    { title: 'Stripe Idempotent Requests', url: 'https://stripe.com/docs/api/idempotent_requests' },
+    { title: 'Money Pattern (Martin Fowler)', url: 'https://martinfowler.com/eaaCatalog/money.html' },
+    { title: 'Spring TransactionalEventListener', url: 'https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/event/TransactionalEventListener.html' },
+    { title: 'Optimistic vs Pessimistic Locking (Vlad Mihalcea)', url: 'https://vladmihalcea.com/optimistic-vs-pessimistic-locking/' }
   ]
+
 }

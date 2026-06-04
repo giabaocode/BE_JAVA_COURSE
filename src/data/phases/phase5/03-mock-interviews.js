@@ -533,5 +533,12 @@ Self-track trong notion / spreadsheet.`
         ]
       }
     }
+  ],
+  references: [
+    { title: 'Cracking the Coding Interview (book site)', url: 'https://www.crackingthecodinginterview.com/' },
+    { title: 'System Design Primer (free, GitHub)', url: 'https://github.com/donnemartin/system-design-primer' },
+    { title: 'Amazon Leadership Principles', url: 'https://www.amazon.jobs/content/en/our-workplace/leadership-principles' },
+    { title: 'STAR method (Indeed guide)', url: 'https://www.indeed.com/career-advice/interviewing/how-to-use-the-star-interview-response-technique' }
   ]
+
 }

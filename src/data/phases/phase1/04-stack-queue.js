@@ -340,5 +340,11 @@ private void grow() {
             }
           ]
         }
-      ]
+      ],
+  references: [
+    { title: 'Deque JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Deque.html' },
+    { title: 'ArrayDeque JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html' },
+    { title: 'Why java.util.Stack is legacy', url: 'https://stackoverflow.com/questions/12524826/why-should-i-use-deque-over-stack' }
+  ]
+
     }

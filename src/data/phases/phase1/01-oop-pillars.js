@@ -709,5 +709,12 @@ for (int i : new Range(0, 5)) System.out.println(i);  // 0 1 2 3 4`,
             ]
           }
         }
-      ]
+      ],
+  references: [
+    { title: 'Java OOP Concepts tutorial', url: 'https://docs.oracle.com/javase/tutorial/java/concepts/' },
+    { title: 'JEP 395 -Records', url: 'https://openjdk.org/jeps/395' },
+    { title: 'JEP 360 -Sealed Classes', url: 'https://openjdk.org/jeps/360' },
+    { title: 'Effective Java (Joshua Bloch) -overview', url: 'https://www.oreilly.com/library/view/effective-java-3rd/9780134686097/' }
+  ]
+
     }

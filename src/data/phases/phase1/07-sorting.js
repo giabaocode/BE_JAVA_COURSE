@@ -708,5 +708,11 @@ Phát hiện "run" (đoạn đã sort sẵn) và merge. Best case O(n) với dat
           }
         }
 
-      ]
+      ],
+  references: [
+    { title: 'Arrays.sort JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html#sort(int%5B%5D)' },
+    { title: 'Tim Peters -Timsort original notes', url: 'https://github.com/python/cpython/blob/main/Objects/listsort.txt' },
+    { title: 'Dual-Pivot Quicksort (Yaroslavskiy)', url: 'https://www.cs.princeton.edu/courses/archive/spring22/cos226/lectures/23DualPivotQuicksort.pdf' }
+  ]
+
     }

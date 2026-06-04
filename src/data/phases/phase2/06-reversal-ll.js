@@ -350,5 +350,10 @@ return prev;`,
         explanationVi: 'Stack push value (most significant ở đáy → least ở đỉnh). Pop từng cặp, cộng. Build result LIST từ MSB về LSB bằng cách "prepend" mỗi node mới. KHÔNG sửa input.'
       }
     }
+  ],
+  references: [
+    { title: 'Reverse Linked List -LeetCode', url: 'https://leetcode.com/problems/reverse-linked-list/' },
+    { title: 'Linked List operations (CLRS Ch10)', url: 'https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/' }
   ]
+
 }

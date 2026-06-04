@@ -406,5 +406,10 @@ Dẫn tôi đến template.`
         explanationVi: 'Monotonic decreasing deque INDEX. <code>peekFirst()</code> = max trong window. Khi value mới &gt; back, pop back (chúng bị che). Khi front index quá cũ, pop front. Đây là pattern monotonic deque kinh điển.'
       }
     }
+  ],
+  references: [
+    { title: 'LeetCode Sliding Window tag', url: 'https://leetcode.com/tag/sliding-window/' },
+    { title: 'NeetCode Sliding Window playlist', url: 'https://neetcode.io/courses/lessons/dsa-for-beginners' }
   ]
+
 }

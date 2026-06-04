@@ -388,5 +388,10 @@ while (!q.isEmpty()) {
         explanationVi: 'BFS tới level depth-1. Tại mỗi node, insert 2 node mới: <code>newLeft</code> = (val, oldLeft, null), <code>newRight</code> = (val, null, oldRight). Edge case depth=1: tạo root mới.'
       }
     }
+  ],
+  references: [
+    { title: 'BFS on trees -LeetCode', url: 'https://leetcode.com/tag/breadth-first-search/' },
+    { title: 'Tree traversal (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Tree_traversal' }
   ]
+
 }

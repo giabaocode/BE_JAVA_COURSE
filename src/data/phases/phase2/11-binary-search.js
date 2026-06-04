@@ -399,5 +399,10 @@ private boolean canSplit(int[] nums, int maxSum, int k) {
         explanationVi: 'Coi matrix như 1D array. Index map: row = idx / n, col = idx % n. BS classic.'
       }
     }
+  ],
+  references: [
+    { title: 'Binary Search canonical template (LC discuss)', url: 'https://leetcode.com/discuss/study-guide/691825/Binary-Search-for-Beginners-Problems-or-Patterns' },
+    { title: 'Binary Search the Answer pattern', url: 'https://codeforces.com/blog/entry/96699' }
   ]
+
 }

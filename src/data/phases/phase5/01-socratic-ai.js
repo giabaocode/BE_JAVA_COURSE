@@ -558,5 +558,11 @@ Nếu KHÔNG PHÙ HỢP: giải thích vì sao + alternative (sealed class? valu
         }
       ]
     }
+  ],
+  references: [
+    { title: 'Anthropic Prompt Engineering Guide', url: 'https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview' },
+    { title: 'OpenAI Prompt Cookbook', url: 'https://cookbook.openai.com/' },
+    { title: 'Active Recall research (Karpicke)', url: 'https://en.wikipedia.org/wiki/Active_recall' }
   ]
+
 }

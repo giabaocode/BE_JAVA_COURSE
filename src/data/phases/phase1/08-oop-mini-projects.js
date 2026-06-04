@@ -349,5 +349,11 @@ Loan KHÔNG phải là Book. Loan KHÔNG phải là Member. Nó là <em>quan h�
             ]
           }
         }
-      ]
+      ],
+  references: [
+    { title: 'SOLID principles (Robert C. Martin)', url: 'https://en.wikipedia.org/wiki/SOLID' },
+    { title: 'Java Streams API', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/package-summary.html' },
+    { title: 'Composition over Inheritance (Effective Java Item 18)', url: 'https://www.oreilly.com/library/view/effective-java-3rd/9780134686097/' }
+  ]
+
     }

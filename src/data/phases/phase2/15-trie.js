@@ -491,5 +491,10 @@ private boolean canSplit(String w, Set<String> dict, Map<String, Boolean> memo, 
         explanationVi: 'DFS check split. <code>isOriginal</code> flag: word gốc KHÔNG được coi như "word đầy đủ" — phải split thành ≥ 2 word khác. Memo tránh recompute.'
       }
     }
+  ],
+  references: [
+    { title: 'Trie (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Trie' },
+    { title: 'Implement Trie -LeetCode', url: 'https://leetcode.com/problems/implement-trie-prefix-tree/' }
   ]
+
 }

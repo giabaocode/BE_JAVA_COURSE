@@ -574,5 +574,12 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
         'Activity feed export PDF qua iText.'
       ]
     }
+  ],
+  references: [
+    { title: 'Spring WebSocket Reference', url: 'https://docs.spring.io/spring-framework/reference/web/websocket.html' },
+    { title: 'STOMP Protocol 1.2', url: 'https://stomp.github.io/stomp-specification-1.2.html' },
+    { title: 'PostgreSQL Row-Level Security', url: 'https://www.postgresql.org/docs/16/ddl-rowsecurity.html' },
+    { title: 'OWASP Authorization Cheat Sheet', url: 'https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html' }
   ]
+
 }

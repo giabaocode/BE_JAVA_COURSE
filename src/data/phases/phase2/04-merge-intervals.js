@@ -317,5 +317,10 @@ Dẫn tôi từ sort tới heap.`
         explanationVi: 'TreeMap đảm bảo log n cho floorKey/ceilingKey. Chỉ cần check 2 neighbor (trước + sau) — đủ vì các booking đã không overlap nhau.'
       }
     }
+  ],
+  references: [
+    { title: 'LeetCode Intervals problems', url: 'https://leetcode.com/tag/sorting/' },
+    { title: 'Sweep Line algorithm intro', url: 'https://cp-algorithms.com/geometry/intersecting_segments.html' }
   ]
+
 }

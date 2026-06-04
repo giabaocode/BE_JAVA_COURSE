@@ -693,5 +693,11 @@ Honest answer. < 4 điểm → quay lại Phase 0.`
         ]
       }
     }
+  ],
+  references: [
+    { title: 'LeetCode Top Interview 150', url: 'https://leetcode.com/studyplan/top-interview-150/' },
+    { title: 'NeetCode 150 Roadmap', url: 'https://neetcode.io/roadmap' },
+    { title: 'Java Standard Library JavaDoc', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/index.html' }
   ]
+
 }

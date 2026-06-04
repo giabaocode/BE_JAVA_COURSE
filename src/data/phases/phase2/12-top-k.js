@@ -347,5 +347,10 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
         explanationVi: 'Heap + cooldown queue size k. Pop ký tự max freq, append, cooldown k items. Sau k iterations, release oldest về heap (nếu count còn).'
       }
     }
+  ],
+  references: [
+    { title: 'Quickselect (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Quickselect' },
+    { title: 'Top K problems -LeetCode', url: 'https://leetcode.com/tag/heap-priority-queue/' }
   ]
+
 }

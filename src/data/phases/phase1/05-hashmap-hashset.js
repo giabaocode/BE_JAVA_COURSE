@@ -192,5 +192,11 @@ Cap 16→32. Một key cũ ở bucket i giờ phải ở i HOẶC i+16 (thêm 1 
             }
           ]
         }
-      ]
+      ],
+  references: [
+    { title: 'HashMap JavaDoc (Java 21)', url: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/HashMap.html' },
+    { title: 'HashMap source (OpenJDK)', url: 'https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/java/util/HashMap.java' },
+    { title: 'JEP 180 -Improve hash collisions (treeify)', url: 'https://bugs.openjdk.org/browse/JDK-8023463' }
+  ]
+
     }
