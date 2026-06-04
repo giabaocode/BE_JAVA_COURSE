@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useTransition } from 'react'
 import { Menu, RotateCcw } from 'lucide-react'
 import { curriculum } from './data/curriculum.js'
 import Sidebar from './components/Sidebar.jsx'
@@ -55,6 +55,10 @@ export default function App() {
 
   const [mobileOpen, setMobileOpen] = useState(false)
   const [streak, setStreak] = useState(() => getStreak())
+  // useTransition: marks lesson change as non-urgent — React keeps the previous lesson
+  // rendered (no white flash) while preparing the new one in interruptible chunks,
+  // so the click feels instant even though MainContent is heavy to remount.
+  const [, startTransition] = useTransition()
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(completedMap)) } catch { /* ignore */ }
@@ -94,8 +98,8 @@ export default function App() {
   }, [onToggleItem])
 
   const onSelectLesson = useCallback((id) => {
-    setActiveLessonId(id)
     setMobileOpen(false)
+    startTransition(() => setActiveLessonId(id))
   }, [])
 
   const current = flatLessons.find(fl => fl.lesson.id === activeLessonId) || flatLessons[0]
@@ -103,8 +107,8 @@ export default function App() {
   const hasPrev = currentIdx > 0
   const hasNext = currentIdx < flatLessons.length - 1
 
-  const onPrev = () => hasPrev && setActiveLessonId(flatLessons[currentIdx - 1].lesson.id)
-  const onNext = () => hasNext && setActiveLessonId(flatLessons[currentIdx + 1].lesson.id)
+  const onPrev = () => hasPrev && startTransition(() => setActiveLessonId(flatLessons[currentIdx - 1].lesson.id))
+  const onNext = () => hasNext && startTransition(() => setActiveLessonId(flatLessons[currentIdx + 1].lesson.id))
 
   const totalAll = useMemo(() => totalItems(curriculum), [])
   const totalDone = useMemo(() => {

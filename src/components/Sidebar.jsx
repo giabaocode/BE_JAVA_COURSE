@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useDeferredValue, useCallback } from 'react'
 import {
   ChevronRight, ChevronDown, BookOpen, Code2, Server, Briefcase, Bot,
   CheckCircle2, Circle, Search, X
@@ -13,42 +13,81 @@ const ICONS = {
   'phase-5': Bot
 }
 
-function countLessonItems(lesson) {
-  if (lesson.problems) return lesson.problems.length
-  if (lesson.steps) return lesson.steps.length
-  return 1
-}
+// Walk curriculum ONCE per completedMap change, build O(1) lookup maps.
+// Previously phasePct/modulePct/lessonProgress ran on EVERY render — for a 125-lesson
+// tree with 200 problems, that's ~thousands of operations per keystroke / nav click.
+function buildProgressMap(curriculum, completedMap) {
+  const phaseStats = {}
+  const moduleStats = {}
+  const lessonStats = {}
 
-function lessonProgress(lesson, completedMap) {
-  const total = countLessonItems(lesson)
-  let done = 0
-  if (lesson.problems) {
-    lesson.problems.forEach(p => { if (completedMap[`${lesson.id}::${p.id}`]) done++ })
-  } else if (lesson.steps) {
-    lesson.steps.forEach(s => { if (completedMap[`${lesson.id}::${s.id}`]) done++ })
-  } else {
-    if (completedMap[`${lesson.id}::__lesson__`]) done = 1
-  }
-  return { done, total }
-}
-
-function modulePct(mod, completedMap) {
-  let t = 0, d = 0
-  mod.lessons.forEach(l => {
-    const { done, total } = lessonProgress(l, completedMap)
-    t += total; d += done
+  curriculum.phases.forEach(phase => {
+    let phaseD = 0, phaseT = 0
+    phase.modules.forEach(mod => {
+      let modD = 0, modT = 0
+      mod.lessons.forEach(lesson => {
+        let done = 0, total
+        if (lesson.problems) {
+          total = lesson.problems.length
+          for (const p of lesson.problems) {
+            if (completedMap[`${lesson.id}::${p.id}`]) done++
+          }
+        } else if (lesson.steps) {
+          total = lesson.steps.length
+          for (const s of lesson.steps) {
+            if (completedMap[`${lesson.id}::${s.id}`]) done++
+          }
+        } else {
+          total = 1
+          if (completedMap[`${lesson.id}::__lesson__`]) done = 1
+        }
+        lessonStats[lesson.id] = {
+          done,
+          total,
+          fullyDone: total > 0 && done === total
+        }
+        modD += done; modT += total
+      })
+      moduleStats[mod.id] = {
+        d: modD,
+        t: modT,
+        pct: modT === 0 ? 0 : Math.round((modD / modT) * 100)
+      }
+      phaseD += modD; phaseT += modT
+    })
+    phaseStats[phase.id] = {
+      d: phaseD,
+      t: phaseT,
+      pct: phaseT === 0 ? 0 : Math.round((phaseD / phaseT) * 100)
+    }
   })
-  return { d, t, pct: t === 0 ? 0 : Math.round((d / t) * 100) }
+
+  return { phaseStats, moduleStats, lessonStats }
 }
 
-function phasePct(phase, completedMap) {
-  let t = 0, d = 0
-  phase.modules.forEach(m => {
-    const r = modulePct(m, completedMap)
-    t += r.t; d += r.d
-  })
-  return { d, t, pct: t === 0 ? 0 : Math.round((d / t) * 100) }
-}
+// Memoized leaf — re-renders ONLY when its specific lesson's progress or active state changes.
+const LessonItem = React.memo(function LessonItem({ lesson, stats, isActive, onSelect }) {
+  return (
+    <li>
+      <button
+        onClick={() => onSelect(lesson.id)}
+        className={`w-full flex items-start gap-1.5 px-2 py-1.5 rounded text-left text-xs leading-tight transition-colors border-l-2
+          ${isActive
+            ? 'bg-brand-50 text-brand-700 font-semibold border-brand-600 shadow-glow-sm'
+            : 'text-ink-600 border-transparent hover:bg-ink-100 hover:text-ink-800'}
+        `}
+      >
+        {stats.fullyDone
+          ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 flex-shrink-0" />
+          : <Circle className="w-3.5 h-3.5 text-ink-300 mt-0.5 flex-shrink-0" />}
+        <span className="flex-1">{lesson.title}</span>
+        {lesson.problems && (
+          <span className="text-[10px] text-ink-400 tabular-nums">{stats.done}/{stats.total}</span>
+        )}
+      </button>
+    </li>
+  )
+})
 
 export default function Sidebar({
   curriculum,
@@ -68,13 +107,25 @@ export default function Sidebar({
   })
   const [openModules, setOpenModules] = useState({})
   const [query, setQuery] = useState('')
+  const deferredQuery = useDeferredValue(query)
 
-  const togglePhase = (id) => setOpenPhases(s => ({ ...s, [id]: !s[id] }))
-  const toggleModule = (id) => setOpenModules(s => ({ ...s, [id]: !s[id] }))
+  const togglePhase = useCallback((id) => {
+    setOpenPhases(s => ({ ...s, [id]: !s[id] }))
+  }, [])
+  const toggleModule = useCallback((id) => {
+    setOpenModules(s => ({ ...s, [id]: !s[id] }))
+  }, [])
 
+  // Walk curriculum ONCE per completedMap change → O(1) lookups below.
+  const progress = useMemo(
+    () => buildProgressMap(curriculum, completedMap),
+    [curriculum, completedMap]
+  )
+
+  // Filter uses DEFERRED query → typing stays smooth; filter computation can lag a frame.
   const filteredPhases = useMemo(() => {
-    if (!query.trim()) return curriculum.phases
-    const q = query.toLowerCase()
+    if (!deferredQuery.trim()) return curriculum.phases
+    const q = deferredQuery.toLowerCase()
     return curriculum.phases.map(phase => {
       const modules = phase.modules.map(mod => {
         const lessons = mod.lessons.filter(l =>
@@ -85,7 +136,7 @@ export default function Sidebar({
       }).filter(m => m.lessons.length > 0)
       return { ...phase, modules }
     }).filter(p => p.modules.length > 0)
-  }, [query, curriculum])
+  }, [deferredQuery, curriculum])
 
   return (
     <>
@@ -133,7 +184,7 @@ export default function Sidebar({
           {filteredPhases.map(phase => {
             const Icon = ICONS[phase.id] || BookOpen
             const isOpen = openPhases[phase.id]
-            const { pct, d, t } = phasePct(phase, completedMap)
+            const ps = progress.phaseStats[phase.id] || { d: 0, t: 0, pct: 0 }
             return (
               <div key={phase.id} className="mb-1">
                 <button
@@ -147,16 +198,16 @@ export default function Sidebar({
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-semibold text-ink-900 truncate">{phase.title}</div>
                     <div className="mt-1">
-                      <ProgressBar value={d} max={t} size="sm" tone="brand" />
+                      <ProgressBar value={ps.d} max={ps.t} size="sm" tone="brand" />
                     </div>
                   </div>
-                  <span className="text-[11px] font-medium text-ink-500 tabular-nums">{pct}%</span>
+                  <span className="text-[11px] font-medium text-ink-500 tabular-nums">{ps.pct}%</span>
                 </button>
                 {isOpen && (
                   <div className="ml-4 mt-1 space-y-0.5 border-l border-ink-200 pl-2">
                     {phase.modules.map(mod => {
                       const mOpen = openModules[mod.id] ?? true
-                      const mr = modulePct(mod, completedMap)
+                      const mr = progress.moduleStats[mod.id] || { d: 0, t: 0, pct: 0 }
                       return (
                         <div key={mod.id}>
                           <button
@@ -171,31 +222,15 @@ export default function Sidebar({
                           </button>
                           {mOpen && (
                             <ul className="ml-4 space-y-0.5 mt-0.5">
-                              {mod.lessons.map(lesson => {
-                                const lp = lessonProgress(lesson, completedMap)
-                                const fullyDone = lp.total > 0 && lp.done === lp.total
-                                const isActive = activeLessonId === lesson.id
-                                return (
-                                  <li key={lesson.id}>
-                                    <button
-                                      onClick={() => onSelectLesson(lesson.id)}
-                                      className={`w-full flex items-start gap-1.5 px-2 py-1.5 rounded text-left text-xs leading-tight transition-colors border-l-2
-                                        ${isActive
-                                          ? 'bg-brand-50 text-brand-700 font-semibold border-brand-600 shadow-glow-sm'
-                                          : 'text-ink-600 border-transparent hover:bg-ink-100 hover:text-ink-800'}
-                                      `}
-                                    >
-                                      {fullyDone
-                                        ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                                        : <Circle className="w-3.5 h-3.5 text-ink-300 mt-0.5 flex-shrink-0" />}
-                                      <span className="flex-1">{lesson.title}</span>
-                                      {lesson.problems && (
-                                        <span className="text-[10px] text-ink-400 tabular-nums">{lp.done}/{lp.total}</span>
-                                      )}
-                                    </button>
-                                  </li>
-                                )
-                              })}
+                              {mod.lessons.map(lesson => (
+                                <LessonItem
+                                  key={lesson.id}
+                                  lesson={lesson}
+                                  stats={progress.lessonStats[lesson.id] || { done: 0, total: 1, fullyDone: false }}
+                                  isActive={activeLessonId === lesson.id}
+                                  onSelect={onSelectLesson}
+                                />
+                              ))}
                             </ul>
                           )}
                         </div>
