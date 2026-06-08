@@ -71,6 +71,34 @@ for (int n : nums) {
 
   problems: [
     {
+      id: 'p0', title: 'Kth Largest Element in a Stream', difficulty: 'Easy', url: LC('kth-largest-element-in-a-stream'),
+      hint: 'Mồi: chính là pattern min-heap size k, làm bài này TRƯỚC để quen.',
+      hints: [
+        'Câu hỏi 1: Giữ đúng k phần tử lớn nhất trong min-heap. Khi thêm số mới, nếu heap > k thì poll cái nào?',
+        'Câu hỏi 2: Sau khi heap chỉ còn k phần tử, top (min) của heap chính là gì?'
+      ],
+      solution: {
+        code: `class KthLargest {
+    private final PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    private final int k;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        for (int n : nums) add(n);          // tái dùng add()
+    }
+
+    public int add(int val) {
+        minHeap.offer(val);
+        if (minHeap.size() > k) minHeap.poll();   // đẩy thằng NHỎ NHẤT ra
+        return minHeap.peek();                     // top = k-th largest
+    }
+}`,
+        lang: 'java',
+        complexityVi: 'Time O(log k) mỗi add · Space O(k).',
+        explanationVi: 'Đây là phiên bản DỄ NHẤT của Top-K để làm quen: min-heap luôn giữ đúng k phần tử lớn nhất từng thấy. Vì top của min-heap là thằng nhỏ nhất trong nhóm k → đó chính là phần tử lớn thứ k. Mỗi <code>add</code>: offer rồi poll nếu dư. Làm chắc bài này rồi sang p1 (cùng tư duy, không có sẵn class).'
+      }
+    },
+    {
       id: 'p1', title: 'Kth Largest Element in an Array', difficulty: 'Medium', url: LC('kth-largest-element-in-an-array'),
       hint: 'Min-heap size k.',
       hints: [

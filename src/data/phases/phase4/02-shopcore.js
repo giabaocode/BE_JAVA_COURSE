@@ -38,7 +38,7 @@ Race condition: 2 user A, B cùng checkout, stock = 1.
 <li>Cả hai UPDATE stock = 0.</li>
 <li>Stock = 0 nhưng 2 order tạo cho 1 unit → oversold!</li>
 </ul>
-Hai cách giải:
+Hai cách giải (<em>ví dụ đời thường — phòng họp:</em> <strong>pessimistic</strong> = khoá cửa phòng lại, ai vào trước dùng xong người sau mới được vào; <strong>optimistic</strong> = không khoá, ai cũng vào, nhưng lúc ghi kết quả mới kiểm "có ai sửa trước mình không?" — nếu có thì làm lại):
 <ul>
 <li><strong>Pessimistic lock</strong>: <code>SELECT ... FOR UPDATE</code>. A lock row, B đợi. Đơn giản nhưng chậm khi contention.</li>
 <li><strong>Optimistic lock (@Version)</strong>: A, B đọc cùng version=5. A update đúng, version=6. B update fail → throw OptimisticLockException → retry. Nhanh khi contention thấp.</li>

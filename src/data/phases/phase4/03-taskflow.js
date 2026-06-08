@@ -38,6 +38,7 @@ VIEWER      Y      N       N     N</pre>
 Mỗi mutation publish ApplicationEvent → @EventListener insert activity row. Decouple business logic khỏi audit log. Phase AFTER_COMMIT để KHÔNG log rolled-back action.
 <br/><br/>
 <strong>5) Cursor pagination cho feed</strong>
+<em>Nói đơn giản:</em> thay vì "cho tôi trang số 5" (OFFSET — DB phải đếm bỏ qua 40.000 dòng trước → chậm), ta nói "cho tôi 20 dòng SAU dòng tôi đã xem cuối cùng" (đánh dấu vị trí — DB nhảy thẳng tới đó qua index → nhanh). Cái "dấu vị trí" đó gọi là <strong>cursor</strong>.
 Activity feed có thể 1M rows. OFFSET pagination chậm. Cursor:
 <pre>WHERE (created_at, id) &lt; (last_seen_at, last_seen_id)
 ORDER BY created_at DESC, id DESC
@@ -154,12 +155,12 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
           mentalModel: {
             vi: `Package theo feature scale tốt hơn theo layer khi project lớn.
 <br/><br/>
-<strong>First Principles</strong>: Conway's Law + Bounded Context (DDD). Mỗi feature = bounded context. Package tách rõ → khi tách microservice sau này, mỗi package thành 1 service riêng.
+<strong>First Principles</strong>: <em>Conway's Law</em> (nói đơn giản: cấu trúc phần mềm thường phản chiếu cấu trúc đội ngũ — đội tách rời thì code cũng nên tách rời) + <em>Bounded Context</em> trong DDD (nói đơn giản: mỗi "vùng nghiệp vụ" có ranh giới riêng, từ ngữ và dữ liệu của vùng này không lẫn sang vùng khác). Mỗi feature = một bounded context. Package tách rõ → khi tách microservice sau này, mỗi package thành 1 service riêng.
 <br/><br/>
 <strong>Junior Pitfalls</strong>:
 <ul>
 <li>Package cross-import lung tung → hard to extract sau này.</li>
-<li>"Service god class" trong package — tách theo aggregate root (Task, Workspace, ...).</li>
+<li>"Service god class" trong package — tách theo <em>aggregate root</em> (nói đơn giản: "vật chủ" của một nhóm dữ liệu đi liền nhau — vd Task là chủ của các Comment/Label của nó; mọi thao tác lên nhóm đi qua vật chủ này): Task, Workspace, ...</li>
 <li>Common package phình to → trở thành "junk drawer".</li>
 </ul>`
           },
@@ -170,7 +171,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Mỗi feature 1 package với controller + service + repo + dto + entity.',
             'common/ chỉ chứa truly cross-cutting (exception handler, config).',
             'Avoid cross-feature import. Nếu cần, dùng events.'
-          ]
+          ],
+          deliverable: { vi: '<code>mvn compile</code> thành công; cây package theo feature (workspace/, project/, task/, comment/, attachment/, common/) tạo xong; app start in "Started TaskflowApplication".' }
         },
         {
           id: 's2',
@@ -213,7 +215,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Mọi entity con (task, comment, ...) có workspace_id (denormalize).',
             'activities.payload JSONB + index GIN nếu cần query.',
             'Optional: RLS Postgres làm safety net.'
-          ]
+          ],
+          deliverable: { vi: 'Flyway migration tạo đủ 9 bảng; mọi bảng con đều có cột <code>workspace_id</code>; <code>workspace_members</code> có UNIQUE(workspace_id, user_id).' }
         },
         {
           id: 's3',
@@ -254,7 +257,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'HandlerMethodArgumentResolver cho @CurrentWorkspaceMember.',
             'Filter order: <code>@Order(after JwtAuthFilter)</code>.',
             '404 thay vì 403 cho "not member" — không leak workspace existence.'
-          ]
+          ],
+          deliverable: { vi: 'Request thiếu <code>X-Workspace-Id</code> → 400; user không thuộc workspace → 404 (không lộ tồn tại); <code>@CurrentWorkspaceMember</code> inject đúng role; ThreadLocal được clear sau mỗi request.' }
         },
         {
           id: 's4',
@@ -287,7 +291,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Token = <code>UUID.randomUUID()</code> hoặc <code>SecureRandom</code>.',
             'EmailService.sendHtml(email, "Invited to workspace", "invite-template", model).',
             'Endpoint /invitations/accept?token=... validate + create membership.'
-          ]
+          ],
+          deliverable: { vi: 'OWNER tạo workspace → 201; OWNER/ADMIN invite qua email → nhận mail invite trong MailHog; accept token hợp lệ → tạo membership đúng role; token hết hạn hoặc đã dùng → 400.' }
         },
         {
           id: 's5',
@@ -320,7 +325,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             '@PreAuthorize("@wsSec.hasRole(#workspaceId, \'ADMIN\')")',
             'Cascade tasks khi delete project; comments theo task.',
             'Test mỗi endpoint 4 role × member/non-member matrix.'
-          ]
+          ],
+          deliverable: { vi: 'MEMBER GET project → 200; MEMBER POST project → 403; ADMIN POST → 201; user của workspace 1 truy cập project workspace 2 → 404.' }
         },
         {
           id: 's6',
@@ -353,7 +359,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Specifications cho filter động.',
             'Bulk size limit (vd 100) tránh memory blow.',
             'Response shape: <code>{succeeded: [...], failed: [...errors]}</code> cho best-effort.'
-          ]
+          ],
+          deliverable: { vi: 'Filter <code>/tasks?status=DONE&assignee=...&due=...</code> trả đúng tập; bulk PATCH 50 task chỉ chạy 1 query UPDATE (kiểm tra SQL log), trả về số dòng affected.' }
         },
         {
           id: 's7',
@@ -387,7 +394,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Publish CommentCreatedEvent → @TransactionalEventListener xử lý notify.',
             'EmailService cho email channel; NotificationRepository cho in-app.',
             'Mute table: (user_id, entity_type, entity_id).'
-          ]
+          ],
+          deliverable: { vi: 'Comment "@bao xem nhé" → tạo 1 notification row cho user "bao" + (nếu opt-in) email trong MailHog; mention user không tồn tại → bỏ qua, không lỗi; user đã mute task → không nhận notify.' }
         },
         {
           id: 's8',
@@ -421,7 +429,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Filename sanitize: keep alphanumeric + dot + dash.',
             'Stream với MultipartFile.transferTo() — không load RAM hết.',
             'S3 presigned URL TTL 5-15 phút.'
-          ]
+          ],
+          deliverable: { vi: 'Upload PDF hợp lệ ≤ 10MB → 201, file lưu đúng path workspace; upload .exe đổi tên thành .pdf → 415/400 (chặn bằng magic bytes, không tin Content-Type); filename "../../x" bị sanitize.' }
         },
         {
           id: 's9',
@@ -465,7 +474,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             '@TransactionalEventListener(phase = AFTER_COMMIT) cho audit.',
             'Cursor: Base64 encode (created_at, id).',
             'Index <code>(workspace_id, created_at DESC, id DESC)</code> cho feed.'
-          ]
+          ],
+          deliverable: { vi: 'Mỗi mutation tạo 1 activity row SAU khi commit (transaction rollback → KHÔNG có row); GET feed cursor pagination trả đúng thứ tự thời gian, cursor opaque (Base64); feed chỉ chứa activity của workspace hiện tại.' }
         },
         {
           id: 's10',
@@ -477,7 +487,7 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
 <strong>First Principles</strong>:
 <ul>
 <li>STOMP = sub-protocol over WebSocket. Frame-based: CONNECT, SUBSCRIBE, SEND, MESSAGE.</li>
-<li>WebSocket auth: JWT trong CONNECT frame header. Verify trong <code>ChannelInterceptor</code>.</li>
+<li>WebSocket auth: JWT trong CONNECT frame header. Verify trong <code>ChannelInterceptor</code> (nói đơn giản: một "trạm kiểm soát" chen vào giữa luồng tin nhắn WebSocket — mọi tin đi qua đều bị nó chặn lại kiểm tra/sửa trước khi cho đi tiếp, giống filter của HTTP nhưng cho WebSocket).</li>
 <li>Multi-instance broadcast: in-memory broker không share. Phải Redis Pub/Sub hoặc RabbitMQ relay.</li>
 <li>Reconnect logic: client implement exponential backoff. Server đơn giản accept lại.</li>
 </ul>
@@ -498,7 +508,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'ChannelInterceptor verify JWT trong CONNECT.',
             'simpMessagingTemplate.convertAndSend("/topic/workspaces/" + wsId, event).',
             'Redis broker cho multi-instance.'
-          ]
+          ],
+          deliverable: { vi: '(Optional/stretch) Client subscribe <code>/topic/workspaces/{id}</code> với JWT hợp lệ → nhận event realtime khi có task mới; CONNECT thiếu/sai JWT → bị từ chối kết nối.' }
         },
         {
           id: 's11',
@@ -529,7 +540,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             '@ParameterizedTest + @MethodSource cho role + expected status.',
             'Test cross-tenant: setup user A workspace 1, gọi workspace 2 → assert 404.',
             'Snapshot library: Approval Tests cho Java.'
-          ]
+          ],
+          deliverable: { vi: '<code>mvn test</code> xanh; ma trận phân quyền (mỗi endpoint × 4 role × member/non-member) được cover bằng @ParameterizedTest; test cross-tenant: user workspace 1 gọi workspace 2 → assert 404.' }
         },
         {
           id: 's12',
@@ -562,7 +574,8 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
             'Architecture: Mermaid sequence diagram trong README.md.',
             'Deploy: Fly.io free tier hỗ trợ Postgres + Java app.',
             'Demo flow video: register → create workspace → invite member → realtime update.'
-          ]
+          ],
+          deliverable: { vi: 'Swagger UI <code>/swagger-ui.html</code> liệt kê đủ endpoint + auth bearer; <code>docker compose up</code> chạy app + Postgres; deploy live Fly.io/Render mở được link demo; README có architecture diagram.' }
         }
       ],
       stretchGoals: [

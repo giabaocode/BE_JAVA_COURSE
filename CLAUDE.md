@@ -163,9 +163,21 @@ git commit -m "describe change"
 git push       # auto-triggers GH Actions deploy
 ```
 
-## Recent decisions / current state (LAST UPDATED 2026-06-02)
+## Recent decisions / current state (LAST UPDATED 2026-06-08)
 
-**Status**: Pending commit — Phase 1 refactor complete, build passes, awaiting user commit.
+**Status**: Rubric-driven QA pass complete (2026-06-08). Build passes. See "QA pass" entry below.
+
+### QA pass theo RUBRIC_DANH_GIA_NOI_DUNG.md (2026-06-08)
+Đánh giá toàn bộ 50 file/125 bài theo rubric 5 nhóm (A-E). Đã sửa:
+- **Lỗi chặn (A2)**: `phase0/02` bài "đếm order premium" — `main()` gọi `countEven` không tồn tại + explanation lạc đề → fixed.
+- **Lỗi nhỏ**: thêm getter `size()` (`phase1/05`); sửa link Joel→Google Eng Practices (`phase5/02`); disclaimer `double` lương demo (`phase1/08`); thêm `deliverable` cho cả 12 step TaskFlow (`phase4/03`).
+- **Lấp khoảng trống nội dung (B6/B7)**: NEW module `phase1/09-java-essentials.js` (Module "Java Core Essentials" — 4 lesson: Exception, Lambda, Stream, Concurrency cơ bản — đặt TRƯỚC oop-mini-projects trong aggregator); NEW lesson `@Transactional` (`phase3/03`, l-3-3-4: propagation/isolation/rollback/self-invocation); NEW lesson mock Fresher (`phase5/03`, l-5-3-fresher: Q&A Java/Spring/SQL, đặt đầu module).
+- **C12/C13**: thêm gloss đời thường cho thuật ngữ nặng ở capstone (Conway's Law, bounded context, aggregate root, cursor pagination, ChannelInterceptor ở TaskFlow; optimistic/pessimistic lock ở ShopCore).
+- **Khác**: thống nhất build tool Maven (đổi 2 comment `build.gradle`→`pom.xml` ở `phase3/04`); Easy mồi LC703 cho Top-K (`phase2/12`) + chỉ dẫn "điểm vào dễ nhất" cho shortest-path/dp-2d.
+- **Còn TODO (chưa làm, ưu tiên thấp)**: re-sequence để java-essentials đứng trước các module dùng stream (1.5/1.8) — hiện chỉ cross-link; thêm Easy mồi thật cho các pattern Medium-heavy khác nếu muốn.
+
+### Pre-QA status
+**Status (cũ)**: Pending commit — Phase 1 refactor complete, build passes, awaiting user commit.
 
 ### Recent commits (newest first)
 1. `ecc5169` **UI polish** — light/dark toggle, particles, XP bar, streak, confetti. Touched the user-customized UI files (App.jsx, Sidebar.jsx, MainContent.jsx, ProgressBar.jsx, index.css, tailwind.config.js etc.) — these are part of the intentional theme work, don't revert.
@@ -207,8 +219,8 @@ phase1/
 
 ### Curriculum stats (current)
 - **Phases**: 6
-- **Modules**: ~**47**
-- **Lessons**: ~**125**
+- **Modules**: ~**48**
+- **Lessons**: ~**131**
 
 ### Gotchas to remember
 - **JS single-quote escape**: `\\'` doesn't escape an apostrophe inside a `'…'` string — it produces `\` then closes the string. Use double quotes around the JS string when the content contains SQL literal quotes (e.g., `"DATE_TRUNC('month', x)"`). Hit this 5× in SQL lessons.

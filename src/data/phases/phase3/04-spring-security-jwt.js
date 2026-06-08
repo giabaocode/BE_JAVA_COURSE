@@ -522,7 +522,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         },
         {
           title: 'Rate limit (Bucket4j) + Swagger bearer + CORS',
-          code: `// build.gradle: implementation 'com.bucket4j:bucket4j-core:8.10.1'
+          code: `// pom.xml dependency: com.bucket4j:bucket4j-core:8.10.1 (groupId:artifactId:version)
 
 @Component
 public class LoginRateLimitFilter extends OncePerRequestFilter {
@@ -575,7 +575,7 @@ public CorsConfigurationSource corsConfigurationSource() {
     scheme = "bearer", bearerFormat = "JWT")
 @SpringBootApplication
 public class DevlogApplication { ... }
-// build.gradle: implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+// pom.xml dependency: org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0
 // Truy cập: http://localhost:8080/swagger-ui/index.html`
         }
       ],

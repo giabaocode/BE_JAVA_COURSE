@@ -87,7 +87,7 @@ return dp[m][n];`,
   problems: [
     {
       id: 'p1', title: 'Unique Paths', difficulty: 'Medium', url: LC('unique-paths'),
-      hint: 'dp[i][j] = dp[i-1][j] + dp[i][j-1].',
+      hint: '⭐ ĐIỂM VÀO DỄ NHẤT của DP 2D — chỉ ĐẾM đường đi (không min/max, không string). Làm bài này trước rồi mới sang các bài còn lại. dp[i][j] = dp[i-1][j] + dp[i][j-1].',
       hints: [
         'Câu hỏi 1: Move chỉ right hoặc down. dp[i][j] = số way đến (i,j).',
         'Câu hỏi 2: dp[i][j] = dp[i-1][j] + dp[i][j-1]. Base: dp[0][j] = dp[i][0] = 1.'

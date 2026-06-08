@@ -88,7 +88,7 @@ while (!pq.isEmpty()) {
   problems: [
     {
       id: 'p1', title: 'Network Delay Time', difficulty: 'Medium', url: LC('network-delay-time'),
-      hint: 'Dijkstra.',
+      hint: '⭐ ĐIỂM VÀO của pattern — đây là bài Dijkstra "chuẩn sách giáo khoa" nhất. Làm chắc bài này trước rồi mới sang các biến thể (K stops, min effort...).',
       hints: [
         'Câu hỏi 1: Single-source SP. Max của dist[i] qua mọi i = answer. -1 nếu unreachable.',
         'Câu hỏi 2: Build adjacency list từ times. Dijkstra từ k.'
