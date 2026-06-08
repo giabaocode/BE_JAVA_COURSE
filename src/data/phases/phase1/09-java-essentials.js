@@ -8,7 +8,7 @@ export default
     {
       id: 'mod-1-9',
       title: 'Java Core Essentials — Exception, Lambda, Stream & Concurrency',
-  prerequisites: { vi: 'Hoàn thành <strong>Module 1.1</strong> (class, interface, OOP). 📌 <strong>Lưu ý:</strong> các module 1.5–1.8 và Phase 2 đã dùng <code>stream()</code>, lambda, <code>Comparator.comparing()</code> trong phần solution. Nếu bạn thấy lạ khi gặp chúng, học module này TRƯỚC rồi quay lại — đây là chỗ giải thích tường tận.' },
+  prerequisites: { vi: 'Hoàn thành <strong>OOP Pillars</strong> (class, interface, OOP) và Phase 0 (collections). 📌 Module này dạy 4 công cụ Java — Exception, Lambda, Stream, Concurrency — mà bạn sẽ gặp liên tục trong phần solution của các module data structure phía sau và cả Phase 2/3. Học chắc ở đây để về sau không bỡ ngỡ cú pháp.' },
       lessons: [
 
         // ----- l-1-9-1: Exception Handling -----

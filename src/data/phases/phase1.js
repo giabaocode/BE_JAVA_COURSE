@@ -20,17 +20,17 @@ export const phase1 = {
   title: 'Phase 1 — Java OOP, Data Structures & Sorting (Under the Hood)',
   tagline: 'Từng byte, từng cache line. Tự tay code lại mọi container. Sort bằng tư duy chia-để-trị.',
   intro: {
-    vi: 'Phase này build foundations: bạn KHÔNG dùng <code>java.util.ArrayList</code> trước khi tự viết được một cái. Mỗi cấu trúc dữ liệu có 3 lớp giải thích — <strong>Mental Model</strong> (cách tư duy), <strong>First Principles</strong> (cơ chế memory/CPU/JVM bên dưới), <strong>Junior Pitfalls</strong> (bug điển hình). Sau phần sort, module <strong>Java Core Essentials</strong> dạy 4 công cụ Java mà các bài trước đã dùng trong solution (Exception, Lambda, Stream, Concurrency cơ bản) — nền cho Phase 2 và Phase 3. Phase kết thúc với OOP Mini Projects để ráp mọi thứ lại.'
+    vi: 'Phase này build foundations: bạn KHÔNG dùng <code>java.util.ArrayList</code> trước khi tự viết được một cái. Mỗi cấu trúc dữ liệu có 3 lớp giải thích — <strong>Mental Model</strong> (cách tư duy), <strong>First Principles</strong> (cơ chế memory/CPU/JVM bên dưới), <strong>Junior Pitfalls</strong> (bug điển hình). Ngay sau OOP Pillars là module <strong>Java Core Essentials</strong> — bộ công cụ Java dùng xuyên suốt (Exception, Lambda, Stream, Concurrency cơ bản) được dạy TRƯỚC khi đi xây data structure, để bạn không gặp cú pháp lạ trong solution. Phase kết thúc với Merge Sort + Quick Sort (chia-để-trị, nền cho Phase 2) và OOP Mini Projects để ráp mọi thứ lại.'
   },
   modules: [
     oopPillars,
+    javaEssentials,
     arraysDynamic,
     linkedLists,
     stackQueue,
     hashmapHashset,
     treesBstHeap,
     sorting,
-    javaEssentials,
     oopMiniProjects
   ]
 }

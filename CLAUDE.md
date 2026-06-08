@@ -174,7 +174,9 @@ git push       # auto-triggers GH Actions deploy
 - **Lấp khoảng trống nội dung (B6/B7)**: NEW module `phase1/09-java-essentials.js` (Module "Java Core Essentials" — 4 lesson: Exception, Lambda, Stream, Concurrency cơ bản — đặt TRƯỚC oop-mini-projects trong aggregator); NEW lesson `@Transactional` (`phase3/03`, l-3-3-4: propagation/isolation/rollback/self-invocation); NEW lesson mock Fresher (`phase5/03`, l-5-3-fresher: Q&A Java/Spring/SQL, đặt đầu module).
 - **C12/C13**: thêm gloss đời thường cho thuật ngữ nặng ở capstone (Conway's Law, bounded context, aggregate root, cursor pagination, ChannelInterceptor ở TaskFlow; optimistic/pessimistic lock ở ShopCore).
 - **Khác**: thống nhất build tool Maven (đổi 2 comment `build.gradle`→`pom.xml` ở `phase3/04`); Easy mồi LC703 cho Top-K (`phase2/12`) + chỉ dẫn "điểm vào dễ nhất" cho shortest-path/dp-2d.
-- **Còn TODO (chưa làm, ưu tiên thấp)**: re-sequence để java-essentials đứng trước các module dùng stream (1.5/1.8) — hiện chỉ cross-link; thêm Easy mồi thật cho các pattern Medium-heavy khác nếu muốn.
+- **Re-sequence (DONE 2026-06-08)**: moved `javaEssentials` to position 2 in `phase1.js` (ngay sau oopPillars, trước mọi module data-structure dùng stream). Note: phase1 module titles dùng tên mô tả KHÔNG có số "Module 1.X" → reorder không gây xung đột đánh số hiển thị. Verified trực quan qua preview (sidebar đúng thứ tự, 4 lesson mới render OK).
+- **Preview verified (DONE 2026-06-08)**: dev server qua `.claude/launch.json` (Claude Preview MCP). Đã screenshot Exception/@Transactional/Stream/Fresher-mock — render đúng (breadcrumb, code highlight, cross-link, prompts). Navigate nhanh bằng cách set localStorage `java-bootcamp-active-lesson-v1` = lesson id rồi reload.
+- **Còn TODO (ưu tiên thấp)**: thêm Easy mồi thật cho các pattern Medium-heavy khác nếu muốn; C12/C13 sâu hơn ở các bước capstone còn lại.
 
 ### Pre-QA status
 **Status (cũ)**: Pending commit — Phase 1 refactor complete, build passes, awaiting user commit.
