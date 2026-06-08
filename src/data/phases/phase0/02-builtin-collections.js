@@ -149,12 +149,14 @@ grid[0].length                     // 4 (số cột)</pre>
     }
 
     public static void main(String[] args) {
-        System.out.println(countEven(new int[]{1, 2, 3, 4, 5, 6}));  // 3
+        // 5tr, 1tr (đúng ngưỡng), 999k, 2tr → 3 order premium
+        long[] orders = {500_000_000L, 100_000_000L, 99_900_000L, 200_000_000L};
+        System.out.println(countPremium(orders));  // 3
     }
 }`,
             lang: 'java',
             complexityVi: 'Time O(n) · Space O(1).',
-            explanationVi: 'Filter pattern. <code>x % 2 == 0</code> work cả số âm (Java mod ưu tiên sign của dividend). Test với mảng có số âm: <code>-4 % 2 == 0</code> ✓.'
+            explanationVi: 'Filter pattern: duyệt 1 lần, đếm phần tử thỏa điều kiện. Đặt threshold thành <code>final</code> constant để code tự giải thích (≥ 1 triệu VND) thay vì rải số "magic" <code>100_000_000L</code> khắp nơi. Dùng <code>>=</code> (không phải <code>></code>) vì order đúng 1 triệu cũng tính là premium. Tiền luôn lưu bằng <code>long</code> xu — không bao giờ <code>double</code>.'
           }
         },
         {

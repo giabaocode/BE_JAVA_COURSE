@@ -117,6 +117,8 @@ Cap 16→32. Một key cũ ở bucket i giờ phải ở i HOẶC i+16 (thêm 1 
         for (Entry<K, V> head : old)
             for (Entry<K, V> e = head; e != null; e = e.next) put(e.key, e.value);
     }
+
+    public int size() { return size; }
 }`
             }
           ],

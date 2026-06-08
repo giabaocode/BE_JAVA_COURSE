@@ -174,6 +174,7 @@ for (Employee e : all) {
   <li>❌ Quên <code>super(...)</code> trong constructor con → compile error nếu parent không có default constructor.</li>
   <li>❌ Override mà không có <code>@Override</code> annotation → typo sẽ thành method mới chứ không override → bug câm.</li>
   <li>❌ Field <code>protected</code> trong parent + truy cập trực tiếp từ child → coupling cao. Tốt hơn: private + getter.</li>
+  <li>⚠️ <strong>Lưu ý về kiểu tiền:</strong> ở đây ta dùng <code>double</code> cho lương <strong>chỉ để tập trung vào polymorphism</strong>. Trong code thật, tiền KHÔNG BAO GIỜ dùng <code>double</code> (sai số dấu phẩy động) — phải dùng <code>long</code> (số xu/đồng) hoặc <code>BigDecimal</code>. Bạn sẽ thấy lại nguyên tắc này ở capstone ShopCore (Phase 4).</li>
 </ul>`
           },
           steps: [
