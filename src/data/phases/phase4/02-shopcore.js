@@ -557,7 +557,7 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
 <strong>First Principles</strong>:
 <ul>
 <li>Reporting query trên 1M order: phải có index trên (created_at, status) → DB skip irrelevant rows.</li>
-<li>Materialized view cho heavy report: precompute, refresh nightly. Trade fresh data lấy speed.</li>
+<li>Materialized view cho heavy report (<em>nói đơn giản: một bảng "kết quả đúc sẵn" của một query nặng — tính 1 lần ban đêm rồi lưu lại, ban ngày đọc bảng này thay vì chạy lại SUM trên 1M dòng; đổi lại số liệu cũ tới lần refresh sau</em>): precompute, refresh nightly. Trade fresh data lấy speed.</li>
 <li>Streaming response cho CSV export 1M rows: KHÔNG load hết RAM → StreamingResponseBody trong Spring.</li>
 <li>Timezone trong report: from/to phải explicit timezone (vd Asia/Ho_Chi_Minh).</li>
 </ul>

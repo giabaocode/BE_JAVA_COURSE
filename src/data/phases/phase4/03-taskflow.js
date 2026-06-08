@@ -186,7 +186,7 @@ Tôi self-explain từng câu. KHÔNG dạy đáp án.`
 <strong>First Principles</strong>:
 <ul>
 <li>workspace_members có (workspace_id, user_id, role). Composite PK hoặc UNIQUE.</li>
-<li>workspace_id propagate qua mọi child entity — DENORMALIZED nhưng cần thiết cho query performance + RLS (Row-Level Security).</li>
+<li>workspace_id propagate qua mọi child entity — DENORMALIZED (cố tình lưu lặp workspace_id ở mọi bảng con để query nhanh, khỏi JOIN ngược) nhưng cần thiết cho query performance + RLS — <em>Row-Level Security: tính năng Postgres tự động chèn điều kiện lọc vào MỌI query trên bảng (vd "chỉ thấy dòng có workspace_id = của tôi"), như một lưới an toàn phòng khi code app quên filter tenant</em>.</li>
 <li>JSONB trong Postgres index được (GIN index). Nhưng schema-on-read → mất type safety.</li>
 <li>activities.entity_type + entity_id = polymorphic — task, comment, project share cùng bảng activity.</li>
 </ul>

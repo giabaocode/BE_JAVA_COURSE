@@ -97,7 +97,7 @@ KHÔNG bao giờ chỉ check "có path không" → phân biệt "word" vs "prefi
   problems: [
     {
       id: 'p1', title: 'Implement Trie', difficulty: 'Medium', url: LC('implement-trie-prefix-tree'),
-      hint: 'Template.',
+      hint: '⭐ ĐIỂM VÀO bắt buộc — Trie không có bài Easy; bài này là "template gốc" mà mọi bài Trie khác xây trên đó. Code thuộc lòng insert/search/startsWith trước rồi mới sang các biến thể (wildcard, word search). Template.',
       hints: [
         'Câu hỏi 1: Insert: walk + create. Search: walk + check end. StartsWith: walk only.',
         'Câu hỏi 2: Node có 26 children array (a-z) + end flag.'

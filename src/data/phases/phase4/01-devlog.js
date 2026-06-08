@@ -352,7 +352,7 @@ Hai môi trường khác URL → dùng env var trong application.yml: <code>\${S
         {
           id: 's5',
           title: 'Posts CRUD with ownership',
-          description: { vi: 'Tạo PostController + PostService + PostRepository. Slugify title. Owner/ADMIN mới được update/delete.' },
+          description: { vi: 'Tạo PostController + PostService + PostRepository. Slugify title (<em>slug = chuỗi định danh thân thiện URL, viết thường + nối gạch ngang, vd "Tôi học Java" → "toi-hoc-java"</em>). Owner/ADMIN mới được update/delete.' },
           mentalModel: {
             vi: `<strong>Sequence diagram cho POST /posts</strong>:
 <pre>Client → POST /api/v1/posts {title, body} + Bearer token
@@ -478,7 +478,7 @@ Implement: check exists(post_id, user_id) trong likes table → có thì delete;
 <li>Idempotent operation: f(f(x)) = f(x). Quan trọng cho retry-safe API.</li>
 <li>HTTP verb GET/PUT/DELETE idempotent native. POST không. Toggle qua POST cần extra logic.</li>
 <li>Alternative: PUT /likes/{userId} (idempotent) — nhưng SEMANTIC weird vì user là sub-resource.</li>
-<li>Denormalize likeCount: trade-off — read fast (1 column query) vs write complexity (update count khi like).</li>
+<li>Denormalize likeCount (<em>nói đơn giản: thay vì mỗi lần xem post phải ĐẾM lại số like, ta lưu sẵn 1 cột <code>like_count</code> — đọc nhanh, đổi lại phải nhớ +1/−1 cột đó mỗi lần like/unlike</em>): trade-off — read fast (1 column query) vs write complexity (update count khi like).</li>
 </ul>
 
 <strong>Junior Pitfalls</strong>:

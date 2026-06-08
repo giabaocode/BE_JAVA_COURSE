@@ -79,7 +79,7 @@ Mỗi recursive call kết thúc, state phải về ORIGINAL như trước call.
   problems: [
     {
       id: 'p1', title: 'Subsets', difficulty: 'Medium', url: LC('subsets'),
-      hint: 'Add path tại mọi gọi.',
+      hint: '⭐ ĐIỂM VÀO của backtracking — pattern này KHÔNG có bài Easy trên LeetCode, và Subsets là bài "khung xương" dễ hình dung nhất (choose → recurse → un-choose). Làm chắc bài này TRƯỚC rồi mới sang permutations/combinations. Add path tại mọi gọi.',
       hints: [
         'Câu hỏi 1: Mỗi node của decision tree = 1 subset. Add tại MỌI call (kể cả root rỗng).',
         'Câu hỏi 2: <code>start</code> tránh duplicate: phần tử mới chỉ chọn từ start trở đi.'

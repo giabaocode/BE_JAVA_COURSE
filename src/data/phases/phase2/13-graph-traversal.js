@@ -99,6 +99,31 @@ class UnionFind {
 
   problems: [
     {
+      id: 'p0', title: 'Flood Fill', difficulty: 'Easy', url: LC('flood-fill'),
+      hint: 'Mồi: chính là DFS trên lưới (grid) — làm bài này TRƯỚC để quen "loang" 4 hướng, rồi sang Number of Islands.',
+      hints: [
+        'Câu hỏi 1: Từ ô (sr,sc), "loang" sang 4 ô kề CÙNG MÀU GỐC. Điều kiện dừng đệ quy là gì? (ngoài lưới, hoặc khác màu gốc, hoặc đã tô).',
+        'Câu hỏi 2: Nếu màu mới TRÙNG màu gốc → đệ quy vô tận. Xử lý case này thế nào?'
+      ],
+      solution: {
+        code: `public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+    int start = image[sr][sc];
+    if (start != color) dfs(image, sr, sc, start, color);   // tránh loop vô tận khi color trùng
+    return image;
+}
+
+private void dfs(int[][] img, int r, int c, int from, int to) {
+    if (r < 0 || r >= img.length || c < 0 || c >= img[0].length || img[r][c] != from) return;
+    img[r][c] = to;                       // tô màu mới = "đánh dấu đã thăm"
+    dfs(img, r+1, c, from, to); dfs(img, r-1, c, from, to);
+    dfs(img, r, c+1, from, to); dfs(img, r, c-1, from, to);
+}`,
+        lang: 'java',
+        complexityVi: 'Time O(m × n) · Space O(m × n) đệ quy worst case.',
+        explanationVi: 'Đây là phiên bản DỄ NHẤT của grid-DFS: từ 1 ô loang ra 4 ô kề cùng màu gốc. Tô màu mới đóng vai trò "đánh dấu đã thăm" (giống flip "1"→"0" ở Number of Islands). Bẫy duy nhất: nếu màu mới = màu gốc thì không bao giờ đổi → đệ quy vô tận, nên check <code>start != color</code> trước. Nắm chắc bài này rồi p1 (Number of Islands) chỉ là "đếm số vùng loang".'
+      }
+    },
+    {
       id: 'p1', title: 'Number of Islands', difficulty: 'Medium', url: LC('number-of-islands'),
       hint: 'DFS/BFS hoặc Union-Find.',
       hints: [

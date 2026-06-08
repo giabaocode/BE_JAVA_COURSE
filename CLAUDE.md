@@ -176,7 +176,8 @@ git push       # auto-triggers GH Actions deploy
 - **Khác**: thống nhất build tool Maven (đổi 2 comment `build.gradle`→`pom.xml` ở `phase3/04`); Easy mồi LC703 cho Top-K (`phase2/12`) + chỉ dẫn "điểm vào dễ nhất" cho shortest-path/dp-2d.
 - **Re-sequence (DONE 2026-06-08)**: moved `javaEssentials` to position 2 in `phase1.js` (ngay sau oopPillars, trước mọi module data-structure dùng stream). Note: phase1 module titles dùng tên mô tả KHÔNG có số "Module 1.X" → reorder không gây xung đột đánh số hiển thị. Verified trực quan qua preview (sidebar đúng thứ tự, 4 lesson mới render OK).
 - **Preview verified (DONE 2026-06-08)**: dev server qua `.claude/launch.json` (Claude Preview MCP). Đã screenshot Exception/@Transactional/Stream/Fresher-mock — render đúng (breadcrumb, code highlight, cross-link, prompts). Navigate nhanh bằng cách set localStorage `java-bootcamp-active-lesson-v1` = lesson id rồi reload.
-- **Còn TODO (ưu tiên thấp)**: thêm Easy mồi thật cho các pattern Medium-heavy khác nếu muốn; C12/C13 sâu hơn ở các bước capstone còn lại.
+- **Easy mồi + C12/C13 (DONE 2026-06-08)**: rà 17 pattern Phase 2 theo phân bố difficulty. Pattern 0-Easy: thêm bài Easy THẬT "Flood Fill" (LC733) cho graph-traversal (13); thêm chỉ dẫn "⭐ điểm vào" cho backtracking/Subsets (10) + trie/Implement Trie (15) — 2 pattern này không có Easy trên LeetCode. (14 shortest-path + 17 dp-2d đã có note từ trước.) C12/C13 capstone: gloss đời thường cho slug + denormalize (Devlog), materialized view (ShopCore), RLS/Row-Level Security + denormalized (TaskFlow).
+- **Trạng thái nội dung**: rubric QA pass coi như hoàn tất toàn bộ các mục đã xác định. Việc mở rộng tiếp (thêm bài, thêm pattern) là tuỳ chọn, không còn TODO tồn đọng từ đợt QA.
 
 ### Pre-QA status
 **Status (cũ)**: Pending commit — Phase 1 refactor complete, build passes, awaiting user commit.
