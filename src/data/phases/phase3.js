@@ -13,13 +13,14 @@ import emailNotifications from './phase3/05-email-notifications.js'
 import redisRabbitMQ      from './phase3/06-redis-rabbitmq.js'
 import testingDeployment  from './phase3/07-testing-deployment.js'
 import umlAnalysis        from './phase3/08-uml-analysis.js'
+import aiIntegration      from './phase3/09-ai-integration.js'
 
 export const phase3 = {
   id: 'phase-3',
   title: 'Phase 3 — Spring Boot + PostgreSQL + Docker',
   tagline: 'SQL foundation → containerize Postgres → JPA → JWT → email/cron → Redis/RabbitMQ → testing → UML.',
   intro: {
-    vi: 'Phase này 9 module: (0) <strong>SQL Foundation</strong> (JOIN, subquery, GROUP BY, window function), (1) Docker + Postgres, (2) Spring Boot IoC + REST, (3) JPA/Hibernate sâu, (4) Spring Security + JWT, (5) Email Notification + @Scheduled, (6) <strong>Redis + RabbitMQ</strong> (caching + messaging), (7) Testing + containerize, (8) <strong>UML & Project Analysis</strong> (use case, sequence, class diagram). Mỗi module có First Principles, The Why, Junior Pitfalls.'
+    vi: 'Phase này 9 module: (0) <strong>SQL Foundation</strong> (JOIN, subquery, GROUP BY, window function), (1) Docker + Postgres, (2) Spring Boot IoC + REST, (3) JPA/Hibernate sâu, (4) Spring Security + JWT, (5) Email Notification + @Scheduled, (6) <strong>Redis + RabbitMQ</strong> (caching + messaging), (7) Testing + containerize, (8) <strong>UML & Project Analysis</strong> (use case, sequence, class diagram), (9) <strong>AI Integration</strong> (Spring AI + RAG + pgvector + tool calling — nhúng AI vào chính stack Spring/Postgres). Mỗi module có First Principles, The Why, Junior Pitfalls.'
   },
   modules: [
     sqlFoundation,
@@ -30,6 +31,7 @@ export const phase3 = {
     emailNotifications,
     redisRabbitMQ,
     testingDeployment,
-    umlAnalysis
+    umlAnalysis,
+    aiIntegration
   ]
 }

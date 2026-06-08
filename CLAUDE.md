@@ -222,8 +222,17 @@ phase1/
 
 ### Curriculum stats (current)
 - **Phases**: 6
-- **Modules**: ~**48**
-- **Lessons**: ~**131**
+- **Modules**: ~**49**
+- **Lessons**: ~**135**
+
+### AI Integration module (NEW 2026-06-08)
+Theo yêu cầu user (AI mạnh → giỏi framework không là chưa đủ, cần "backend + tích hợp AI"). Module mới `phase3/09-ai-integration.js` (mod-3-9, đặt CUỐI Phase 3), 4 lesson dựa trên **Spring AI 1.x** (GA 5/2025), nội dung verify từ docs.spring.io/spring-ai qua WebFetch:
+- l-3-9-1: ChatClient (call/stream/.entity structured output), token/cost, stateless, OpenAI + Ollama local.
+- l-3-9-2: Embeddings + pgvector (extension của Postgres đã học, VectorStore, similaritySearch, HNSW).
+- l-3-9-3: RAG (QuestionAnswerAdvisor, chunk→embed→retrieve→augment, chống hallucination + multi-tenant filter).
+- l-3-9-4: Tool calling (@Tool/@ToolParam, AI Agent, prompt injection, production: cost cap/timeout/fallback/auth).
+- **Gotcha escaping**: code mẫu có `${ENV_VAR}` (Spring placeholder) → trong template literal JS phải viết `\${...}` nếu không bị nuốt thành interpolation. Đã verify preview render literal đúng.
+- **Lời khuyên đã chốt với user**: học SONG SONG được — Phase 2 (DSA) độc lập với Spring Boot. Cổng tối thiểu trước Spring: Phase 0 + 1.1 OOP + Java Essentials + 3.0 SQL. DSA cày song song như interview prep.
 
 ### Gotchas to remember
 - **JS single-quote escape**: `\\'` doesn't escape an apostrophe inside a `'…'` string — it produces `\` then closes the string. Use double quotes around the JS string when the content contains SQL literal quotes (e.g., `"DATE_TRUNC('month', x)"`). Hit this 5× in SQL lessons.
