@@ -413,12 +413,155 @@ CREATE INDEX idx_posts_published_created_at ON posts(published, created_at DESC)
 5. <code>batch_size: 50</code> giúp gì? Khi nào KHÔNG có tác dụng?`
         }
       ]
+    },
+    {
+      id: 'l-3-3-4',
+      type: 'theory',
+      title: '@Transactional — Propagation, Isolation & Rollback Rules',
+      subtitle: { en: 'The boundary where commit or rollback happens.', vi: 'Ranh giới quyết định "lưu hết" hay "huỷ hết" — và 3 cái bẫy kinh điển khi phỏng vấn.' },
+      mentalModel: {
+        vi: `Hình dung <code>@Transactional</code> như một <strong>cái khung bao quanh method</strong>: trước khi vào method, Spring mở một DB transaction (BEGIN); nếu method chạy xong êm → COMMIT (lưu hết); nếu method ném exception → ROLLBACK (huỷ hết, như chưa từng xảy ra).
+<br/><br/>
+Đây là cách bạn đảm bảo <strong>tính nguyên tử nghiệp vụ</strong>: "trừ kho VÀ tạo order" phải cùng thành công hoặc cùng thất bại — không có chuyện trừ kho rồi order lỗi mà kho vẫn bị trừ.
+<br/><br/>
+3 câu hỏi mọi transaction phải trả lời (3 thuộc tính):
+<ul>
+  <li><strong>Propagation</strong>: method A (đã có transaction) gọi method B (cũng @Transactional) — B dùng CHUNG transaction của A hay mở transaction MỚI?</li>
+  <li><strong>Isolation</strong>: transaction này "nhìn thấy" thay đổi chưa commit của transaction khác tới mức nào?</li>
+  <li><strong>Rollback rule</strong>: exception loại nào thì rollback? (Bẫy: mặc định KHÔNG phải mọi exception!)</li>
+</ul>`
+      },
+      underTheHood: {
+        vi: `<h3>First Principles — Bản chất ngầm</h3>
+<strong>1) @Transactional chạy bằng PROXY (AOP), không phải phép màu.</strong>
+Spring bọc bean của bạn trong một proxy. Khi code ngoài gọi <code>service.method()</code>, thực ra gọi proxy → proxy mở transaction → gọi method thật → commit/rollback. <strong>Hệ quả cực quan trọng</strong>: nếu method A trong cùng class gọi thẳng method B (<code>this.B()</code>), lời gọi KHÔNG đi qua proxy → @Transactional trên B <strong>bị bỏ qua hoàn toàn</strong>. Đây là "self-invocation pitfall" — bẫy phỏng vấn số 1.
+<br/><br/>
+<strong>2) Rollback mặc định CHỈ cho unchecked exception.</strong>
+Spring rollback khi gặp <code>RuntimeException</code> và <code>Error</code>. Với <strong>checked exception</strong> (IOException, hay custom checked) → Spring <strong>VẪN COMMIT</strong>! Rất phản trực giác. Muốn rollback cả checked: <code>@Transactional(rollbackFor = Exception.class)</code>.
+<br/><br/>
+<strong>3) Propagation REQUIRED (mặc định) vs REQUIRES_NEW.</strong>
+<code>REQUIRED</code>: nếu đã có transaction thì THAM GIA (cùng commit/rollback). <code>REQUIRES_NEW</code>: luôn TẠM DỪNG transaction ngoài, mở transaction riêng (commit độc lập). Dùng REQUIRES_NEW cho audit log: "dù order rollback, log vẫn phải lưu".
+<br/><br/>
+<strong>4) Isolation & các hiện tượng đọc bẩn.</strong>
+Postgres mặc định <code>READ_COMMITTED</code> (không đọc dữ liệu chưa commit của người khác). Tăng lên <code>REPEATABLE_READ</code> / <code>SERIALIZABLE</code> chống "non-repeatable read"/"phantom read" nhưng đắt hơn + dễ deadlock. Đa số CRUD để mặc định; chỉ nâng khi nghiệp vụ thật sự cần (vd báo cáo tài chính).
+<br/><br/>
+<strong>5) <code>readOnly = true</code></strong> báo Hibernate bỏ dirty checking + báo driver/replica đây là query đọc → tối ưu nhẹ cho method chỉ đọc.`
+      },
+      theory: {
+        vi: `<h3>Đặt @Transactional ở đâu?</h3>
+<ul>
+  <li><strong>Tầng Service</strong>, KHÔNG phải Repository hay Controller. Service là nơi gom nhiều thao tác DB thành 1 đơn vị nghiệp vụ.</li>
+  <li>Method phải <code>public</code> — proxy chỉ chặn được public method (với JDK/CGLIB proxy mặc định). @Transactional trên private/protected → bị bỏ qua câm.</li>
+  <li>Query chỉ đọc → <code>@Transactional(readOnly = true)</code>.</li>
+</ul>
+
+<h3>The "Why" — Vì sao đây là chủ đề phỏng vấn lõi?</h3>
+Vì nó là nơi <strong>3 bẫy</strong> hội tụ (self-invocation, checked-không-rollback, propagation sai) — và cả 3 đều gây bug "thầm lặng" ở production: dữ liệu lưu một nửa, rollback không xảy ra, hoặc transaction lồng nhau sai. Interviewer hỏi để xem bạn hiểu cơ chế PROXY hay chỉ "thấy annotation thì dán".
+
+<h3>Junior Pitfalls — Lỗi thường gặp</h3>
+<ul>
+  <li><strong>Self-invocation</strong>: method public không @Transactional gọi <code>this.transactionalMethod()</code> → annotation vô hiệu. Sửa: tách sang bean khác, hoặc self-inject, hoặc dùng <code>TransactionTemplate</code>.</li>
+  <li><strong>Tưởng mọi exception đều rollback</strong>: bắt checked exception trong service mà không <code>rollbackFor</code> → commit dữ liệu lỗi.</li>
+  <li><strong>catch exception rồi không ném lại</strong>: nuốt exception trong @Transactional → Spring không biết để rollback → commit.</li>
+  <li><strong>@Transactional trên private method</strong> → bị bỏ qua, không báo lỗi.</li>
+  <li><strong>Gọi HTTP/gửi email TRONG transaction</strong>: giữ transaction (và DB connection) suốt thời gian chờ API ngoài → cạn connection pool. Tách ra ngoài hoặc dùng event AFTER_COMMIT.</li>
+  <li><strong>readOnly nhưng vẫn ghi</strong>: ghi trong method readOnly → lỗi hoặc bị bỏ qua tuỳ provider.</li>
+</ul>`
+      },
+      codeExamples: [
+        {
+          title: 'Self-invocation pitfall — vì sao @Transactional "không chạy"',
+          code: `@Service
+public class OrderService {
+
+    // ❌ BUG: createOrder() KHÔNG có @Transactional, gọi this.charge()
+    //     → lời gọi nội bộ KHÔNG qua proxy → @Transactional trên charge() BỊ BỎ QUA.
+    public void createOrder(Long userId, Long amount) {
+        saveOrderRow(userId, amount);
+        this.charge(userId, amount);   // ⚠️ self-invocation: transaction KHÔNG mở
+    }
+
+    @Transactional
+    public void charge(Long userId, Long amount) {
+        // ... nếu ở đây ném exception, sẽ KHÔNG rollback như mong đợi
+    }
+}
+
+// ✅ SỬA 1: đặt @Transactional ở method "ngoài cùng" được gọi từ ngoài (controller)
+@Service
+public class OrderServiceFixed {
+    @Transactional                      // proxy chặn ở đây → cả block là 1 transaction
+    public void createOrder(Long userId, Long amount) {
+        saveOrderRow(userId, amount);
+        charge(userId, amount);         // gọi nội bộ giờ nằm TRONG transaction của createOrder
+    }
+    private void charge(Long userId, Long amount) { /* ... */ }
+}
+
+// ✅ SỬA 2 (khi cần transaction RIÊNG): tách charge sang bean khác + REQUIRES_NEW
+@Service
+public class PaymentService {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void charge(Long userId, Long amount) { /* commit độc lập */ }
+}`,
+          lang: 'java',
+          description: 'Self-invocation: gọi this.method() không qua proxy nên @Transactional vô hiệu. Hai cách sửa.'
+        },
+        {
+          title: 'Rollback rule: checked exception KHÔNG tự rollback',
+          code: `@Service
+public class TransferService {
+
+    // ❌ BUG: ném checked exception → Spring VẪN COMMIT (trừ tiền A nhưng không cộng B... đã lưu!)
+    @Transactional
+    public void transfer(Long from, Long to, long cents) throws InsufficientFundsException {
+        debit(from, cents);
+        if (balanceOf(to) < 0) {
+            throw new InsufficientFundsException();  // checked → KHÔNG rollback mặc định!
+        }
+        credit(to, cents);
+    }
+
+    // ✅ SỬA: khai báo rollbackFor để rollback cả checked exception
+    @Transactional(rollbackFor = Exception.class)
+    public void transferFixed(Long from, Long to, long cents) throws InsufficientFundsException {
+        debit(from, cents);
+        if (balanceOf(to) < 0) throw new InsufficientFundsException();
+        credit(to, cents);
+    }
+}`,
+          lang: 'java',
+          description: 'Mặc định Spring chỉ rollback RuntimeException/Error. Checked exception cần rollbackFor.'
+        }
+      ],
+      socraticPrompts: [
+        {
+          title: 'Thiết kế ranh giới transaction',
+          prompt: `KHÔNG cho code. Hỏi tôi:
+1. @Transactional chạy bằng cơ chế gì (proxy/AOP)? Vì sao gọi <code>this.method()</code> lại làm nó vô hiệu?
+2. Method ném <code>IOException</code> (checked) trong @Transactional — Spring commit hay rollback? Vì sao? Sửa thế nào?
+3. "Trừ kho + tạo order + ghi audit log" — nếu order rollback nhưng audit log PHẢI lưu, dùng propagation nào cho log?
+4. Tôi gọi API thanh toán bên ngoài (2 giây) ngay giữa @Transactional. Hậu quả gì với connection pool? Nên làm gì?
+5. Đặt @Transactional ở Controller, Service hay Repository? Vì sao?`
+        }
+      ],
+      keyTakeaways: {
+        vi: [
+          '@Transactional = AOP proxy mở/commit/rollback transaction quanh method PUBLIC ở tầng Service.',
+          'Self-invocation: gọi <code>this.method()</code> trong cùng class KHÔNG qua proxy → annotation bị bỏ qua câm.',
+          'Mặc định CHỈ rollback RuntimeException/Error; checked exception vẫn COMMIT → cần <code>rollbackFor = Exception.class</code>.',
+          'Propagation REQUIRED (tham gia transaction sẵn có) là mặc định; REQUIRES_NEW mở transaction độc lập (audit log).',
+          'KHÔNG gọi API ngoài/gửi email trong transaction (giữ connection lâu); query chỉ đọc dùng readOnly = true.'
+        ]
+      }
     }
   ],
   references: [
     { title: 'Spring Data JPA Reference', url: 'https://docs.spring.io/spring-data/jpa/reference/' },
     { title: 'Hibernate 6.5 User Guide', url: 'https://docs.jboss.org/hibernate/orm/6.5/userguide/html_single/Hibernate_User_Guide.html' },
-    { title: 'Vlad Mihalcea -JPA persistence context', url: 'https://vladmihalcea.com/jpa-persistence-context/' }
+    { title: 'Vlad Mihalcea -JPA persistence context', url: 'https://vladmihalcea.com/jpa-persistence-context/' },
+    { title: 'Spring Transaction Management (Reference)', url: 'https://docs.spring.io/spring-framework/reference/data-access/transaction.html' },
+    { title: 'Spring @Transactional rollback rules', url: 'https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/rolling-back.html' }
   ]
 
 }

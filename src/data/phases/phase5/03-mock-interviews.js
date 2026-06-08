@@ -5,6 +5,133 @@ export default {
   prerequisites: { vi: 'Hoàn thành <strong>toàn bộ curriculum</strong> (Phase 0–4) hoặc đang chuẩn bị phỏng vấn trong 4–12 tuần tới.' },
   lessons: [
     {
+      id: 'l-5-3-fresher',
+      type: 'ai',
+      title: 'Fresher/Junior Mock — Java Core · Spring · SQL Q&A (40 phút)',
+      subtitle: { en: 'The questions juniors actually get asked in Vietnam.', vi: 'Phỏng vấn fresher VN hỏi LÝ THUYẾT nhiều hơn LeetCode hard — đây là loại mock sát bạn nhất.' },
+      mentalModel: {
+        vi: `Sự thật ít ai nói với người mới: <strong>phỏng vấn fresher/junior Backend ở Việt Nam phần lớn là hỏi-đáp lý thuyết</strong> (Java core, OOP, Collections, Spring, JPA, SQL), CỘNG 1–2 bài code dễ/vừa — KHÔNG phải LeetCode Hard như các bài mock kia.
+<br/><br/>
+Vì sao? Công ty tuyển fresher cần kiểm tra bạn <strong>hiểu nền tảng</strong> và <strong>không paste mù</strong>, chứ không kỳ vọng bạn giải Hard. Một câu "HashMap hoạt động thế nào?" lọc ứng viên tốt hơn 1 bài DP 2D.
+<br/><br/>
+Lesson này cho AI đóng vai interviewer hỏi <strong>rapid-fire</strong> theo đúng ngân hàng câu hỏi fresher hay gặp, bắt bạn trả lời bằng lời (verbalize), rồi chấm theo độ chính xác + độ sâu. Mục tiêu: trả lời trôi chảy, đúng bản chất, không học vẹt.`
+      },
+      underTheHood: {
+        vi: `<h3>First Principles — Vì sao tier này tách riêng?</h3>
+<strong>1) Fresher ≠ Senior interview.</strong>
+Các bài mock algo/system design trong module này ghi "Senior/FAANG" — đúng để vươn cao, nhưng <strong>không phải</strong> thứ bạn gặp ở buổi phỏng vấn fresher đầu tiên. Tier này khớp đúng thực tế VN: TopCV/ITviec JD fresher thường ghi "nắm vững Java core, OOP, SQL cơ bản, hiểu Spring Boot".
+<br/><br/>
+<strong>2) Câu hỏi lý thuyết kiểm tra "hiểu" hay "thuộc".</strong>
+Interviewer giỏi không hỏi "định nghĩa encapsulation" (Google được) mà hỏi "vì sao <code>==</code> khác <code>.equals()</code>?", "override equals mà quên hashCode thì HashMap hỏng sao?". Câu hỏi "vì sao" lộ ngay ai hiểu bản chất.
+<br/><br/>
+<strong>3) Curriculum này đã dạy đủ để trả lời.</strong>
+Gần như mọi câu hỏi tier fresher đều có đáp án trong các module bạn đã học: <code>==</code> vs equals (M1.1), HashMap internals (M1.5), Exception/Lambda/Stream/Concurrency (M1.9), @Transactional (M3.3), index/JOIN (M3.0). Nếu bí câu nào → quay lại đúng module đó, đừng tra AI.
+<br/><br/>
+<strong>4) Verbalize là kỹ năng riêng.</strong>
+Biết câu trả lời ≠ nói được mạch lạc trong 60 giây dưới áp lực. Mock này luyện đúng kỹ năng đó.`
+      },
+      theory: {
+        vi: `<h3>Ngân hàng câu hỏi fresher hay gặp (tự kiểm tra: bạn trả lời được bao nhiêu?)</h3>
+<strong>Java core:</strong>
+<ul>
+  <li><code>==</code> vs <code>.equals()</code> khác gì? Khi nào dùng cái nào? → <em>M1.1</em></li>
+  <li>JDK vs JRE vs JVM? <code>String</code> immutable nghĩa là gì, vì sao lợi?</li>
+  <li>Checked vs unchecked exception? <code>final</code> / <code>finally</code> / <code>finalize</code> khác nhau? → <em>M1.9</em></li>
+  <li>Lambda là gì? Functional interface? Stream lazy nghĩa là gì? → <em>M1.9</em></li>
+</ul>
+<strong>OOP:</strong>
+<ul>
+  <li>4 tính chất OOP — cho ví dụ thực tế mỗi cái. Overloading vs overriding?</li>
+  <li>Abstract class vs interface — khi nào dùng cái nào?</li>
+  <li>Override <code>equals()</code> mà quên <code>hashCode()</code> → chuyện gì xảy ra với HashMap? → <em>M1.1, M1.5</em></li>
+</ul>
+<strong>Collections:</strong>
+<ul>
+  <li>HashMap hoạt động bên trong thế nào (bucket, hash, collision, treeify)? → <em>M1.5</em></li>
+  <li>ArrayList vs LinkedList — khác về truy cập/thêm/xoá? → <em>M1.2, M1.3</em></li>
+  <li>HashMap vs ConcurrentHashMap — vì sao không dùng HashMap đa luồng? → <em>M1.9</em></li>
+</ul>
+<strong>Concurrency:</strong>
+<ul>
+  <li>Race condition là gì? <code>count++</code> vì sao không an toàn? → <em>M1.9</em></li>
+  <li><code>volatile</code> vs <code>synchronized</code> vs <code>Atomic</code>? Vì sao @Service Spring nên stateless? → <em>M1.9</em></li>
+</ul>
+<strong>Spring / JPA:</strong>
+<ul>
+  <li>IoC & DI là gì? Vì sao tốt hơn tự <code>new</code>? Bean scope mặc định? → <em>M3.2</em></li>
+  <li><code>@Transactional</code> hoạt động bằng cơ chế gì? Self-invocation vì sao làm nó vô hiệu? → <em>M3.3</em></li>
+  <li>N+1 problem là gì, fix ra sao? LAZY vs EAGER? → <em>M3.3</em></li>
+  <li>REST: GET/POST/PUT/PATCH/DELETE khác nhau? Status code 200/201/400/401/403/404/409/500 dùng khi nào? → <em>M3.2</em></li>
+</ul>
+<strong>SQL:</strong>
+<ul>
+  <li>INNER vs LEFT JOIN? <code>WHERE</code> vs <code>HAVING</code>? Index giúp gì, đánh đổi gì? → <em>M3.0</em></li>
+  <li>Vì sao KHÔNG nối chuỗi SQL (injection)? Transaction ACID là gì? → <em>M3.0, M3.4</em></li>
+</ul>
+
+<h3>The "Why" — Cách trả lời ghi điểm</h3>
+Công thức 3 lớp: <strong>(1) định nghĩa ngắn → (2) cơ chế "vì sao" → (3) ví dụ/khi nào dùng</strong>. VD "<code>==</code> so sánh reference (cùng object trên heap?), <code>.equals()</code> so sánh nội dung; với String luôn dùng equals vì 2 String cùng nội dung có thể khác object". Đủ 3 lớp = đậu.
+
+<h3>Junior Pitfalls — Khi trả lời lý thuyết</h3>
+<ul>
+  <li><strong>Học vẹt định nghĩa</strong> nhưng tịt ở "vì sao" → lộ ngay. Luôn hiểu cơ chế.</li>
+  <li><strong>Trả lời lan man</strong> 3 phút cho câu 30 giây → luyện trả lời ngắn gọn, đúng trọng tâm.</li>
+  <li><strong>Bịa khi không biết</strong> → interviewer biết ngay. Nói thẳng "em chưa chắc, em đoán là... vì..." tốt hơn bịa.</li>
+  <li><strong>Không cho ví dụ</strong> → câu trả lời "khô". Một ví dụ thực tế (order, user) ăn điểm.</li>
+  <li><strong>Bỏ qua câu hỏi ngược</strong>: cuối buổi luôn có "em có hỏi gì không?" — chuẩn bị 2–3 câu.</li>
+</ul>`
+      },
+      prompts: [
+        {
+          title: '[Mock] Rapid-fire Q&A fresher Backend (40 phút)',
+          prompt: `Bạn là interviewer tuyển FRESHER/JUNIOR Backend Java tại một công ty Việt Nam (không phải FAANG). Phỏng vấn hỏi-đáp lý thuyết 40 phút.
+
+QUY TẮC NGHIÊM NGẶT:
+1. Hỏi RAPID-FIRE, mỗi lần MỘT câu, theo thứ tự chủ đề: Java core → OOP → Collections → Concurrency → Spring/JPA → SQL.
+2. Độ khó tăng dần. Bắt đầu dễ ("JDK vs JRE vs JVM?") rồi sâu dần ("@Transactional self-invocation vì sao vô hiệu?").
+3. TUYỆT ĐỐI KHÔNG cho đáp án trước khi tôi trả lời.
+4. Sau mỗi câu tôi trả lời: chấm Đúng / Thiếu / Sai, bổ sung phần tôi miss NGẮN GỌN, rồi hỏi câu tiếp.
+5. Nếu tôi trả lời hời hợt, hỏi "vì sao?" để đào sâu (đúng kiểu interviewer thật).
+6. Hỏi khoảng 12–15 câu. CUỐI buổi: tổng kết theo chủ đề (chủ đề nào vững/yếu) + 3 việc cần ôn trong 7 ngày + chấm tổng "sẵn sàng phỏng vấn fresher: chưa / gần / sẵn sàng".
+
+Bắt đầu bằng 1 câu chào ngắn + câu hỏi đầu tiên. Đợi tôi trả lời giữa mỗi câu.`
+        },
+        {
+          title: '[Mock] Đào sâu 1 chủ đề (deep dive)',
+          prompt: `Tôi muốn luyện sâu chủ đề [chọn: HashMap internals / @Transactional / Exception / Stream / SQL JOIN & index].
+
+YÊU CẦU:
+1. Hỏi tôi 5 câu từ nông đến sâu về CHỈ chủ đề này.
+2. Mỗi câu, sau khi tôi trả lời, push thêm 1 câu "vì sao/điều gì xảy ra nếu..." để test hiểu bản chất.
+3. KHÔNG cho đáp án cho tới khi tôi đã thử.
+4. Cuối: chỉ ra chính xác chỗ tôi hiểu sai/nông và bài học (module) nên xem lại.`
+        },
+        {
+          title: '[Mock] Behavioral fresher (chưa có kinh nghiệm đi làm)',
+          prompt: `Phỏng vấn behavioral cho fresher CHƯA đi làm chính thức.
+
+QUY TẮC:
+1. Hỏi các câu phù hợp người mới: "Giới thiệu bản thân?", "Vì sao chọn Backend Java?", "Kể về một dự án/đồ án bạn tự hào?", "Gặp bug khó nhất bạn xử lý sao?", "Học công nghệ mới bằng cách nào?".
+2. Vì tôi chưa đi làm, chấp nhận ví dụ từ ĐỒ ÁN/PROJECT cá nhân (vd capstone Devlog/ShopCore/TaskFlow) thay cho kinh nghiệm công ty.
+3. Sau mỗi câu, góp ý cấu trúc trả lời (rõ ràng, có dẫn chứng, không lan man).
+4. Cuối: 3 câu chuyện project tôi nên chuẩn bị sẵn để kể trong interview.`
+        }
+      ],
+      socraticPrompts: [
+        {
+          title: 'Self-eval sau mock fresher',
+          prompt: `Sau buổi mock Q&A. KHÔNG cho đáp án trước. Hỏi tôi:
+1. Chủ đề nào tôi trả lời tự tin nhất? Chủ đề nào tịt?
+2. Có câu nào tôi trả lời được "định nghĩa" nhưng tịt phần "vì sao" không?
+3. Tôi có cho ví dụ thực tế không, hay chỉ nói lý thuyết khô?
+4. Câu nào tôi BỊA thay vì nói thẳng "chưa chắc"?
+5. 3 module cụ thể tôi cần xem lại trong 7 ngày tới?
+Tự chấm: tôi đã sẵn sàng cho phỏng vấn fresher chưa?`
+        }
+      ]
+    },
+
+    {
       id: 'l-5-3-algo',
       type: 'ai',
       title: 'Algorithmic Mock Interview (45 phút)',

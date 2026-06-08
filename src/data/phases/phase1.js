@@ -13,13 +13,14 @@ import hashmapHashset   from './phase1/05-hashmap-hashset.js'
 import treesBstHeap     from './phase1/06-trees-bst-heap.js'
 import sorting          from './phase1/07-sorting.js'
 import oopMiniProjects  from './phase1/08-oop-mini-projects.js'
+import javaEssentials   from './phase1/09-java-essentials.js'
 
 export const phase1 = {
   id: 'phase-1',
   title: 'Phase 1 — Java OOP, Data Structures & Sorting (Under the Hood)',
   tagline: 'Từng byte, từng cache line. Tự tay code lại mọi container. Sort bằng tư duy chia-để-trị.',
   intro: {
-    vi: 'Phase này build foundations: bạn KHÔNG dùng <code>java.util.ArrayList</code> trước khi tự viết được một cái. Mỗi cấu trúc dữ liệu có 3 lớp giải thích — <strong>Mental Model</strong> (cách tư duy), <strong>First Principles</strong> (cơ chế memory/CPU/JVM bên dưới), <strong>Junior Pitfalls</strong> (bug điển hình). Phase kết thúc với Merge Sort + Quick Sort — đây là lúc bạn nắm chia-để-trị và recursion tree, hai trụ cột cho Phase 2.'
+    vi: 'Phase này build foundations: bạn KHÔNG dùng <code>java.util.ArrayList</code> trước khi tự viết được một cái. Mỗi cấu trúc dữ liệu có 3 lớp giải thích — <strong>Mental Model</strong> (cách tư duy), <strong>First Principles</strong> (cơ chế memory/CPU/JVM bên dưới), <strong>Junior Pitfalls</strong> (bug điển hình). Sau phần sort, module <strong>Java Core Essentials</strong> dạy 4 công cụ Java mà các bài trước đã dùng trong solution (Exception, Lambda, Stream, Concurrency cơ bản) — nền cho Phase 2 và Phase 3. Phase kết thúc với OOP Mini Projects để ráp mọi thứ lại.'
   },
   modules: [
     oopPillars,
@@ -29,6 +30,7 @@ export const phase1 = {
     hashmapHashset,
     treesBstHeap,
     sorting,
+    javaEssentials,
     oopMiniProjects
   ]
 }
