@@ -43,7 +43,7 @@ Khi intervals add/remove dynamic (My Calendar series), TreeMap với <code>floor
 </ul>`,
 
   code: `// Merge Intervals template
-Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 List<int[]> merged = new ArrayList<>();
 for (int[] cur : intervals) {
     if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < cur[0]) {
@@ -84,7 +84,7 @@ Dẫn tôi từ sort tới heap.`
       ],
       solution: {
         code: `public int[][] merge(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     List<int[]> merged = new ArrayList<>();
     for (int[] cur : intervals) {
         if (merged.isEmpty() || merged.get(merged.size() - 1)[1] < cur[0]) {
@@ -138,7 +138,7 @@ Dẫn tôi từ sort tới heap.`
       ],
       solution: {
         code: `public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);   // sort theo END
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));   // sort theo END
     int prevEnd = Integer.MIN_VALUE, removed = 0;
     for (int[] cur : intervals) {
         if (cur[0] >= prevEnd) prevEnd = cur[1];      // không overlap, giữ
@@ -160,7 +160,7 @@ Dẫn tôi từ sort tới heap.`
       ],
       solution: {
         code: `public boolean canAttendMeetings(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     for (int i = 1; i < intervals.length; i++) {
         if (intervals[i][0] < intervals[i - 1][1]) return false;
     }
@@ -180,7 +180,7 @@ Dẫn tôi từ sort tới heap.`
       ],
       solution: {
         code: `public int minMeetingRooms(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     PriorityQueue<Integer> heap = new PriorityQueue<>();
     for (int[] m : intervals) {
         if (!heap.isEmpty() && heap.peek() <= m[0]) heap.poll();

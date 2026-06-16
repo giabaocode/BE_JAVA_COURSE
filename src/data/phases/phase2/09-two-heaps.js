@@ -155,7 +155,7 @@ double median() {
       solution: {
         code: `public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
     int n = profits.length;
-    PriorityQueue<int[]> byCapital = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> byCapital = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     PriorityQueue<Integer> byProfit = new PriorityQueue<>(Comparator.reverseOrder());
 
     for (int i = 0; i < n; i++) byCapital.offer(new int[]{capital[i], profits[i]});
@@ -288,7 +288,7 @@ double median() {
     for (int c : count) maxCount = Math.max(maxCount, c);
     if (maxCount > (s.length() + 1) / 2) return "";
 
-    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> Integer.compare(b[1], a[1]));
     for (int i = 0; i < 26; i++) if (count[i] > 0) heap.offer(new int[]{i, count[i]});
 
     StringBuilder sb = new StringBuilder();

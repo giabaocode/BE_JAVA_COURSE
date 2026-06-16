@@ -262,7 +262,7 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
       solution: {
         code: `public int kthSmallest(int[][] matrix, int k) {
     int n = matrix.length;
-    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     for (int r = 0; r < Math.min(n, k); r++) heap.offer(new int[]{matrix[r][0], r, 0});
 
     int res = 0;
@@ -323,7 +323,7 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
     }
     if (maxC > (s.length() + 1) / 2) return "";
 
-    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> Integer.compare(b[1], a[1]));
     for (int i = 0; i < 26; i++) if (count[i] > 0) heap.offer(new int[]{i, count[i]});
 
     StringBuilder sb = new StringBuilder();

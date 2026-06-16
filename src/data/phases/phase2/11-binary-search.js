@@ -49,7 +49,9 @@ Bài "Koko Eating Bananas": brute force thử speed 1, 2, 3, ... → O(max × n)
   <li><strong>Quên handle empty/single element</strong>.</li>
 </ul>`,
 
-  code: `// Template: tìm smallest x s.t. predicate(x) TRUE
+  code: `// TEMPLATE TƯ DUY (pseudo-code) — KHÔNG copy chạy trực tiếp.
+// 'predicate(mid)' và 'n' là CHỖ TRỐNG: thay bằng hàm kiểm tra + biên cụ thể của bài.
+// Mục tiêu: tìm x NHỎ NHẤT sao cho predicate(x) == true. Xem problem bên dưới để có code đầy đủ.
 int lo = 0, hi = n;
 while (lo < hi) {
     int mid = lo + (hi - lo) / 2;

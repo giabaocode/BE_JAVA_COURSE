@@ -43,7 +43,10 @@ Khi r tiến 1: update state bằng <code>O(1)</code> (add char mới vào HashM
   <li><strong>Confuse window length</strong>: <code>r - l + 1</code> (CẢ HAI inclusive), NHỚ +1.</li>
 </ul>`,
 
-  code: `// Variable-size template
+  code: `// TEMPLATE TƯ DUY (pseudo-code) — KHÔNG copy chạy trực tiếp.
+// 'windowInvalid(count)' là CHỖ TRỐNG: thay bằng điều kiện cụ thể của bài
+//   (vd: count.size() > k, hoặc cửa sổ có ký tự lặp...). 's' là chuỗi input của bài.
+// Xem các problem bên dưới để có bản code ĐẦY ĐỦ chạy được.
 int left = 0, best = 0;
 Map<Character, Integer> count = new HashMap<>();
 for (int right = 0; right < s.length(); right++) {

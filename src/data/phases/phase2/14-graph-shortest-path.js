@@ -50,7 +50,7 @@ Kruskal: sort edges, union-find, O(E log E). Cho sparse graph. Prim: như Dijkst
 int[] dist = new int[n];
 Arrays.fill(dist, Integer.MAX_VALUE);
 dist[src] = 0;
-PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);   // [node, distSoFar]
+PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));   // [node, distSoFar]
 pq.offer(new int[]{src, 0});
 while (!pq.isEmpty()) {
     int[] cur = pq.poll();
@@ -102,7 +102,7 @@ while (!pq.isEmpty()) {
     int[] dist = new int[n + 1];
     Arrays.fill(dist, Integer.MAX_VALUE);
     dist[k] = 0;
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
     pq.offer(new int[]{k, 0});
     while (!pq.isEmpty()) {
         int[] cur = pq.poll();
@@ -168,7 +168,7 @@ while (!pq.isEmpty()) {
     int[][] dist = new int[m][n];
     for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
     dist[0][0] = 0;
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
     pq.offer(new int[]{0, 0, 0});
     int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
     while (!pq.isEmpty()) {
@@ -203,7 +203,7 @@ while (!pq.isEmpty()) {
       solution: {
         code: `public int swimInWater(int[][] grid) {
     int n = grid.length;
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
     pq.offer(new int[]{0, 0, grid[0][0]});
     boolean[][] visited = new boolean[n][n];
     int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
@@ -239,7 +239,7 @@ while (!pq.isEmpty()) {
     int[][] dist = new int[m][n];
     for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
     dist[start[0]][start[1]] = 0;
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
     pq.offer(new int[]{start[0], start[1], 0});
     int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
     while (!pq.isEmpty()) {
@@ -353,7 +353,7 @@ while (!pq.isEmpty()) {
       ],
       solution: {
         code: `public int minimumCost(int n, int[][] connections) {
-    Arrays.sort(connections, (a, b) -> a[2] - b[2]);
+    Arrays.sort(connections, (a, b) -> Integer.compare(a[2], b[2]));
     int[] parent = new int[n + 1];
     for (int i = 0; i <= n; i++) parent[i] = i;
     int total = 0, edges = 0;
