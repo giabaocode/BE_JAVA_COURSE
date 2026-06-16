@@ -4,8 +4,8 @@
 // Nội dung verify từ docs.spring.io/spring-ai (1.x).
 export default {
   id: 'mod-3-9',
-  title: 'AI Integration for Backend — Spring AI, RAG & pgvector',
-  prerequisites: { vi: 'Hoàn thành <strong>Module 3.2 (Spring foundations)</strong>, <strong>3.3 (JPA)</strong> và <strong>3.1 (Docker + Postgres)</strong>. Module này nhúng AI vào CHÍNH stack Spring + Postgres bạn đã học — không cần Python, không cần học ML.' },
+  title: 'AI Integration for Backend — Spring AI, RAG & pgvector (BONUS / Optional)',
+  prerequisites: { vi: '⭐ <strong>Module BỔ SUNG (optional)</strong>: nếu mục tiêu trước mắt là phỏng vấn Junior Backend, hãy ưu tiên Module 3.2–3.7 (Spring core, JPA, Security, Testing) TRƯỚC; quay lại module này khi đã vững. Tiền điều kiện: hoàn thành <strong>Module 3.1 (Docker + Postgres)</strong>, <strong>3.2 (Spring foundations)</strong>, <strong>3.3 (JPA)</strong>. Module này nhúng AI vào CHÍNH stack Spring + Postgres bạn đã học — không cần Python, không cần học ML.' },
   lessons: [
 
     // ----- l-3-9-1: LLM Integration Foundations -----

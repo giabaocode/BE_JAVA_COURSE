@@ -42,7 +42,7 @@ Engine thực thi theo thứ tự:
 <ul>
   <li>Bảng 10 triệu row + không index + WHERE x = 5 → <strong>full scan</strong> O(N).</li>
   <li>Index B-Tree trên cột x → <strong>O(log N)</strong>. Nhưng INDEX TỐN DISK + chậm INSERT.</li>
-  <li>Index trên PK + FK là MIẶC ĐỊNH. Cột WHERE thường xuyên → add index.</li>
+  <li>Index trên <strong>PK và UNIQUE</strong>: Postgres TẠO TỰ ĐỘNG. Nhưng cột <strong>FK (khóa ngoại) thì KHÔNG</strong> — phải tự thêm index cho cột FK (xem Module Docker &amp; PostgreSQL). Cột hay nằm trong <code>WHERE</code> cũng nên add index.</li>
   <li><code>EXPLAIN ANALYZE SELECT ...</code> cho biết engine dùng index hay scan.</li>
 </ul>
 

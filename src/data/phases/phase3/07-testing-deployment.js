@@ -496,7 +496,9 @@ public class RequestIdFilter extends OncePerRequestFilter {
         },
         {
           title: 'Custom metric với Micrometer',
-          code: `@Service
+          code: `// SNIPPET minh họa Micrometer (@Timed + counter) — Order/CheckoutRequest/InsufficientStockException
+// là class domain GIẢ ĐỊNH; trọng tâm là cách đặt metric, không phải logic checkout.
+@Service
 @RequiredArgsConstructor
 public class OrderService {
     private final MeterRegistry registry;
@@ -504,7 +506,7 @@ public class OrderService {
     @Timed(value = "orders.checkout", percentiles = {0.5, 0.95, 0.99})
     public Order checkout(CheckoutRequest req) {
         try {
-            // ... business logic
+            Order order = doCheckout(req);          // business logic của bạn ở đây
             registry.counter("orders.success").increment();
             return order;
         } catch (InsufficientStockException e) {

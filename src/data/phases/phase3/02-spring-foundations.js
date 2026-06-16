@@ -77,6 +77,27 @@ Method A gọi <code>this.b()</code> trong cùng class → KHÔNG đi qua proxy 
       },
       codeExamples: [
         {
+          title: 'Required dependencies (pom.xml) cho module này',
+          lang: 'xml',
+          code: `<!-- REST + IoC container -->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<!-- Bean Validation (@Valid, @NotNull, @Size...) -->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+<!-- Lombok — giảm boilerplate getter/constructor (optional) -->
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+  <optional>true</optional>
+</dependency>`,
+          description: 'Module này chỉ cần web + validation. Cấu hình DB (application.yml + starter-data-jpa) sẽ thêm ở Module 3.3.'
+        },
+        {
           title: 'Constructor injection chuẩn với Lombok',
           code: `@RestController
 @RequestMapping("/api/v1/posts")
