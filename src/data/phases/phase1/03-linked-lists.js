@@ -48,6 +48,18 @@ Nó implement cả List và Deque, nhưng cho mọi op (kể cả add đầu), A
   <li><strong>NPE khi traversal</strong>: <code>while (curr.next != null)</code> dừng ở node CUỐI. Để xử lý cả node cuối, dùng <code>while (curr != null)</code>.</li>
   <li><strong>Equality bằng <code>==</code></strong> giữa 2 LL → chỉ so head reference. Cần loop so từng value.</li>
   <li><strong>Không xử lý cycle</strong> khi traverse → infinite loop. Floyd's algorithm phát hiện.</li>
+</ul>
+
+<h3>Test-case checklist — tự kiểm khi cài BẤT KỲ data structure</h3>
+Cài xong cấu trúc nào (LinkedList, ArrayList, Stack, Queue, Tree...) cũng phải test các ca biên này — đây chính là chỗ bug hay nấp. Mỗi ca = 1 assert trong test; pass hết mới đáng tin:
+<ul>
+  <li><strong>Rỗng</strong>: get/remove/peek trên cấu trúc rỗng → trả gì / ném gì? Không được NPE âm thầm.</li>
+  <li><strong>1 phần tử</strong>: add rồi remove → về rỗng đúng chưa? head và tail có cùng trỏ 1 node?</li>
+  <li><strong>Đầu / cuối / giữa</strong>: remove (và insert) ở head, ở tail, ở giữa — 3 ca khác nhau, dễ quên cập nhật tail/next.</li>
+  <li><strong>Resize</strong> (với ArrayList): add vượt capacity → grow đúng, không mất phần tử?</li>
+  <li><strong>Trùng giá trị</strong>: remove(value) khi có phần tử trùng → xóa đúng 1 cái đầu tiên?</li>
+  <li><strong>null</strong>: add(null) / tìm null → xử lý thế nào (định nghĩa rõ, đừng để crash bất ngờ)?</li>
+  <li><strong>Sửa trong lúc iterate</strong>: add/remove giữa vòng for-each → phải fail-fast ném <code>ConcurrentModificationException</code> (xem Module Arrays & Dynamic Array).</li>
 </ul>`
           },
           codeExamples: [

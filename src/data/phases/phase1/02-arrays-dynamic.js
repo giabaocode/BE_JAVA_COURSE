@@ -250,13 +250,31 @@ public T remove(int index) {
                 'Câu hỏi 2: Iterator nội bộ có cần biết thay đổi của list không? Phát hiện ra sao tại next()?'
               ],
               solution: {
-                code: `public class MyArrayList<T> implements Iterable<T> {
+                code: `import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class MyArrayList<T> implements Iterable<T> {
     private Object[] data = new Object[8];
     private int size = 0;
     private int modCount = 0;   // tăng mỗi lần add/remove
 
-    public void add(T v) { /* ... */ modCount++; }
-    public T remove(int i) { /* ... */ modCount++; return removed; }
+    public void add(T v) {
+        if (size == data.length) data = Arrays.copyOf(data, size * 2);   // resize gấp đôi
+        data[size++] = v;
+        modCount++;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T remove(int i) {
+        if (i < 0 || i >= size) throw new IndexOutOfBoundsException("index " + i);
+        T removed = (T) data[i];
+        System.arraycopy(data, i + 1, data, i, size - i - 1);   // dịch trái lấp chỗ trống
+        data[--size] = null;                                    // tránh memory leak
+        modCount++;
+        return removed;
+    }
 
     @Override public Iterator<T> iterator() {
         return new Iterator<>() {
