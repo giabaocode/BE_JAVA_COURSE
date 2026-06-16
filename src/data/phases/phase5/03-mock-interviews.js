@@ -542,13 +542,13 @@ Self-grade 1-5 per câu.`
         vi: `<h3>First Principles — Job search như marketing funnel</h3>
 
 <strong>1) Application → Screen → Onsite → Offer funnel</strong>
-Conversion rate average: 100 apply → 10 screen → 3 onsite → 1 offer. Để 1 offer cần ~100 application. Volume matters.
+Tuyển dụng là một cái phễu: phần lớn application không qua vòng đầu. <em>(Con số minh họa, KHÔNG phải số đo chuẩn — thay đổi theo thị trường/hồ sơ: vd ~100 apply → vài screen → 1 offer.)</em> Bài học đúng: <strong>volume + kiên trì</strong>, đừng nản sau vài cái rớt.
 <br/><br/>
 <strong>2) Quality vs Quantity</strong>
-Mass apply = low quality, low conversion. Targeted apply (research company + customize CV) = 30-40% conversion vs 5% mass.
+Apply hàng loạt CV giống nhau → tỉ lệ qua thấp. Apply có chọn lọc (research công ty + tùy biến CV) → tỉ lệ cao hơn nhiều. <em>(Tỉ lệ cụ thể là ước lượng minh họa.)</em>
 <br/><br/>
 <strong>3) Network &gt; cold apply</strong>
-Referral conversion 3-5× cold apply. Maintain LinkedIn + reach out alumni + tech meetup.
+Có người <strong>referral</strong> nội bộ thường cho tỉ lệ qua cao hơn hẳn nộp lạnh (cold apply). <em>(Mức "bội lần" là ước lượng minh họa.)</em> Duy trì LinkedIn + kết nối alumni + tech meetup.
 <br/><br/>
 <strong>4) Compound learning</strong>
 Tuần 1 học 1 pattern → tuần 12 đã practice mỗi pattern ~50 lần. Daily consistency beats weekend marathon.

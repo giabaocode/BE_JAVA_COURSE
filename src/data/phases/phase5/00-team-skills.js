@@ -508,6 +508,53 @@ Em đề xuất:
             complexityVi: 'Disagree dựa trên data, không phải opinion.',
             explanationVi: 'Cấu trúc: (1) Acknowledge suggestion (tôn trọng), (2) đưa benchmark cụ thể có data, (3) cite source authoritative, (4) đề xuất 2 path forward (giữ for loop hoặc đổi nếu anh nhấn mạnh readability), (5) thêm nuance (parallelStream với N lớn) — show bạn hiểu nuance, không phải bướng. Reviewer sẽ approve hoặc đưa lý do khác — conversation productive.'
           }
+        },
+        {
+          title: 'PR review — tìm lỗi thật (≥6 bug cài sẵn)',
+          prompt: 'Review đoạn controller RepairCore dưới đây. Tự liệt kê các vấn đề (kèm severity [blocker]/[suggestion]) TRƯỚC khi mở lời giải. Gợi ý số lượng: ít nhất 6 vấn đề.',
+          hints: [
+            'Đọc từng dòng: input có validate? trả Entity hay DTO? log có lộ gì? status code đúng chưa? ai gọi cũng xem được data người khác?',
+            'Tự hỏi: "nếu user gửi dữ liệu xấu / gọi với id của người khác / mạng retry thì sao?"'
+          ],
+          solution: {
+            code: `// ===== CODE CÓ BUG (để bạn review) =====
+@RestController
+@RequestMapping("/api/v1/tickets")
+class TicketController {
+    private final TicketRepository repo;
+    private final UserService users;
+    private static final Logger log = LoggerFactory.getLogger(TicketController.class);
+
+    @PostMapping
+    public RepairTicket create(@RequestBody CreateTicketRequest req) {   // (1) thiếu @Valid
+        log.info("create ticket, token={}", req.getToken());            // (4) log lộ secret
+        return repo.save(new RepairTicket(req));                         // (6) trả Entity; (5) tạo mới nên 201
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public List<TicketDto> byCustomer(@PathVariable Long customerId) {   // (3) không check quyền xem customer này
+        List<RepairTicket> tickets = repo.findByCustomerId(customerId);
+        List<TicketDto> out = new ArrayList<>();
+        for (RepairTicket t : tickets) {
+            String tech = users.findById(t.getTechnicianId()).getName(); // (2) N+1: query trong vòng lặp
+            out.add(TicketDto.from(t, tech));
+        }
+        return out;
+    }
+}
+
+// ===== CÁC VẤN ĐỀ (review chuẩn) =====
+// [blocker] (1) Thiếu @Valid -> input null/âm lọt vào. Thêm @Valid + Bean Validation trên DTO -> 400.
+// [blocker] (2) N+1: users.findById() trong vòng lặp = 1 + N query. Dùng JOIN FETCH/@EntityGraph/batch.
+// [blocker] (3) Auth bypass: ai cũng xem được ticket của customer bất kỳ. Kiểm quyền sở hữu/role, sai -> 404.
+// [blocker] (4) Log secret: KHÔNG log token/password. Bỏ hoặc mask.
+// [suggestion] (5) POST tạo mới nên trả 201 Created (+ Location), không mặc định 200.
+// [blocker] (6) Trả Entity ra controller -> lộ field nội bộ + nguy cơ lazy/serialize. Trả DTO.
+// [suggestion] (7) Thiếu test cho controller. Thêm @WebMvcTest + ca lỗi (400/403/404).`,
+            lang: 'java',
+            complexityVi: 'N/A — bài luyện review (kỹ năng internship/phỏng vấn).',
+            explanationVi: 'Đây là bộ lỗi kinh điển reviewer PHẢI bắt được: thiếu validation, N+1, auth bypass, log lộ secret, status code sai, trả Entity, thiếu test. Mỗi lỗi gắn severity + đề xuất sửa cụ thể. Ở internship, biết bắt mấy lỗi này = bạn review được PR do AI/người khác sinh ra, không merge mù.'
+          }
         }
       ],
       socraticPrompts: [

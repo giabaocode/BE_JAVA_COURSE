@@ -25,7 +25,7 @@ export default {
         vi: `<h3>First Principles — LLM thực sự là gì?</h3>
 
 <strong>1) LLM = "autocomplete khổng lồ"</strong>
-GPT/Claude/Gemini chỉ làm 1 việc duy nhất: dự đoán <strong>token tiếp theo</strong> dựa trên context. Không có "suy luận" hay "ý chí". Mọi behavior bạn thấy đều là <em>pattern match</em> từ training data.
+GPT/Claude/Gemini về cơ chế lõi: dự đoán <strong>token tiếp theo</strong> dựa trên context. Chúng <em>có thể biểu hiện suy luận</em> trong ngữ cảnh (chain-of-thought, giải bài), nhưng <strong>không đảm bảo đúng</strong> — vì không có cơ chế xác minh sự thật bên trong. Tránh hai thái cực: vừa đừng coi nó "biết tuốt", vừa đừng nói "hoàn toàn không suy luận". Thực dụng: coi output là <em>bản nháp cần kiểm chứng</em>, không phải chân lý.
 <br/><br/>
 <strong>2) Tại sao "TUYỆT ĐỐI KHÔNG" hoạt động?</strong>
 Training data có rất nhiều ví dụ "instruction-following" — câu lệnh + response tuân thủ. Khi bạn viết "TUYỆT ĐỐI KHÔNG", model match pattern này và sinh response tuân thủ. Caps lock + repetition + explicit constraint = signal mạnh.
@@ -47,7 +47,7 @@ LLM sinh text "plausible" không phải "correct". Có thể bịa method API kh
 <ul>
   <li><strong>Prompt thường</strong>: "Explain JPA persistence context" → AI dump 500 chữ → bạn skim → quên.</li>
   <li><strong>Socratic prompt</strong>: "Hỏi tôi 5 câu về persistence context, đợi tôi trả lời" → bạn vừa tự nhớ vừa được correct → nhớ lâu.</li>
-  <li>Khoa học giáo dục: <strong>active recall</strong> (tự nhớ) hiệu quả gấp 5-10× <strong>passive review</strong> (đọc).</li>
+  <li>Khoa học giáo dục: <strong>active recall</strong> (tự nhớ) hiệu quả hơn rõ rệt <strong>passive review</strong> (đọc lại) — testing effect (Roediger &amp; Karpicke, 2006). <em>(Mức "bội lần" chỉ là ước lượng minh họa; điều chắc chắn là hiệu ứng tồn tại.)</em></li>
 </ul>
 
 <h3>Khi nào dùng Socratic prompt</h3>
