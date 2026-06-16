@@ -208,9 +208,10 @@ KHÔNG cho code OOP. Chỉ gợi mở.`
         vi: `Mục tiêu Phase 0 không phải là <em>"học xong syntax"</em> — mà là <strong>fingers nhớ syntax mà brain không cần nghĩ</strong>. Đây là phép kiểm tra cuối cùng.`
       },
       theory: {
-        vi: `<h3>Self-assessment — Trả lời "có / không" cho 10 câu</h3>
+        vi: `<h3>Self-assessment — Trả lời "có / không" cho 11 câu</h3>
 <ol>
   <li>Tôi gõ được <code>for (int i = 0; i &lt; n; i++)</code> KHÔNG cần nhìn bàn phím trong &lt; 3 giây.</li>
+  <li>Tôi viết được <code>if / else if / else</code> nhiều nhánh VÀ <code>switch</code> mà không nhầm cú pháp (dấu ngoặc, <code>break</code>, thứ tự điều kiện).</li>
   <li>Tôi gõ được skeleton <code>public class X { public static void main(String[] args) { } }</code> trong &lt; 10 giây.</li>
   <li>Tôi biết khi nào dùng <code>int</code> vs <code>long</code> mà không tra Google.</li>
   <li>Tôi giải thích được bằng tiếng Việt: vì sao <code>"abc" == "abc"</code> có thể trả true nhưng KHÔNG nên rely vào điều đó.</li>
@@ -224,10 +225,10 @@ KHÔNG cho code OOP. Chỉ gợi mở.`
 
 <h3>Diễn giải kết quả</h3>
 <ul>
-  <li><strong>9-10 ✅</strong>: Sẵn sàng Phase 1. Đi tiếp.</li>
-  <li><strong>7-8 ✅</strong>: Borderline. Pick 2-3 câu chưa pass → ôn 2-3 ngày → re-test.</li>
-  <li><strong>5-6 ✅</strong>: <strong>QUAY LẠI</strong> các lesson tương ứng. Đừng ép sang Phase 1, sẽ vỡ.</li>
-  <li><strong>&lt; 5 ✅</strong>: Phase 0 chưa thấm. Restart toàn bộ Phase 0 với tinh thần "tay gõ 3 lần" thực sự.</li>
+  <li><strong>10-11 ✅</strong>: Sẵn sàng Phase 1. Đi tiếp.</li>
+  <li><strong>8-9 ✅</strong>: Borderline. Pick 2-3 câu chưa pass → ôn 2-3 ngày → re-test.</li>
+  <li><strong>6-7 ✅</strong>: <strong>QUAY LẠI</strong> các lesson tương ứng. Đừng ép sang Phase 1, sẽ vỡ.</li>
+  <li><strong>&lt; 6 ✅</strong>: Phase 0 chưa thấm. Restart toàn bộ Phase 0 với tinh thần "tay gõ 3 lần" thực sự.</li>
 </ul>
 
 <h3>Nếu bạn pass 10/10 — đây là cảnh báo</h3>
@@ -240,6 +241,10 @@ Mở Feynman Modal. Viết tối thiểu 200 chữ tiếng Việt trả lời:
   <li>Cái gì tôi <strong>vẫn chưa thực sự hiểu</strong>, chỉ "biết cú pháp"?</li>
   <li>Tôi đã paste AI ít nhất 1 lần chưa? Lần nào? Cảm giác sau đó?</li>
 </ul>
+
+<h3>Vị trí Phase 0 trong lộ trình Backend Java — và chặng tiếp theo</h3>
+Phase 0 <strong>cố ý</strong> chưa dạy OOP, Spring hay database — vì viết backend trên nền tay yếu sẽ thành "paste cho chạy". Phase 0 chỉ lo <em>phản xạ cú pháp + tư duy giải bài</em>. Tiếp nối: <strong>Phase 1</strong> (OOP + tự cài data structure) → <strong>Phase 2</strong> (17 pattern thuật toán cho vòng phỏng vấn coding) → <strong>Phase 3</strong> mới là backend core (Spring Boot + PostgreSQL + Docker). Nói ngắn: Phase 0 là "tập viết", Phase 3 là "viết văn".
+
 Không có self-honesty thì 20 tuần tới sẽ thành chuyến chu du qua tutorial hell.`
       },
       socraticPrompts: [
@@ -254,7 +259,7 @@ Không có self-honesty thì 20 tuần tới sẽ thành chuyến chu du qua tut
       ],
       keyTakeaways: {
         vi: [
-          'Pass 9-10/10 → sang Phase 1. Pass &lt; 7 → ÔN LẠI, không ép.',
+          'Pass 10-11/11 → sang Phase 1. Pass &lt; 8 → ÔN LẠI, không ép.',
           'Phép thử cuối: viết Mini Bank trong 30 phút từ đầu, KHÔNG AI.',
           'Self-honesty quan trọng hơn tốc độ. 20 tuần là dài — đừng tự lừa mình ở tuần 3.',
           'Phase 1 không "khó hơn" — chỉ "deep hơn". Foundations Phase 0 vững là điều kiện cần.'

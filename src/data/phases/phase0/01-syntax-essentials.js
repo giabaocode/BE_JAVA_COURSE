@@ -676,7 +676,7 @@ Recursion = method gọi chính nó. Bắt buộc có <strong>base case</strong>
       id: 'l-0-1-5',
       type: 'practice',
       title: 'String Manipulation Essentials',
-      subtitle: { vi: 'Lesson 5/15. String là cấu trúc dữ liệu xuất hiện 50% LeetCode.' },
+      subtitle: { vi: 'Lesson 5/15. String là kiểu dữ liệu xuất hiện rất thường xuyên trong bài LeetCode.' },
       mentalModel: {
         vi: `String trong Java là <strong>immutable</strong>. Mọi operation tạo String MỚI. Quan trọng vì:
 <ul>

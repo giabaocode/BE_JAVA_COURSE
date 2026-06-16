@@ -205,7 +205,7 @@ grid[0].length                     // 4 (số cột)</pre>
 <li>Lookup theo index — O(1).</li>
 <li>KHÔNG cần insert giữa nhiều — O(n) cho insert/delete giữa.</li>
 </ul>
-Hơn 90% trường hợp <strong>thay int[]</strong> bằng ArrayList nếu size không biết trước.`
+Phần lớn trường hợp khi size KHÔNG biết trước, <strong>ArrayList tiện hơn <code>int[]</code></strong> (tự grow, có sẵn add/remove).`
       },
       theory: {
         vi: `<h3>API cheat sheet</h3>
@@ -387,7 +387,7 @@ public class MergeSorted {
       id: 'l-0-2-3',
       type: 'practice',
       title: 'HashMap — Key-Value Lookup O(1)',
-      subtitle: { vi: 'Lesson 8/15. HashMap là vũ khí mạnh nhất cho 50% LeetCode.' },
+      subtitle: { vi: 'Lesson 8/15. HashMap là một trong những công cụ xuất hiện nhiều nhất trong bài LeetCode.' },
       mentalModel: {
         vi: `HashMap = bảng key → value, lookup O(1) trung bình. Khi bạn cần:
 <ul>

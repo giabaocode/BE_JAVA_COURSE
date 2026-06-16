@@ -35,7 +35,7 @@ Sau 20p stuck = bạn thiếu KIẾN THỨC, không phải effort. Xem solution 
 KEY anti-copy-paste. Đọc solution = thấy quen thuộc. Tự gõ = đảm bảo fingers nhớ. Brain learns by DOING, not READING.
 <br/><br/>
 <strong>4) Feynman note</strong>
-Giải thích bằng lời của mình = ép brain reconstruct concept. Đây là <em>active recall</em> — research nói tăng retention 5-10× so với passive review.
+Giải thích bằng lời của mình = ép brain reconstruct concept. Đây là <em>active recall / testing effect</em>: chủ động tự tái tạo kiến thức giúp nhớ lâu hơn rõ rệt so với đọc lại thụ động (Roediger &amp; Karpicke, 2006). <em>(Con số "bội lần" cụ thể chỉ là ước lượng minh họa — điều chắc chắn là hiệu ứng tồn tại, không phải mức tăng chính xác.)</em>
 <br/><br/>
 <strong>5) 25 bài trong 3 tuần</strong>
 ~ 1 bài/ngày. Đủ chậm để hấp thụ, đủ nhanh để momentum. Hoàn thành Phase 0 → đã giải 25 bài → confidence boost cho Phase 1.`
