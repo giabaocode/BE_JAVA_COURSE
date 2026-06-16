@@ -163,9 +163,22 @@ git commit -m "describe change"
 git push       # auto-triggers GH Actions deploy
 ```
 
-## Recent decisions / current state (LAST UPDATED 2026-06-08)
+## Recent decisions / current state (LAST UPDATED 2026-06-16)
 
-**Status**: Rubric-driven QA pass complete (2026-06-08). Build passes. See "QA pass" entry below.
+**Status**: Rubric round-2 + internship pivot complete (2026-06-16). 7 phases · ~394 lessons · 5 capstones. Build passes, all pushed. See "Internship pivot" entry below; older "QA pass" (2026-06-08) entry retained.
+
+### Internship pivot + rubric round-2 (2026-06-16)
+User got a hardware-company internship (PC/laptop assembly/repair/inventory) where the director vibe-codes internal software with Claude Code, and uses Python more than Java. Goal stays Backend Java long-term + keep LeetCode; add Python (tool), hardware domain, and disciplined Claude Code workflow. Delivered:
+- **NEW Phase 6** (`phase6.js`, wired in `curriculum.js`) — Internship Specialization, 4 modules over 12 weeks: Domain Discovery (director-question checklist + "what NOT to learn deeply yet") → Codebase & Claude Code setup (CLAUDE.md + 9-step disciplined workflow) → Small value tasks (DoD per task) → Mini feature + CV positioning.
+- **NEW Capstone A** (`phase4/04-repair-inventory.js`) — RepairCore: repair & inventory backend (Java 21/Spring Boot 3/Postgres/Docker/Flyway/JWT/JPA/Testcontainers), 10-table domain, ticket lifecycle state machine, 4 roles, dashboard API, 12-step blueprint + Definition of Done.
+- **NEW Capstone B** (`phase4/05-automation-toolkit.js`) — RepairCLI: Python toolkit (Typer/requests/pandas/logging/dotenv/pytest) that CALLS RepairCore's API (Java↔Python bridge). Python framed as TOOL, not main track.
+- **Rubric round-2 fixes** (Group A focus): P0 quantitative claims sourced/illustrative + roadmap bridge relocated to retrospective lesson; P1 Book getTitle() compile fix + MyArrayList iterator completed + JVM escape-analysis caveat + DS test-checklist; P2 14 comparator `a-b`→`Integer.compare` + pseudo-code labels + NEW "Bắt đầu ở đây" module (appendix ListNode/TreeNode + backend mapping + refs); P3 FK-index contradiction fixed + undeclared-var snippet + Required-deps in spring-foundations + AI module marked optional + **NEW GitHub Actions CI** in 07-testing-deployment; P4 Like idempotency fixed (toggle≠idempotent → PUT/DELETE per REST); P5 LLM "no reasoning" rewrite + job-search/active-recall claims sourced/illustrative + **NEW PR-review-with-bugs exercise** in team-skills.
+- **CRITICAL render gotcha**: phase-level `intro`/`tagline` are NOT rendered by the app (0 refs in src/). Only `module.prerequisites`, `lesson.*` (mentalModel/underTheHood/theory/codeExamples/socraticPrompts/keyTakeaways), and `module.references` render. Project lessons: `steps[].{description,mentalModel,socraticPrompts,hints,deliverable}` render. Put ALL content there, never in phase.intro.
+- **Deferred (intentionally NOT done — flagged to user)**: splitting Phase 2→2A/2B/2C and Phase 3→3A/3B/3C (risky nav change, low value — a single "Bắt đầu ở đây"/intro module + ⭐ entry markers suffice); full repo-skeleton files + elaborate threat models; standalone Jira-template/Git-lab lessons (Git/PR/Jira already covered conceptually in phase5/00-team-skills). Phase 3 "skeletons per module" mostly already exist as code examples.
+- **Deliverable PDFs (untracked, on disk)**: `So-Tay-Hoc-Hieu-Qua.pdf`, `Phase3-Build-Playbook-Devlog.pdf`, `Phase3-Huong-Dan-Ap-Dung-Do-An.pdf`, `So-Tay-Dinh-Huong-Internship.pdf`. Generators in `scripts/` (reportlab, Arial+Consolas for Vietnamese, no emoji; `export_md.mjs` exports curriculum→clean markdown for ChatGPT review). PDFs/scripts/gpt-export NOT committed (binary/generated) unless user asks.
+
+### QA pass theo RUBRIC_DANH_GIA_NOI_DUNG.md (2026-06-08)
+Đánh giá toàn bộ 50 file/125 bài theo rubric 5 nhóm (A-E). Đã sửa:
 
 ### QA pass theo RUBRIC_DANH_GIA_NOI_DUNG.md (2026-06-08)
 Đánh giá toàn bộ 50 file/125 bài theo rubric 5 nhóm (A-E). Đã sửa:
@@ -221,9 +234,10 @@ phase1/
 - `phase5.js` — added teamSkills as first module; updated intro
 
 ### Curriculum stats (current)
-- **Phases**: 6
-- **Modules**: ~**49**
-- **Lessons**: ~**135**
+- **Phases**: **7** (added Phase 6 — Internship)
+- **Modules**: ~**55**
+- **Lessons**: ~**145** (app counter shows ~394 incl. LeetCode problems)
+- **Capstones**: **5** (Devlog, ShopCore, TaskFlow, RepairCore-Java, RepairCLI-Python)
 
 ### AI Integration module (NEW 2026-06-08)
 Theo yêu cầu user (AI mạnh → giỏi framework không là chưa đủ, cần "backend + tích hợp AI"). Module mới `phase3/09-ai-integration.js` (mod-3-9, đặt CUỐI Phase 3), 4 lesson dựa trên **Spring AI 1.x** (GA 5/2025), nội dung verify từ docs.spring.io/spring-ai qua WebFetch:
