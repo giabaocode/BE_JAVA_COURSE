@@ -4,9 +4,11 @@
 //  Mỗi capstone 1 file dưới ./phase4/
 // ============================================================================
 
-import devlog    from './phase4/01-devlog.js'
-import shopcore  from './phase4/02-shopcore.js'
-import taskflow  from './phase4/03-taskflow.js'
+import devlog            from './phase4/01-devlog.js'
+import shopcore          from './phase4/02-shopcore.js'
+import taskflow          from './phase4/03-taskflow.js'
+import repairInventory   from './phase4/04-repair-inventory.js'
+import automationToolkit from './phase4/05-automation-toolkit.js'
 
 export const phase4 = {
   id: 'phase-4',
@@ -18,6 +20,8 @@ export const phase4 = {
   modules: [
     devlog,
     shopcore,
-    taskflow
+    taskflow,
+    repairInventory,
+    automationToolkit
   ]
 }
