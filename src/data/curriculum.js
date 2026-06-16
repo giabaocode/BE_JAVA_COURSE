@@ -9,6 +9,7 @@ import { phase2 } from './phases/phase2.js'
 import { phase3 } from './phases/phase3.js'
 import { phase4 } from './phases/phase4.js'
 import { phase5 } from './phases/phase5.js'
+import { phase6 } from './phases/phase6.js'
 
 export const curriculum = {
   meta: {
@@ -21,7 +22,7 @@ export const curriculum = {
     }
   },
 
-  phases: [phase0, phase1, phase2, phase3, phase4, phase5]
+  phases: [phase0, phase1, phase2, phase3, phase4, phase5, phase6]
 }
 
 export const LC = (slug) => `https://leetcode.com/problems/${slug}/`
