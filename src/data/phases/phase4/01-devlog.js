@@ -46,7 +46,7 @@ Schema versioned trong git. Mọi instance app start chạy migration tự độ
   <li>Auth: register, login, JWT issue/validate.</li>
   <li>Posts CRUD (markdown body, slug, tags).</li>
   <li>Comments per post.</li>
-  <li>Likes (toggle, idempotent).</li>
+  <li>Likes — idempotent: <code>PUT /like</code> (like) + <code>DELETE /like</code> (unlike).</li>
   <li>Search + pagination.</li>
   <li>Owner-only update/delete; ADMIN có thể delete bất kỳ.</li>
 </ul>
@@ -464,20 +464,27 @@ JPA: Post có <code>@ManyToMany Set&lt;Tag&gt; tags</code>; Tag có <code>@ManyT
         },
         {
           id: 's7',
-          title: 'Comments & Likes (idempotent toggle)',
-          description: { vi: 'CRUD comment cho post. Like là toggle endpoint POST /posts/{id}/like.' },
+          title: 'Comments & Likes (like/unlike idempotent đúng chuẩn REST)',
+          description: { vi: 'CRUD comment cho post. Like dùng 2 endpoint idempotent: <code>PUT /posts/{id}/like</code> (like) + <code>DELETE /posts/{id}/like</code> (unlike).' },
           mentalModel: {
-            vi: `<strong>Like idempotent</strong>: gọi POST /like 2 lần liên tiếp → kết quả như gọi 1 lần.
+            vi: `<strong>Cảnh báo: "toggle" KHÔNG idempotent.</strong> Endpoint kiểu "có thì xóa, chưa có thì thêm" — gọi 2 lần lật về trạng thái cũ → retry (mạng chập chờn) gây sai trạng thái.
 <br/><br/>
-Implement: check exists(post_id, user_id) trong likes table → có thì delete; chưa có thì insert. Return likeCount mới.
+<strong>Thiết kế REST đúng (idempotent):</strong>
+<ul>
+<li><code>PUT /posts/{id}/like</code> = "đặt trạng thái = ĐÃ like". Gọi N lần vẫn = đã like.</li>
+<li><code>DELETE /posts/{id}/like</code> = "đặt trạng thái = CHƯA like". Gọi N lần vẫn = chưa like.</li>
+</ul>
+Nếu BẮT BUỘC giữ 1 nút toggle (UX), đặt tên rõ <code>POST /posts/{id}/like/toggle</code> và GHI RÕ nó KHÔNG idempotent.
+<br/><br/>
+Implement: PUT → insert nếu chưa có (đã có thì bỏ qua); DELETE → xóa nếu có (chưa có thì bỏ qua). Return likeCount mới.
 <br/><br/>
 <strong>Race condition</strong>: 2 request đồng thời từ cùng user — có thể tạo 2 row! Giải quyết: UNIQUE constraint (post_id, user_id) — DB throw → catch và treat as "đã like".
 <br/><br/>
 <strong>First Principles</strong>:
 <ul>
-<li>Idempotent operation: f(f(x)) = f(x). Quan trọng cho retry-safe API.</li>
-<li>HTTP verb GET/PUT/DELETE idempotent native. POST không. Toggle qua POST cần extra logic.</li>
-<li>Alternative: PUT /likes/{userId} (idempotent) — nhưng SEMANTIC weird vì user là sub-resource.</li>
+<li>Idempotent operation: f(f(x)) = f(x). Quan trọng cho retry-safe API (client retry khi timeout không gây hại).</li>
+<li>HTTP: GET/PUT/DELETE idempotent theo spec; POST thì KHÔNG. Vì thế like/unlike dùng PUT/DELETE, không phải POST-toggle.</li>
+<li>Vì sao KHÔNG dùng 1 POST toggle: client gửi like, mạng timeout, client retry → lần 2 thành unlike → mất like. PUT/DELETE tránh hẳn vấn đề này.</li>
 <li>Denormalize likeCount (<em>nói đơn giản: thay vì mỗi lần xem post phải ĐẾM lại số like, ta lưu sẵn 1 cột <code>like_count</code> — đọc nhanh, đổi lại phải nhớ +1/−1 cột đó mỗi lần like/unlike</em>): trade-off — read fast (1 column query) vs write complexity (update count khi like).</li>
 </ul>
 

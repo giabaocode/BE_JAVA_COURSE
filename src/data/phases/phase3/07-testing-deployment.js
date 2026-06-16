@@ -333,6 +333,36 @@ dist/
 
 volumes:
   pgdata:`
+        },
+        {
+          title: 'GitHub Actions CI — test + build + Docker image',
+          lang: 'yaml',
+          code: `# .github/workflows/ci.yml
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # 'verify' chạy unit + integration test.
+      # Testcontainers TỰ dựng Postgres trong test (cần Docker — runner ubuntu có sẵn).
+      - name: Test + build
+        run: ./mvnw -B verify
+
+      - name: Build Docker image (chỉ build, chưa push)
+        run: docker build -t devlog:ci .`
         }
       ],
       socraticPrompts: [
