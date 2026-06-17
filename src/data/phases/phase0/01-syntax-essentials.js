@@ -17,6 +17,11 @@ export default {
 </ul>
 Quy tắc: <code>int</code> chứa số nguyên 32-bit; <code>long</code> 64-bit (số lớn); <code>double</code> số thực. <code>String</code> KHÔNG phải primitive — là class.`
       },
+      underTheHood: {
+        vi: `Hãy tưởng tượng biến như một <strong>cái hộp có nhãn</strong>. <code>int age = 18;</code> nghĩa là tạo hộp tên <code>age</code>, loại hộp chỉ đựng số nguyên, rồi bỏ số 18 vào.
+<br/><br/>
+Với primitive như <code>int</code>, hộp giữ luôn giá trị. Với reference như <code>String name = "Bao";</code>, hộp giữ "địa chỉ" chỉ tới object String ở nơi khác trong bộ nhớ. Vì vậy sau này bạn sẽ thấy <code>==</code> và <code>.equals()</code> khác nhau: một cái so địa chỉ, một cái so nội dung.`
+      },
       theory: {
         vi: `<h3>Cheat sheet syntax cần thuộc lòng</h3>
 <ul>
@@ -160,6 +165,15 @@ Khi nào dùng cái nào?
 <li><strong>≥ 4 case rời rạc (số, enum, String)</strong>: switch sạch hơn.</li>
 <li><strong>So sánh range</strong> (x &lt; 10, 10 ≤ x &lt; 20, ...): if/else (switch không support range — except Java 21+ pattern matching).</li>
 </ul>`
+      },
+      underTheHood: {
+        vi: `Máy chạy <code>if/else</code> giống đi qua một ngã rẽ:
+<ul>
+  <li>Nếu điều kiện đầu đúng, máy đi nhánh đó rồi bỏ qua các nhánh còn lại.</li>
+  <li>Nếu điều kiện đầu sai, máy thử điều kiện kế tiếp.</li>
+  <li><code>else</code> cuối cùng giống "không rơi vào trường hợp nào ở trên thì làm cái này".</li>
+</ul>
+Vì máy đọc từ trên xuống dưới, <strong>thứ tự điều kiện rất quan trọng</strong>. Ví dụ chấm điểm phải check <code>score &gt;= 90</code> trước <code>score &gt;= 60</code>, nếu không điểm 95 sẽ bị nhận nhầm là D.`
       },
       theory: {
         vi: `<h3>Syntax cheat sheet</h3>
@@ -336,6 +350,15 @@ public class Leap {
 <li><strong>do-while</strong>: như while, nhưng CHẠY ÍT NHẤT 1 LẦN trước khi check.</li>
 </ul>
 Bí kíp: thấy "cho mảng, duyệt mọi phần tử" → for-each. "Đếm từ 0 đến n-1" → for traditional. "Lặp tới khi user nhập 'quit'" → while.`
+      },
+      underTheHood: {
+        vi: `Loop là cách bảo máy <strong>làm lại một việc nhiều lần</strong>. Một vòng lặp luôn có 3 câu hỏi:
+<ol>
+  <li><strong>Bắt đầu ở đâu?</strong> Ví dụ <code>int i = 0</code>.</li>
+  <li><strong>Khi nào còn làm tiếp?</strong> Ví dụ <code>i &lt; n</code>.</li>
+  <li><strong>Sau mỗi lần thì đổi gì?</strong> Ví dụ <code>i++</code>.</li>
+</ol>
+Nếu quên câu hỏi số 3, <code>while</code> có thể chạy mãi không dừng. Nếu viết sai câu hỏi số 2, bạn dễ bị lỗi lệch 1 ô: đọc quá cuối mảng hoặc bỏ sót phần tử cuối.`
       },
       theory: {
         vi: `<h3>Syntax cheat sheet</h3>
@@ -514,6 +537,11 @@ public class Triangle {
 </ul>
 Recursion = method gọi chính nó. Bắt buộc có <strong>base case</strong> để dừng.`
       },
+      underTheHood: {
+        vi: `Method giống một <strong>cỗ máy nhỏ</strong>: bạn đưa nguyên liệu vào qua parameter, máy làm việc, rồi có thể trả kết quả bằng <code>return</code>.
+<br/><br/>
+Khi gọi method, Java tạo một "phiếu làm việc" trên call stack. Method chạy xong thì phiếu đó được bỏ đi. Recursion là khi cỗ máy tự gọi một bản sao nhỏ hơn của chính nó, nên phải có <strong>base case</strong> giống biển báo "tới đây dừng". Không có biển dừng thì stack đầy và chương trình báo <code>StackOverflowError</code>.`
+      },
       theory: {
         vi: `<h3>Syntax cheat sheet</h3>
 <pre>public class Calc {
@@ -684,6 +712,11 @@ Recursion = method gọi chính nó. Bắt buộc có <strong>base case</strong>
 <li>Concat nhiều String (<code>s += x</code>) trong loop → tạo nhiều object tạm → CHẬM. Dùng <strong>StringBuilder</strong>.</li>
 <li>Char access: <code>s.charAt(i)</code>, KHÔNG <code>s[i]</code> như C.</li>
 </ul>`
+      },
+      underTheHood: {
+        vi: `String immutable nghĩa là <strong>không sửa trực tiếp chữ cũ</strong>. Nếu có <code>String s = "Hi";</code> rồi viết <code>s = s + "!"</code>, Java tạo String mới là <code>"Hi!"</code> và cho biến <code>s</code> trỏ sang cái mới.
+<br/><br/>
+Làm như vậy một hai lần thì ổn. Nhưng trong loop 10.000 lần, mỗi lần tạo String mới và copy lại chữ cũ nên chậm. <code>StringBuilder</code> giống một tờ giấy nháp có thể viết thêm liên tục, cuối cùng mới đóng thành String bằng <code>toString()</code>.`
       },
       theory: {
         vi: `<h3>API cần thuộc lòng</h3>
