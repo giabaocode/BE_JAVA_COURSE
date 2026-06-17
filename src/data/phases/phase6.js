@@ -165,9 +165,69 @@ Khách mang máy → <strong>nhận</strong> (received) → <strong>chẩn đoá
               'Chưa cần: mạch/hàn/firmware/embedded — chờ bằng chứng công ty thực sự cần.'
             ]
           }
+        },
+        {
+          id: 'l-6-0-4',
+          type: 'theory',
+          title: 'GPU NVIDIA — đọc tên model & nói chuyện ở công ty (RTX 50-series)',
+          subtitle: { vi: 'Khi sếp hỏi "biết RTX 5080 không?" — bạn cần ĐỌC ĐƯỢC tên model + biết spec nào quan trọng, KHÔNG cần thuộc bảng giá.' },
+          mentalModel: {
+            vi: `Tên GPU nhìn rối nhưng có <strong>quy luật</strong>. Học cái <em>bộ giải mã tên</em> (đúng với mọi đời) thì giá trị hơn thuộc lòng vài model (model + giá thay đổi mỗi năm).
+<br/><br/>
+Với vai <strong>phần mềm/bán hàng</strong>, bạn cần 3 thứ: (1) <strong>đọc tên</strong> → biết model đó thuộc phân khúc nào; (2) biết <strong>spec nào quan trọng</strong> (VRAM, công suất); (3) biết <strong>tra ở đâu</strong> khi cần số chính xác. KHÔNG cần nhớ từng con số.
+<br/><br/>
+Và quan trọng: sếp hỏi "biết RTX 5080 không?" thường là <em>thăm dò bạn có theo dõi ngành không</em>, không phải bài thi. Trả lời thật + cho thấy học nhanh là đủ.`
+          },
+          theory: {
+            vi: `<h3>Bộ giải mã tên GeForce RTX (gaming/consumer)</h3>
+<code>RTX 50 80</code> → đọc: <strong>RTX</strong> = dòng GeForce có ray-tracing; <strong>"50"</strong> = THẾ HỆ (50-series, đời mới nhất 2025, kiến trúc Blackwell); <strong>"80"</strong> = PHÂN KHÚC trong đời đó.
+<ul>
+  <li>Phân khúc (cao → thấp): <strong>90</strong> (đầu bảng) &gt; <strong>80</strong> (cao cấp) &gt; <strong>70 Ti</strong> &gt; <strong>70</strong> (tầm trung-cao) &gt; <strong>60</strong> (tầm trung) &gt; <strong>50</strong> (phổ thông).</li>
+  <li>Hậu tố <strong>Ti</strong> / <strong>Super</strong> = bản mạnh hơn của cùng số (vd 5070 Ti &gt; 5070).</li>
+  <li>Vậy: <strong>RTX 5090</strong> = mạnh nhất 50-series; <strong>RTX 5080</strong> = cao cấp; <strong>RTX 5070</strong> = tầm trung-cao. So đời: RTX 5080 (đời 50) mới hơn RTX 4080 (đời 40).</li>
+</ul>
+
+<h3>Spec nào quan trọng (cho phần mềm/tư vấn)</h3>
+<ul>
+  <li><strong>VRAM (GB)</strong> — bộ nhớ riêng của card. Cao = chạy game nặng/đồ hoạ/AI tốt hơn. (Model đầu bảng có VRAM nhiều nhất.)</li>
+  <li><strong>Công suất / TDP (W)</strong> — card mạnh ngốn nhiều điện → ảnh hưởng chọn <strong>PSU</strong> (nối thẳng bài compatibility 6.0.2).</li>
+  <li><strong>Đời (generation)</strong> + <strong>model</strong> — là product attribute trong DB/báo giá.</li>
+</ul>
+<em>⚠️ Số VRAM/W/giá chính xác từng model THAY ĐỔI và có nhiều biến thể — đừng học thuộc, hãy TRA ở <strong>nvidia.com</strong>, PCPartPicker, hoặc catalog công ty khi cần.</em>
+
+<h3>Hai điều dễ nhầm</h3>
+<ul>
+  <li><strong>GeForce RTX (gaming)</strong> KHÁC dòng <strong>workstation/AI/data-center</strong> của NVIDIA (RTX dòng pro, hay card AI như H-series). Nếu công ty hợp tác NVIDIA cho mảng AI thì có thể chạm dòng pro — nhưng đừng đào sâu tới khi được giao.</li>
+  <li><strong>Founders Edition</strong> = bản NVIDIA tự làm; còn <strong>ASUS/MSI/Gigabyte/Galax...</strong> = đối tác (AIB) làm bản riêng của cùng chip. Công ty lắp ráp thường nhập từ các hãng này → trong DB cùng "GPU model" nhưng khác "brand/SKU".</li>
+</ul>
+
+<h3>Cách trả lời sếp (thật + thông minh)</h3>
+"Em biết RTX 5080 là dòng cao cấp trong 50-series mới của NVIDIA; em đọc được phân khúc qua tên model và biết spec quan trọng là VRAM + công suất. Về mặt phần mềm, em sẽ lưu model/VRAM/công suất làm thuộc tính sản phẩm và dùng công suất để kiểm tra PSU. Con số chi tiết em tra catalog/NVIDIA khi cần." → cho thấy hiểu hệ thống + liên hệ phần mềm, không cần thuộc lòng.`
+          },
+          socraticPrompts: [
+            {
+              title: '[Tự kiểm] Đọc một model GPU bất kỳ',
+              prompt: `Cho 1 model GPU (vd RTX 5070 Ti, RTX 4060, RTX 5090). KHÔNG tra vội — tự trả lời:
+1. Nó thuộc THẾ HỆ nào, PHÂN KHÚC nào (đọc qua tên)?
+2. Giữa 2 model, cái nào cao cấp hơn — chỉ nhìn tên?
+3. Spec nào mình PHẢI tra để tư vấn/nhập kho (VRAM? công suất)?
+4. Nếu khách lắp con này, nó ảnh hưởng việc chọn linh kiện nào khác? (gợi ý: PSU, case)
+5. Trong database sản phẩm, mình lưu những field gì cho một GPU?`
+            }
+          ],
+          keyTakeaways: {
+            vi: [
+              'Đọc tên: RTX 50|80 = đời 50-series | phân khúc 80 (cao cấp). 90>80>70Ti>70>60>50; Ti/Super = bản mạnh hơn.',
+              'Spec quan trọng cho phần mềm: VRAM (GB) + công suất (W, ảnh hưởng PSU) + đời + model.',
+              'Số chính xác thay đổi → TRA nvidia.com/PCPartPicker/catalog, đừng học thuộc.',
+              'GeForce (gaming) ≠ dòng pro/AI; Founders Edition ≠ bản ASUS/MSI/... (cùng chip, khác brand/SKU).',
+              'Trả lời sếp: đọc được phân khúc + biết spec nào quan trọng + liên hệ phần mềm = đủ, không cần thuộc bảng giá.'
+            ]
+          }
         }
       ],
       references: [
+        { title: 'NVIDIA GeForce RTX (dòng sản phẩm chính thức)', url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/' },
         { title: 'PCPartPicker (xem thông số & tương thích linh kiện thực tế)', url: 'https://pcpartpicker.com/' },
         { title: 'NVIDIA GPU specs', url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/' },
         { title: 'Microsoft — Device Manager', url: 'https://support.microsoft.com/windows/device-manager' }
