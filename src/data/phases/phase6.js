@@ -468,6 +468,125 @@ Không sửa file nào cho tới khi tôi nói "duyệt".`
       ]
     },
 
+    // ===================== MODULE 6.2b =====================
+    {
+      id: 'mod-6-2b',
+      title: 'Tuần 3 (thực chiến): Python Codebase Survival + An toàn dữ liệu + Báo cáo',
+      prerequisites: { vi: 'Xong Module 6.2 (chạy được codebase + CLAUDE.md). Module này là phần THỰC CHIẾN còn thiếu: vì sếp <strong>vibe code bằng Python</strong>, bạn phải đọc/sửa được app Python thật + Git cho thành "cơ bắp" + biết bảo vệ dữ liệu + báo cáo sếp. Đây cũng là nơi kéo 1 task nhỏ THẬT lên sớm (tuần 3, không đợi tuần 5).' },
+      lessons: [
+        {
+          id: 'l-6-2b-1',
+          type: 'project',
+          title: 'Python Codebase Survival — đọc & sửa app Python (như của sếp) + Git cơ bắp',
+          subtitle: { vi: 'Làm trên repo Python giả (tự dựng) HOẶC chính repo của sếp. Mục tiêu: hết sợ đụng code Python + giao được 1 thay đổi nhỏ an toàn.' },
+          steps: [
+            {
+              id: 's1', title: 'Dựng môi trường Python chạy được',
+              description: { vi: 'Tạo/clone 1 repo Python (giả lập app nội bộ: đọc Excel/SQLite, vài hàm xử lý repair ticket/inventory). Lập <code>venv</code>, <code>pip install -r requirements.txt</code>, tạo <code>.env</code> từ <code>.env.example</code>.' },
+              hints: ['<code>python -m venv .venv</code> rồi activate.', 'Thiếu package → đọc lỗi, cài đúng version trong requirements.', 'KHÔNG có .env.example → hỏi sếp biến môi trường nào cần.'],
+              deliverable: { vi: 'App chạy local (hoặc ghi rõ lỗi môi trường + cách xử lý). Ghi lệnh chạy vào <code>local-setup-notes.md</code>.' }
+            },
+            {
+              id: 's2', title: 'Tìm entry point + lần luồng',
+              description: { vi: 'File nào khởi động app (main.py/app.py/cli)? Dữ liệu lưu ở đâu (SQLite/PostgreSQL/Excel/Google Sheet)? Hàm nào xử lý nghiệp vụ chính?' },
+              deliverable: { vi: 'Ghi 5 dòng: "app làm gì · chạy từ đâu · data ở đâu · 3 hàm quan trọng nhất".' }
+            },
+            {
+              id: 's3', title: 'Đọc stack trace khi lỗi',
+              description: { vi: 'Cố tình cho input xấu để app ném lỗi. Đọc stack trace: dòng CUỐI thường là nguyên nhân gốc; lần ngược lên xem lỗi ở hàm nào.' },
+              deliverable: { vi: '1 lỗi tự gây + giải thích bằng lời "lỗi gì, ở dòng nào, vì sao".' }
+            },
+            {
+              id: 's4', title: 'Thêm logging có ngữ cảnh (thay print)',
+              description: { vi: 'Dùng <code>logging</code> (INFO/ERROR) cho 1 flow quan trọng, kèm dữ liệu ngữ cảnh (id, đường dẫn file) — KHÔNG log secret.' },
+              deliverable: { vi: '1 flow có log đọc được; chạy thấy log ra đúng.' }
+            },
+            {
+              id: 's5', title: '⭐ MICRO-TASK tuần 3 (task nhỏ THẬT, lên sớm)',
+              description: { vi: 'Chọn 1 việc cực nhỏ, ít rủi ro, làm trên DỮ LIỆU GIẢ: sửa 1 validation đơn giản / thêm export CSV / thêm filter. Đi qua Plan Mode → review diff → commit (Phase 6.2 module 9 bước).' },
+              mentalModel: { vi: 'GPT review đúng: đừng đợi tuần 5 mới có commit đầu. Một thay đổi nhỏ an toàn ở tuần 3 xây niềm tin với sếp + cho bạn cảm giác "đã đóng góp thật".' },
+              hints: ['Chọn task KHÔNG đụng dữ liệu thật/thanh toán.', 'Bắt buộc: review từng dòng diff AI sinh trước khi commit.'],
+              deliverable: { vi: '1 commit nhỏ trên branch riêng + note (yêu cầu/cách làm/test/kết quả). Demo được cho sếp.' }
+            },
+            {
+              id: 's6', title: 'Viết 2 test pytest',
+              description: { vi: 'Test 1 hàm parse/validate. Nếu repo CHƯA có test (vibe code hay thiếu) → viết characterization test "chụp" hành vi hiện tại trước (nối Phase 1.10).' },
+              hints: ['<code>pip install pytest</code>; file <code>test_*.py</code>; hàm <code>def test_...()</code> + <code>assert</code>.'],
+              deliverable: { vi: '<code>pytest</code> xanh với ≥ 2 test.' }
+            },
+            {
+              id: 's7', title: 'Git "cơ bắp" — drill trên repo sandbox',
+              description: { vi: 'Tạo 1 repo nháp, luyện đến khi KHÔNG cần tra: tạo branch, commit nhỏ, <code>git diff</code>, revert 1 file (<code>git restore</code>), <code>git stash</code>/<code>pop</code>, <code>reset --soft</code> vs <code>--hard</code>, <code>git revert</code> (khi đã push).' },
+              mentalModel: { vi: 'Chỉ "biết" lệnh chưa đủ — phải làm tay nhiều lần để hết sợ đụng code thật. Tự gây tình huống "sửa hỏng" rồi tự cứu.' },
+              deliverable: { vi: 'Làm trơn cả 6 thao tác trên repo nháp; tự tin rollback khi sếp/AI sửa hỏng.' }
+            }
+          ]
+        },
+        {
+          id: 'l-6-2b-2',
+          type: 'theory',
+          title: 'An toàn dữ liệu + Báo cáo sếp (2 file phải có tuần đầu)',
+          subtitle: { vi: 'Công ty có kho/bán hàng/bảo hành — lỗi dữ liệu thật rất đắt. Và sếp bận → bạn phải báo cáo cực rõ.' },
+          theory: {
+            vi: `<h3>1) <code>data-safety-checklist.md</code> — trả lời TRƯỚC khi đụng dữ liệu</h3>
+<ul>
+  <li>Dữ liệu THẬT nằm ở đâu (DB nào / Excel / Google Sheet)?</li>
+  <li>Có <strong>backup</strong> không? Ai backup? Khôi phục được không?</li>
+  <li>Có bản <strong>staging / DB local / dữ liệu giả</strong> để test không? (KHÔNG test trên data thật.)</li>
+  <li>File <code>.env</code> nào KHÔNG được commit? Có <code>.env.example</code> chưa?</li>
+  <li>Bảng/file nào <strong>TUYỆT ĐỐI không sửa/xoá</strong> (đơn hàng, khách, tồn kho, thanh toán)?</li>
+  <li>Ai phải <strong>duyệt</strong> trước khi chạy script import/export lên dữ liệu thật?</li>
+</ul>
+
+<h3>2) <code>daily-report-template.md</code> — báo cáo sếp mỗi ngày/cuối tuần</h3>
+Sếp bận + tự code phần mềm → bạn báo cáo càng rõ càng được tin. 5 dòng:
+<ul>
+  <li><strong>Hôm nay em đã hiểu/làm gì?</strong></li>
+  <li><strong>Em test bằng cách nào?</strong> (đã chắc chưa phá gì cũ?)</li>
+  <li><strong>Em đang kẹt ở đâu?</strong> (cần anh giúp/quyết gì?)</li>
+  <li><strong>Rủi ro nếu sửa tiếp là gì?</strong></li>
+  <li><strong>Ngày mai em định làm gì?</strong></li>
+</ul>
+
+<h3>3) Checklist review diff (khi bạn còn là SV, đọc diff Python phức tạp)</h3>
+<ul>
+  <li>Thay đổi này ĐỘNG tới file/hàm nào? Có ngoài phạm vi mong đợi không?</li>
+  <li>Input/output của hàm đổi có đúng không? Có ca null/rỗng/âm chưa xử lý?</li>
+  <li>Có vô tình xoá/sửa logic cũ không (đọc cả phần bị xoá)?</li>
+  <li>Có log secret / hardcode key / câu lệnh nguy hiểm (drop/delete) không?</li>
+  <li>Nếu hỏng, rollback thế nào? (đã commit mốc sạch trước chưa?)</li>
+</ul>`
+          },
+          socraticPrompts: [
+            {
+              title: '[Hỏi sếp tuần đầu] An toàn dữ liệu',
+              prompt: `Copy đi hỏi sếp/senior (đừng đoán):
+1. Dữ liệu thật của phần mềm đang nằm ở đâu, và có backup không?
+2. Em có môi trường staging / dữ liệu giả để test không, hay chỉ có data thật?
+3. Bảng/dữ liệu nào em TUYỆT ĐỐI không được sửa/xoá?
+4. Trước khi chạy script đụng dữ liệu thật, em cần ai duyệt?
+5. Nếu em (hoặc AI) lỡ làm hỏng dữ liệu, quy trình khôi phục là gì?`
+            }
+          ],
+          keyTakeaways: {
+            vi: [
+              'Trước khi đụng dữ liệu: trả lời data-safety-checklist (data thật ở đâu, backup, staging, .env, bảng cấm, ai duyệt).',
+              'Báo cáo sếp 5 dòng/ngày: hiểu-làm gì · test sao · kẹt đâu · rủi ro · mai làm gì.',
+              'Review diff có checklist: phạm vi · input/output · logic bị xoá · secret/lệnh nguy hiểm · cách rollback.',
+              'Repo không có test (vibe code hay thiếu) → viết characterization test TRƯỚC khi sửa.',
+              'KHÔNG test trên dữ liệu thật — luôn có data giả/staging.'
+            ]
+          }
+        }
+      ],
+      references: [
+        { title: 'Python venv (môi trường ảo)', url: 'https://docs.python.org/3/library/venv.html' },
+        { title: 'pytest — Getting Started', url: 'https://docs.pytest.org/en/stable/getting-started.html' },
+        { title: 'Python logging HOWTO', url: 'https://docs.python.org/3/howto/logging.html' },
+        { title: 'Pro Git — Undoing Things', url: 'https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things' }
+      ]
+    },
+
     // ===================== MODULE 6.3 =====================
     {
       id: 'mod-6-3',
