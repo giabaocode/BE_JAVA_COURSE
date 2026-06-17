@@ -577,9 +577,43 @@ Sếp bận + tự code phần mềm → bạn báo cáo càng rõ càng đượ
               'KHÔNG test trên dữ liệu thật — luôn có data giả/staging.'
             ]
           }
+        },
+        {
+          id: 'l-6-2b-3',
+          type: 'project',
+          title: '3 drill thực chiến: Python app map · Backup-Restore · Ticket→PR→Merge',
+          subtitle: { vi: 'Biến checklist thành KỸ NĂNG TAY. Làm trên repo/dữ liệu GIẢ trước khi đụng đồ thật của công ty.' },
+          steps: [
+            {
+              id: 's1', title: 'Drill A — Python "app map" (nếu code sếp là WEB/GUI, không chỉ script)',
+              description: { vi: 'Lấy/dựng 1 repo Python theo đúng kiểu của sếp: Flask / FastAPI / Streamlit / Tkinter. Code web/GUI có thêm "tầng route/màn hình" mà script thuần không có — phải map riêng.' },
+              mentalModel: { vi: 'Script Excel/SQLite: lần thẳng hàm. Web/GUI: phải lần <em>route/màn hình → hàm xử lý → dữ liệu</em>. Vd Flask/FastAPI: tìm các <code>@app.route</code>/<code>@app.get</code>; Streamlit/Tkinter: tìm phần dựng UI + callback nút bấm.' },
+              hints: ['FastAPI/Flask: grep <code>@app.</code> hoặc <code>@router.</code> để liệt kê endpoint.', 'Streamlit: tìm <code>st.</code>; Tkinter: tìm <code>command=</code> của button.'],
+              deliverable: { vi: 'File <code>python-app-map.md</code>: app chạy từ file nào · route/màn hình nào gọi hàm nào · data đọc/ghi ở đâu · config/env ở đâu · chỗ KHÔNG được sửa · cách chạy test · cách rollback.' }
+            },
+            {
+              id: 's2', title: 'Drill B — Backup → (cố tình) hỏng → Restore → Verify',
+              description: { vi: 'Tạo dữ liệu giả mô phỏng customers/inventory/serial/repair_tickets. Tập đường lùi THẬT trước khi công ty cho chạy import Excel lên dữ liệu thật.' },
+              mentalModel: { vi: 'Với công ty kho/bán hàng/bảo hành, "hỏi có backup không" CHƯA đủ — bạn phải tự làm được backup→restore. Khi lỡ tay (hoặc AI lỡ tay), bạn cần biết chính xác cách khôi phục.' },
+              hints: ['SQLite: copy file .db; Postgres: <code>pg_dump</code> / <code>pg_restore</code>; Excel: copy file.', 'Sau restore, chạy query/COUNT để xác nhận số dòng + vài bản ghi khớp.'],
+              deliverable: { vi: 'File <code>data-restore-runbook.md</code>: lệnh backup · cách restore · query/checklist xác nhận dữ liệu quay lại đúng. Đã chạy thử end-to-end trên data giả.' }
+            },
+            {
+              id: 's3', title: 'Drill C — Workflow team: Ticket → Branch → PR → Review → Merge',
+              description: { vi: 'Trên repo giả, làm 3 ticket nhỏ: (1) sửa validation, (2) thêm export CSV, (3) thêm logging + 1 pytest. Mỗi ticket đi đủ vòng đời như công ty dùng GitHub/GitLab.' },
+              mentalModel: { vi: 'Module 6.2 mạnh ở Git rollback CÁ NHÂN; cái này là workflow NHÓM: issue → branch → commit → mở PR (mô tả: requirement/test/risk) → tự review diff → resolve comment → squash & merge. Khái niệm chi tiết xem Phase 5 (Team Skills).' },
+              hints: ['1 ticket = 1 branch = 1 PR (PR nhỏ < 400 dòng).', 'PR description: yêu cầu · cách test · rủi ro · ảnh/log kết quả.', 'Tập cả squash merge + viết 1 dòng release note.'],
+              deliverable: { vi: '3 PR (trên repo giả/GitHub cá nhân) có branch riêng + mô tả đầy đủ + tự review diff trước khi merge. Cross-link: Phase 5 mod-5-0 (Git/PR/code review).' }
+            }
+          ],
+          stretchGoals: { vi: ['Tự gây 1 merge conflict rồi resolve (Phase 5 có scenario).', 'Thêm GitHub Actions CI chạy pytest cho repo giả (Phase 3.7 có mẫu).'] }
         }
       ],
       references: [
+        { title: 'FastAPI', url: 'https://fastapi.tiangolo.com/' },
+        { title: 'Flask', url: 'https://flask.palletsprojects.com/' },
+        { title: 'PostgreSQL — pg_dump / pg_restore (backup)', url: 'https://www.postgresql.org/docs/16/backup-dump.html' },
+        { title: 'GitHub Flow (PR workflow)', url: 'https://docs.github.com/en/get-started/using-github/github-flow' },
         { title: 'Python venv (môi trường ảo)', url: 'https://docs.python.org/3/library/venv.html' },
         { title: 'pytest — Getting Started', url: 'https://docs.pytest.org/en/stable/getting-started.html' },
         { title: 'Python logging HOWTO', url: 'https://docs.python.org/3/howto/logging.html' },
