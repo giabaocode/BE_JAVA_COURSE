@@ -13,6 +13,167 @@ export const phase6 = {
   intro: { vi: 'Domain discovery → codebase & Claude Code setup → small value tasks → mini feature. Giữ Java + LeetCode là trục.' },
   modules: [
 
+    // ===================== MODULE 6.0 =====================
+    {
+      id: 'mod-6-0',
+      title: 'Tuần 0: Hardware Fundamentals cho Software Dev (phần cứng từ số 0)',
+      prerequisites: { vi: 'Phần cứng ≈ 0 cũng học được — module này dạy ở mức <strong>software dev cần để làm phần mềm + nói chuyện với kỹ thuật viên</strong>, KHÔNG dạy thiết kế mạch/hàn/firmware. Mục tiêu: hiểu đủ để mô hình hoá dữ liệu (Phase 1.10) và đỡ bỡ ngỡ ở công ty lắp ráp PC.' },
+      lessons: [
+        {
+          id: 'l-6-0-1',
+          type: 'theory',
+          title: 'Linh kiện PC/laptop & vai trò — và vì sao software dev cần biết',
+          subtitle: { vi: 'Biết mỗi cục là gì, làm gì, và nó thành dữ liệu gì trong phần mềm. Không cần biết bên trong nó chạy điện ra sao.' },
+          mentalModel: {
+            vi: `Hình dung một bộ PC như một <strong>văn phòng</strong>: <strong>CPU</strong> = nhân viên xử lý (làm việc nhanh/chậm), <strong>RAM</strong> = mặt bàn (chỗ để việc đang làm — mất điện là sạch), <strong>SSD/HDD</strong> = tủ hồ sơ (lưu lâu dài), <strong>mainboard</strong> = toà nhà nối mọi phòng, <strong>PSU</strong> (nguồn) = trạm điện, <strong>GPU</strong> (card đồ hoạ) = hoạ sĩ chuyên vẽ (game/AI/đồ hoạ).
+<br/><br/>
+Là <em>software dev</em> ở công ty lắp ráp, bạn KHÔNG cần biết transistor hay điện áp. Bạn cần biết: mỗi linh kiện <strong>là gì, để làm gì, có thông số chính nào</strong> — vì những thông số đó sẽ thành <strong>cột trong database</strong> và <strong>field trong form nhập kho/báo giá</strong>.`
+          },
+          theory: {
+            vi: `<h3>Bảng linh kiện — vai trò + thông số chính + thành dữ liệu gì</h3>
+<ul>
+  <li><strong>CPU</strong> (bộ xử lý): nhanh/chậm. Thông số: hãng (Intel/AMD), đời, số nhân (core), xung (GHz), <strong>socket</strong> (quan trọng cho compatibility). → DB: model, socket, cores.</li>
+  <li><strong>RAM</strong> (bộ nhớ tạm): dung lượng (GB), <strong>loại DDR4/DDR5</strong>, bus (MHz). Mất điện = mất. → DB: capacityGB, type, speed.</li>
+  <li><strong>SSD/HDD</strong> (ổ lưu trữ): dung lượng, <strong>form factor</strong> (2.5"/M.2), chuẩn (SATA/NVMe). SSD nhanh hơn HDD nhiều. → DB: capacityGB, formFactor, interface.</li>
+  <li><strong>Mainboard</strong> (bo mạch chủ): nối mọi thứ. Có <strong>socket CPU</strong> + khe RAM + khe M.2 + chipset. → DB: socket, ramSlots, chipset.</li>
+  <li><strong>PSU</strong> (nguồn): cấp điện. Thông số: <strong>công suất (W)</strong>, chuẩn 80+ . → DB: wattage.</li>
+  <li><strong>GPU</strong> (card đồ hoạ, vd NVIDIA): vẽ hình/đồ hoạ/AI. Thông số: model, VRAM (GB), <strong>điện năng cần (W)</strong>, kích thước. → DB: model, vramGB, powerW.</li>
+  <li><strong>Màn hình</strong>: kích thước (inch), độ phân giải, tần số quét (Hz). <strong>Pin</strong> (laptop): dung lượng (Wh), chai pin. <strong>Adapter</strong> (sạc): công suất (W). <strong>Cổng kết nối</strong>: USB-A/C, HDMI, DisplayPort, jack.</li>
+</ul>
+
+<h3>The "Why" — vì sao biết mấy thứ này lại quan trọng cho phần mềm</h3>
+Khi bạn làm form "nhập sản phẩm mới" hay "tạo phiếu sửa", bạn phải biết <em>linh kiện có những thuộc tính gì</em> để thiết kế field/cột đúng. Không biết "SSD có form factor" → form thiếu field → nhập kho sai → phần mềm vô dụng. Đây là lý do domain knowledge = nền của schema (nối thẳng Phase 1.10 domain model).
+
+<h3>Junior Pitfalls (software dev mới chạm phần cứng)</h3>
+<ul>
+  <li>Nhầm RAM (tạm, mất điện là sạch) với ổ cứng (lưu lâu dài) — 2 thứ hoàn toàn khác.</li>
+  <li>Tưởng "GB nào cũng như nhau": RAM 16GB ≠ SSD 16GB ≠ VRAM 16GB (khác vai trò hoàn toàn).</li>
+  <li>Bỏ qua đơn vị: công suất = W, dung lượng = GB, xung = GHz/MHz — nhập sai đơn vị = dữ liệu rác.</li>
+</ul>`
+          },
+          socraticPrompts: [
+            {
+              title: '[Hỏi kỹ thuật viên / tự kiểm] Linh kiện → dữ liệu',
+              prompt: `KHÔNG cần đáp án sẵn. Tự trả lời (hoặc hỏi anh kỹ thuật):
+1. Một cái laptop khách mang tới sửa — phần mềm cần lưu những thông tin gì để quản lý? (gợi ý: serial, cấu hình, lỗi)
+2. Khi nhập 1 lô SSD vào kho, form cần những field nào? (dung lượng, form factor, chuẩn, số lượng, serial?)
+3. Card GPU (NVIDIA) khác CPU ở chỗ nào về vai trò? Vì sao công ty mình bán/lắp nhiều GPU?
+4. Thông số nào của linh kiện ảnh hưởng "lắp có vừa/chạy được không"? (gợi ý: socket, form factor, công suất)`
+            }
+          ],
+          keyTakeaways: {
+            vi: [
+              'CPU=xử lý, RAM=bộ nhớ tạm (mất điện là sạch), SSD/HDD=lưu lâu dài, mainboard=nối, PSU=nguồn, GPU=đồ hoạ/AI.',
+              'Software dev cần biết linh kiện LÀ GÌ + thông số chính → để thiết kế field/cột database, KHÔNG cần biết điện tử.',
+              'Thông số chính: CPU(socket), RAM(DDR4/5), SSD(form factor/NVMe), PSU(W), GPU(VRAM/W).',
+              'Domain knowledge = nền của schema (nối Phase 1.10). Không học sâu mạch/hàn/firmware.'
+            ]
+          }
+        },
+        {
+          id: 'l-6-0-2',
+          type: 'theory',
+          title: 'Compatibility cơ bản — "lắp có vừa & chạy được không"',
+          subtitle: { vi: 'Quy tắc tương thích = chính là validation rules phần mềm có thể kiểm. Học để hiểu + để code form không cho cấu hình sai.' },
+          mentalModel: {
+            vi: `Lắp PC giống ghép Lego: không phải miếng nào cũng ghép được với miếng nào. <strong>Compatibility</strong> = các quy tắc "cái này có khớp cái kia không". Là dev, mỗi quy tắc tương thích là một <strong>validation rule</strong> bạn có thể đưa vào phần mềm (vd: chọn CPU socket LGA1700 thì chỉ cho chọn mainboard cùng socket).`
+          },
+          theory: {
+            vi: `<h3>Các quy tắc tương thích cốt lõi</h3>
+<ul>
+  <li><strong>CPU ↔ Mainboard</strong>: phải CÙNG <strong>socket</strong> (vd Intel LGA1700, AMD AM5). Khác socket = không lắp được. (Quy tắc tương thích #1.)</li>
+  <li><strong>RAM ↔ Mainboard</strong>: phải đúng <strong>loại</strong> (DDR4 vào khe DDR4, DDR5 vào khe DDR5 — không lẫn được) + không vượt số khe / dung lượng tối đa.</li>
+  <li><strong>SSD ↔ Mainboard</strong>: đúng <strong>form factor + khe</strong> (M.2 NVMe cần khe M.2; 2.5" SATA cần cổng SATA).</li>
+  <li><strong>PSU ↔ cả hệ</strong>: <strong>công suất (W)</strong> phải đủ cho tổng linh kiện (đặc biệt GPU ngốn điện). Thiếu W = không ổn định/không lên.</li>
+  <li><strong>GPU ↔ case + PSU</strong>: GPU phải <strong>vừa kích thước</strong> case + PSU đủ W + đủ đầu cắm nguồn.</li>
+</ul>
+
+<h3>The "Why" — biến quy tắc thành phần mềm</h3>
+Một tính năng giá trị công ty thật cần: <em>"trình cấu hình PC"</em> — khách/nhân viên chọn linh kiện, phần mềm <strong>chặn cấu hình không tương thích</strong> (CPU khác socket mainboard → báo lỗi; PSU thiếu W → cảnh báo). Mỗi quy tắc ở trên = 1 hàm validate. Đây là chỗ domain phần cứng gặp backend của bạn.
+
+<h3>Junior Pitfalls</h3>
+<ul>
+  <li>Tưởng "cứ cắm là chạy" — sai socket/loại RAM là không lắp được, không phải chậm.</li>
+  <li>Quên PSU: dàn mạnh + nguồn yếu = sập nguồn khi tải nặng (thường gặp khi thêm GPU).</li>
+  <li>Hard-code danh sách tương thích thay vì dữ liệu hoá (socket/form factor nên là field, để quy tắc tự suy ra).</li>
+</ul>`
+          },
+          socraticPrompts: [
+            {
+              title: '[Thiết kế] Trình kiểm tra tương thích',
+              prompt: `KHÔNG cho code. Hỏi tôi:
+1. Để phần mềm biết "CPU này có lắp được mainboard kia không", mỗi entity cần lưu field gì?
+2. Quy tắc "PSU đủ công suất" — phần mềm tính thế nào? (tổng W các linh kiện so với W của PSU)
+3. Nếu khách chọn GPU NVIDIA mạnh nhưng PSU 350W — phần mềm nên báo gì, ở bước nào?
+4. Danh sách tương thích nên hard-code hay suy ra từ thuộc tính (socket/formFactor)? Vì sao cách sau dễ bảo trì hơn?`
+            }
+          ],
+          keyTakeaways: {
+            vi: [
+              'Compatibility = quy tắc ghép linh kiện = validation rules trong phần mềm.',
+              'Cốt lõi: CPU↔mainboard (cùng socket), RAM đúng loại DDR, SSD đúng form factor/khe, PSU đủ W, GPU vừa case + đủ nguồn.',
+              'Tính năng "trình cấu hình PC chặn cấu hình sai" = nơi domain phần cứng gặp backend.',
+              'Dữ liệu hoá thuộc tính (socket/formFactor/W) thay vì hard-code danh sách tương thích.'
+            ]
+          }
+        },
+        {
+          id: 'l-6-0-3',
+          type: 'theory',
+          title: 'BIOS/driver/OS + quy trình test + vòng đời sửa chữa',
+          subtitle: { vi: 'Hiểu QUY TRÌNH (lắp xong → cài → test → bảo hành) ở mức nhận biết, để mô hình hoá phần mềm quản lý nó.' },
+          mentalModel: {
+            vi: `Lắp xong phần cứng mới là một nửa — còn phải <strong>cài phần mềm nền + test + theo dõi bảo hành</strong>. Bạn không cần tự làm thợ, nhưng cần hiểu <em>quy trình</em> để xây phần mềm quản lý nó (phiếu sửa, log chẩn đoán, trạng thái, bảo hành).`
+          },
+          theory: {
+            vi: `<h3>Phần mềm nền (mức nhận biết)</h3>
+<ul>
+  <li><strong>BIOS/UEFI</strong>: phần mềm nhỏ trong mainboard, chạy TRƯỚC hệ điều hành — nhận diện linh kiện, chọn ổ boot. (Bạn chỉ cần biết nó tồn tại + để làm gì.)</li>
+  <li><strong>Driver</strong>: phần mềm để OS "nói chuyện" với linh kiện (driver GPU NVIDIA, driver mạng...). Thiếu driver = thiết bị không chạy đúng.</li>
+  <li><strong>Cài Windows/Linux</strong>: cài hệ điều hành lên SSD. <strong>Device Manager</strong> (Windows): xem thiết bị nào nhận/lỗi.</li>
+</ul>
+
+<h3>Quy trình test (hiểu để ghi log, không cần tự test sâu)</h3>
+<ul>
+  <li>Test <strong>RAM</strong> (MemTest), <strong>SSD</strong> (sức khoẻ/SMART), <strong>nhiệt độ</strong> (CPU/GPU khi tải), <strong>pin</strong> (chai bao nhiêu %), <strong>màn hình</strong> (điểm chết). → mỗi kết quả test = 1 <code>DiagnosticLog</code> trong phần mềm.</li>
+</ul>
+
+<h3>Vòng đời sửa chữa → trạng thái phần mềm</h3>
+Khách mang máy → <strong>nhận</strong> (received) → <strong>chẩn đoán</strong> (diagnosing) → <strong>chờ linh kiện</strong> (waiting_parts) → <strong>sửa</strong> (repairing) → <strong>test</strong> (testing) → <strong>hoàn tất</strong> (completed) → <strong>trả máy</strong> (returned). Kèm: <strong>serial number</strong> (định danh từng máy), <strong>warranty</strong> (còn hạn không), <strong>quote</strong> (báo giá). → Đây CHÍNH là domain model bạn code ở Phase 1.10 + Capstone A.
+
+<h3>Chưa cần học sâu (và khi nào mới cần)</h3>
+<ul>
+  <li>Thiết kế mạch/hàn/PCB/sửa mainboard → chỉ khi được giao làm kỹ thuật (≠ vai phần mềm).</li>
+  <li>Firmware, UART/I2C/SPI, MQTT/IoT → chỉ khi phần mềm phải giao tiếp thiết bị (hỏi giám đốc xác nhận trước).</li>
+</ul>`
+          },
+          socraticPrompts: [
+            {
+              title: '[Nối domain ↔ phần mềm] Từ quy trình tới schema',
+              prompt: `KHÔNG cho code. Hỏi tôi:
+1. Mỗi bước trong vòng đời sửa chữa (nhận → ... → trả) nên là gì trong phần mềm? (gợi ý: enum trạng thái)
+2. Kết quả test RAM/SSD/nhiệt độ nên lưu thế nào để tra lại lịch sử? (gợi ý: DiagnosticLog gắn ticket)
+3. Làm sao phần mềm biết một máy còn bảo hành? Cần lưu mốc gì + tính ra sao?
+4. Vì sao serial number phải UNIQUE trong database?`
+            }
+          ],
+          keyTakeaways: {
+            vi: [
+              'BIOS/UEFI/driver/Device Manager: hiểu để làm gì ở mức nhận biết, không cần thành thợ.',
+              'Mỗi kết quả test (RAM/SSD/nhiệt/pin/màn hình) = 1 DiagnosticLog trong phần mềm.',
+              'Vòng đời sửa chữa (received→...→returned) = enum trạng thái; serial/warranty/quote = entity — chính là Phase 1.10 + Capstone A.',
+              'Chưa cần: mạch/hàn/firmware/embedded — chờ bằng chứng công ty thực sự cần.'
+            ]
+          }
+        }
+      ],
+      references: [
+        { title: 'PCPartPicker (xem thông số & tương thích linh kiện thực tế)', url: 'https://pcpartpicker.com/' },
+        { title: 'NVIDIA GPU specs', url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/' },
+        { title: 'Microsoft — Device Manager', url: 'https://support.microsoft.com/windows/device-manager' }
+      ]
+    },
+
     // ===================== MODULE 6.1 =====================
     {
       id: 'mod-6-1',
