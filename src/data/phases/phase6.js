@@ -30,15 +30,72 @@ export const phase6 = {
 Là <em>software dev</em> ở công ty lắp ráp, bạn KHÔNG cần biết transistor hay điện áp. Bạn cần biết: mỗi linh kiện <strong>là gì, để làm gì, có thông số chính nào</strong> — vì những thông số đó sẽ thành <strong>cột trong database</strong> và <strong>field trong form nhập kho/báo giá</strong>.`
           },
           theory: {
-            vi: `<h3>Bảng linh kiện — vai trò + thông số chính + thành dữ liệu gì</h3>
+            vi: `<h3>Từng linh kiện là gì — giải thích thật dễ</h3>
+Với mỗi linh kiện, mình nói 3 thứ: <em>nó là gì (ví đời thường) · các con số trên hộp NGHĨA LÀ GÌ · phần mềm lưu lại gì</em>. Đọc chậm, không cần thuộc.
+
+<p><strong>1) CPU — "bộ não" của máy</strong><br/>
+Là cục tính toán chính, quyết định máy chạy nhanh hay chậm — ví như <em>người nhân viên</em> làm việc. Các con số hay thấy:</p>
 <ul>
-  <li><strong>CPU</strong> (bộ xử lý): nhanh/chậm. Thông số: hãng (Intel/AMD), đời, số nhân (core), xung (GHz), <strong>socket</strong> (quan trọng cho compatibility). → DB: model, socket, cores.</li>
-  <li><strong>RAM</strong> (bộ nhớ tạm): dung lượng (GB), <strong>loại DDR4/DDR5</strong>, bus (MHz). Mất điện = mất. → DB: capacityGB, type, speed.</li>
-  <li><strong>SSD/HDD</strong> (ổ lưu trữ): dung lượng, <strong>form factor</strong> (2.5"/M.2), chuẩn (SATA/NVMe). SSD nhanh hơn HDD nhiều. → DB: capacityGB, formFactor, interface.</li>
-  <li><strong>Mainboard</strong> (bo mạch chủ): nối mọi thứ. Có <strong>socket CPU</strong> + khe RAM + khe M.2 + chipset. → DB: socket, ramSlots, chipset.</li>
-  <li><strong>PSU</strong> (nguồn): cấp điện. Thông số: <strong>công suất (W)</strong>, chuẩn 80+ . → DB: wattage.</li>
-  <li><strong>GPU</strong> (card đồ hoạ, vd NVIDIA): vẽ hình/đồ hoạ/AI. Thông số: model, VRAM (GB), <strong>điện năng cần (W)</strong>, kích thước. → DB: model, vramGB, powerW.</li>
-  <li><strong>Màn hình</strong>: kích thước (inch), độ phân giải, tần số quét (Hz). <strong>Pin</strong> (laptop): dung lượng (Wh), chai pin. <strong>Adapter</strong> (sạc): công suất (W). <strong>Cổng kết nối</strong>: USB-A/C, HDMI, DisplayPort, jack.</li>
+  <li><strong>Hãng</strong>: Intel hoặc AMD (2 hãng làm CPU lớn nhất).</li>
+  <li><strong>Model / đời</strong>: ví dụ "Intel Core i5-13400". Số đời càng mới thường càng mạnh.</li>
+  <li><strong>Số nhân (core)</strong>: số "người" cùng làm việc bên trong CPU. Nhiều nhân = làm nhiều việc một lúc tốt hơn.</li>
+  <li><strong>Xung (GHz)</strong>: tốc độ mỗi nhân làm việc. Cao hơn = nhanh hơn (giống nhịp tay làm việc nhanh hơn).</li>
+  <li><strong>Socket</strong>: "kiểu chân cắm" của CPU. RẤT quan trọng — CPU chỉ cắm vừa mainboard CÙNG loại socket (như phích điện phải đúng ổ).</li>
+</ul>
+<p><em>→ Phần mềm lưu: model, socket, số nhân.</em></p>
+
+<p><strong>2) RAM — "mặt bàn làm việc"</strong><br/>
+Chỗ để mọi việc CPU đang làm dở. Đặc điểm: <strong>tắt điện là mất sạch</strong> (như dọn bàn cuối ngày). Vì thế nó KHÁC ổ cứng (nơi lưu lâu dài).</p>
+<ul>
+  <li><strong>Dung lượng (GB)</strong>: bàn rộng cỡ nào. Nhiều GB = mở được nhiều việc cùng lúc không lag.</li>
+  <li><strong>Loại DDR4 / DDR5</strong>: "thế hệ" của RAM. DDR5 mới hơn. Quan trọng: DDR4 và DDR5 KHÔNG cắm lẫn nhau được.</li>
+  <li><strong>Bus / tốc độ (MHz)</strong>: RAM truyền dữ liệu nhanh cỡ nào.</li>
+</ul>
+<p><em>→ Phần mềm lưu: capacityGB, type (DDR4/5), speed.</em></p>
+
+<p><strong>3) SSD / HDD — "tủ hồ sơ" lưu lâu dài</strong><br/>
+Nơi cất dữ liệu KHÔNG mất khi tắt máy (Windows, file, ảnh...). <strong>SSD nhanh hơn HDD rất nhiều</strong> (SSD như tủ ngay cạnh bàn; HDD như kho ở xa, có đĩa quay).</p>
+<ul>
+  <li><strong>Dung lượng (GB/TB)</strong>: chứa được bao nhiêu.</li>
+  <li><strong>Form factor (kích thước/kiểu)</strong>: "hình dáng" của ổ — loại <em>2.5 inch</em> (như hộp nhỏ) hay <em>M.2</em> (như thanh kẹo cao su cắm thẳng lên main). Quan trọng vì main phải có đúng khe cho nó.</li>
+  <li><strong>Chuẩn kết nối (SATA / NVMe)</strong>: "đường truyền". NVMe nhanh hơn SATA nhiều.</li>
+</ul>
+<p><em>→ Phần mềm lưu: capacityGB, formFactor, interface.</em></p>
+
+<p><strong>4) Mainboard (bo mạch chủ) — "toà nhà" nối mọi thứ</strong><br/>
+Tấm bảng lớn để cắm mọi linh kiện vào và cho chúng nói chuyện với nhau.</p>
+<ul>
+  <li><strong>Socket CPU</strong>: kiểu chân cắm CPU mà main này nhận (phải khớp với socket của CPU).</li>
+  <li><strong>Số khe RAM</strong> + loại RAM nó nhận (DDR4 hay DDR5).</li>
+  <li><strong>Khe M.2</strong>: để cắm SSD loại M.2.</li>
+  <li><strong>Chipset</strong>: "đời" của main, quyết định nó hỗ trợ CPU/tính năng nào.</li>
+</ul>
+<p><em>→ Phần mềm lưu: socket, ramSlots, chipset.</em></p>
+
+<p><strong>5) PSU (nguồn) — "trạm điện" của máy</strong><br/>
+Biến điện ngoài ổ cắm thành điện cho linh kiện. Nếu yếu quá, máy chạy không ổn hoặc không lên.</p>
+<ul>
+  <li><strong>Công suất (W — watt)</strong>: cấp được bao nhiêu điện. Dàn mạnh (nhất là có GPU) cần nhiều W hơn.</li>
+  <li><strong>Chuẩn 80 PLUS</strong>: nhãn cho biết nguồn chạy hiệu quả/tiết kiệm cỡ nào.</li>
+</ul>
+<p><em>→ Phần mềm lưu: wattage.</em></p>
+
+<p><strong>6) GPU (card đồ hoạ, vd NVIDIA) — "hoạ sĩ" chuyên vẽ</strong><br/>
+Lo phần hình ảnh nặng: game, đồ hoạ, và AI. Đây là linh kiện công ty bạn bán/lắp nhiều (hợp tác NVIDIA).</p>
+<ul>
+  <li><strong>Model</strong>: vd "RTX 5080" (cách đọc tên có ở bài 6.0.4).</li>
+  <li><strong>VRAM (GB)</strong>: bộ nhớ RIÊNG của card (khác RAM máy). Cao = chạy đồ hoạ/AI nặng tốt hơn.</li>
+  <li><strong>Công suất cần (W)</strong>: card mạnh ăn nhiều điện → phải có PSU đủ khoẻ.</li>
+  <li><strong>Kích thước</strong>: card to phải vừa thùng máy (case).</li>
+</ul>
+<p><em>→ Phần mềm lưu: model, vramGB, powerW.</em></p>
+
+<p><strong>7) Linh kiện khác (gọn)</strong></p>
+<ul>
+  <li><strong>Màn hình</strong>: kích thước (inch), độ phân giải (càng cao càng nét), tần số quét (Hz — cao thì hình mượt hơn).</li>
+  <li><strong>Pin</strong> (laptop): dung lượng (Wh); dùng lâu pin "chai" → giữ điện kém đi.</li>
+  <li><strong>Adapter (sạc)</strong>: công suất (W) — phải đủ cho máy.</li>
+  <li><strong>Cổng kết nối</strong>: các "lỗ cắm" — USB-A/USB-C, HDMI/DisplayPort (cắm màn hình), jack tai nghe.</li>
 </ul>
 
 <h3>The "Why" — vì sao biết mấy thứ này lại quan trọng cho phần mềm</h3>
@@ -133,10 +190,16 @@ Một tính năng giá trị công ty thật cần: <em>"trình cấu hình PC"<
   <li><strong>Cài Windows/Linux</strong>: cài hệ điều hành lên SSD. <strong>Device Manager</strong> (Windows): xem thiết bị nào nhận/lỗi.</li>
 </ul>
 
-<h3>Quy trình test (hiểu để ghi log, không cần tự test sâu)</h3>
+<h3>Quy trình test (hiểu để GHI LẠI, không cần tự test sâu)</h3>
+Sau khi lắp/sửa, kỹ thuật viên kiểm tra máy có "khoẻ" không. Bạn cần biết họ kiểm GÌ để phần mềm ghi lại kết quả:
 <ul>
-  <li>Test <strong>RAM</strong> (MemTest), <strong>SSD</strong> (sức khoẻ/SMART), <strong>nhiệt độ</strong> (CPU/GPU khi tải), <strong>pin</strong> (chai bao nhiêu %), <strong>màn hình</strong> (điểm chết). → mỗi kết quả test = 1 <code>DiagnosticLog</code> trong phần mềm.</li>
+  <li><strong>RAM</strong>: chạy phần mềm dò lỗi bộ nhớ (vd MemTest) → RAM có lỗi không.</li>
+  <li><strong>SSD/ổ cứng</strong>: xem "sức khoẻ" ổ (chỉ số SMART) → ổ sắp hỏng chưa.</li>
+  <li><strong>Nhiệt độ</strong>: cho máy chạy nặng, đo CPU/GPU nóng tới đâu → có quá nóng không.</li>
+  <li><strong>Pin</strong> (laptop): pin còn giữ được bao nhiêu % so với lúc mới (độ "chai").</li>
+  <li><strong>Màn hình</strong>: soi điểm chết (chấm không sáng).</li>
 </ul>
+<em>→ Mỗi lần test ra 1 kết quả = lưu thành 1 dòng <code>DiagnosticLog</code> trong phần mềm (gắn với phiếu sửa). Bạn KHÔNG cần tự biết test sâu — chỉ cần hiểu để thiết kế chỗ ghi kết quả.</em>
 
 <h3>Vòng đời sửa chữa → trạng thái phần mềm</h3>
 Khách mang máy → <strong>nhận</strong> (received) → <strong>chẩn đoán</strong> (diagnosing) → <strong>chờ linh kiện</strong> (waiting_parts) → <strong>sửa</strong> (repairing) → <strong>test</strong> (testing) → <strong>hoàn tất</strong> (completed) → <strong>trả máy</strong> (returned). Kèm: <strong>serial number</strong> (định danh từng máy), <strong>warranty</strong> (còn hạn không), <strong>quote</strong> (báo giá). → Đây CHÍNH là domain model bạn code ở Phase 1.10 + Capstone A.
