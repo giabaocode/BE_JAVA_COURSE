@@ -94,7 +94,17 @@ import java.util.*;   // List, Map, Set, Queue, Deque, ArrayList, HashMap, HashS
   <li><strong>Trùng giá trị</strong>; <strong>số âm</strong>; số rất lớn (<strong>overflow</strong> — lý do comparator dùng <code>Integer.compare</code> chứ KHÔNG phải <code>a - b</code>).</li>
   <li>Với graph: <strong>đồ thị rời</strong> (disconnected) và <strong>có chu trình</strong> (cycle).</li>
   <li><strong>Ca không thể</strong> (không có đáp án → trả <code>-1</code>/rỗng/<code>false</code> cho đúng).</li>
-</ul>` },
+</ul>
+
+<h3>Lịch luyện bền vững khi đang đi internship — 3 buổi/tuần</h3>
+DSA dễ bị bỏ khi bận việc công ty. Giữ nhịp <strong>3 buổi/tuần × 60–90 phút</strong> (không cần nhiều hơn lúc đầu):
+<ul>
+  <li><strong>2 buổi bài mới</strong>: học 1 pattern → làm bài Easy "mồi" → 1–2 bài Medium.</li>
+  <li><strong>1 buổi review</strong>: làm lại bài tuần trước TỪ TRÍ NHỚ (spaced repetition) — đây là buổi giữ kiến thức không rơi.</li>
+  <li>Tuần công ty bận: vẫn giữ 3 buổi NHƯNG rút còn 30 phút/buổi — đừng để trống tuần nào.</li>
+</ul>
+<h3>Sổ tay pattern (tự xây — vé phỏng vấn)</h3>
+Mỗi pattern ghi 1 trang: (1) <em>dấu hiệu nhận ra</em> pattern, (2) <em>template tư duy</em>, (3) 1–2 <em>bài đại diện</em>, (4) <em>bẫy</em> hay sai. Trước phỏng vấn chỉ cần đọc sổ tay, không cày lại từ đầu. Dùng <strong>Bug Journal</strong> trên web này làm nơi ghi.` },
       keyTakeaways: { vi: [
         'Hiểu CÂU HỎI pattern trả lời, đừng thuộc code.',
         'Comparator cho int dùng <code>Integer.compare</code>, không dùng <code>a - b</code> (tránh overflow).',

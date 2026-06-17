@@ -2,7 +2,7 @@
 export default {
   id: 'mod-3-3',
   title: 'Spring Data JPA & Hibernate — Behind the Scenes',
-  prerequisites: { vi: 'Hoàn thành <code>Module 3.0 (SQL), 3.1 (Docker+Postgres), 3.2 (Spring foundations)</code>.' },
+  prerequisites: { vi: 'Hoàn thành <code>Module 3.0 (SQL), 3.1 (Docker+Postgres), 3.2 (Spring foundations)</code>. 📌 Schema nghiệp vụ công ty (repair/inventory/warranty) + Python bridge script được xây thành sản phẩm hoàn chỉnh ở <strong>Capstone A (RepairCore) & B (RepairCLI) — Phase 4</strong>.' },
   lessons: [
     {
       id: 'l-3-3-1',
