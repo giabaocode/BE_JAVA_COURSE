@@ -14,6 +14,7 @@ import treesBstHeap     from './phase1/06-trees-bst-heap.js'
 import sorting          from './phase1/07-sorting.js'
 import oopMiniProjects  from './phase1/08-oop-mini-projects.js'
 import javaEssentials   from './phase1/09-java-essentials.js'
+import readingDomain    from './phase1/10-reading-domain.js'
 
 export const phase1 = {
   id: 'phase-1',
@@ -31,6 +32,7 @@ export const phase1 = {
     hashmapHashset,
     treesBstHeap,
     sorting,
-    oopMiniProjects
+    oopMiniProjects,
+    readingDomain
   ]
 }
