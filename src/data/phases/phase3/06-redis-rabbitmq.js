@@ -646,7 +646,9 @@ public class OrderService {
     public Order createOrder(CreateOrderRequest req) {
         Order order = repo.save(new Order(req));
 
-        // Publish event AFTER DB commit
+        // ⚠️ BẪY: convertAndSend Ở ĐÂY chạy TRONG transaction (TRƯỚC khi commit).
+        // Nếu commit sau đó FAIL nhưng message đã gửi → "dual-write problem" (DB và queue lệch nhau).
+        // Cách đúng: dùng @TransactionalEventListener(phase = AFTER_COMMIT) hoặc Outbox pattern (xem phần dưới).
         rabbit.convertAndSend(
             RabbitConfig.ORDER_EXCHANGE,
             RabbitConfig.ORDER_CREATED_KEY,

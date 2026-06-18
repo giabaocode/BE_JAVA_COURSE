@@ -237,7 +237,7 @@ while (left < right) {
     return res;
 }`,
         lang: 'java',
-        complexityVi: 'Time O(n²) · Space O(1) (không tính output).',
+        complexityVi: 'Time O(n²) · Space O(log n) (stack của Arrays.sort; không tính output).',
         explanationVi: 'Sort → 2Sum cho mỗi i. Skip duplicate ở 3 cấp: (1) skip i nếu trùng prev → tránh triplet trùng do i; (2) skip l/r sau match → tránh triplet trùng do hoán vị.'
       }
     },
@@ -379,7 +379,7 @@ private void swap(int[] a, int i, int j) { int t = a[i]; a[i] = a[j]; a[j] = t; 
     return res;
 }`,
         lang: 'java',
-        complexityVi: 'Time O(n³) · Space O(1).',
+        complexityVi: 'Time O(n³) · Space O(log n) (stack của Arrays.sort).',
         explanationVi: 'Generalize kSum: cố định k-2 phần tử (n^(k-2) lựa chọn), two-pointer cho 2 phần tử cuối. Đối với 4Sum: O(n²) × O(n) = O(n³). Dùng <code>long</code> tránh overflow khi nums lên đến 10^9.'
       }
     }

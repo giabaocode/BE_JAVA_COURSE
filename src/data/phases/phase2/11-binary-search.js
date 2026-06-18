@@ -357,7 +357,7 @@ private boolean canSplit(int[] nums, int maxSum, int k) {
     int m = a.length, n = b.length;
     int lo = 0, hi = m;
     while (lo <= hi) {
-        int i = (lo + hi) / 2;
+        int i = lo + (hi - lo) / 2;
         int j = (m + n + 1) / 2 - i;
         int maxL1 = i == 0 ? Integer.MIN_VALUE : a[i - 1];
         int minR1 = i == m ? Integer.MAX_VALUE : a[i];

@@ -620,7 +620,7 @@ Spreadsheet: every interview + outcome + lessons learned. Pattern emerge — b�
   <li><strong>Burn out tuần 4</strong> → bỏ cuộc. Plan rest day mỗi tuần.</li>
   <li><strong>So sánh với người khác</strong> trên LinkedIn → demotivate. Track YOUR progress.</li>
   <li><strong>Ghost employer sau interview</strong> → cháy bridge. Always reply.</li>
-  <li><strong>Apply trên job board duy nhất</strong> (LinkedIn) → miss 70% job. Diversify: TopCV, ITviec, VietnamWorks, Wellfound, direct company career page.</li>
+  <li><strong>Apply trên job board duy nhất</strong> (LinkedIn) → bỏ lỡ nhiều tin (ước lượng minh họa). Diversify: TopCV, ITviec, VietnamWorks, Wellfound, direct company career page.</li>
 </ul>`
       },
       socraticPrompts: [

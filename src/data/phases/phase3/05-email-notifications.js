@@ -584,8 +584,9 @@ public class StudyReminderJob {
 "0 0 0 1 1 *"           — đầu năm (1/1 0:00)
 "0 0 22 * * *"          — 10 PM mỗi ngày
 
-Tip: dùng https://crontab.guru để debug (lưu ý: Unix 5 fields,
-     bỏ field đầu khi paste vào Spring).`
+Tip: dùng https://crontab.guru để debug. LƯU Ý: crontab.guru là Unix 5 field
+     (phút giờ ngày tháng thứ); Spring là 6 field (THÊM field GIÂY ở ĐẦU).
+     Vd Unix "0 22 * * *" → Spring "0 0 22 * * *" (thêm số 0 giây ở đầu).`
         }
       ],
       socraticPrompts: [

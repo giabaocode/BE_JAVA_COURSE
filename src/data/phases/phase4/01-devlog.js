@@ -514,7 +514,7 @@ Implement: PUT → insert nếu chưa có (đã có thì bỏ qua); DELETE → x
             'Comments flat (1 level) — Devlog không cần nested.',
             'Atomic increment: <code>UPDATE posts SET like_count = like_count + 1 WHERE id = :id</code>.'
           ],
-          deliverable: { vi: 'Like 1 lần → 201, count=1. Like lần nữa → 200, count=0 (unlike). Postman/curl test.' }
+          deliverable: { vi: '<code>PUT /posts/{id}/like</code> gọi 2 lần → vẫn 200, count=1 (idempotent, không cộng dồn). <code>DELETE /posts/{id}/like</code> → count=0; gọi lại vẫn count=0. Retry KHÔNG đổi kết quả. Postman/curl test.' }
         },
         {
           id: 's8',

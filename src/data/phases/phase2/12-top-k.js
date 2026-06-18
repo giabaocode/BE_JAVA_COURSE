@@ -51,7 +51,6 @@ for (int n : nums) {
   prompts: [
     {
       title: 'Vì sao MIN-heap cho top K LARGEST?',
-  prerequisites: { vi: 'Hoàn thành <code>Pattern 9 — Two Heaps</code>. Hiểu heap operations O(log n).' },
       prompt: `Sai lầm phổ biến. KHÔNG cho đáp án. Hỏi tôi:
 1. Max-heap size = n, pop K lần — time?
 2. Max-heap size = K, đẩy giá trị lớn vào — làm sao biết khi nào pop?
@@ -131,7 +130,7 @@ for (int n : nums) {
     Map<Integer, Integer> count = new HashMap<>();
     for (int n : nums) count.merge(n, 1, Integer::sum);
 
-    PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+    PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>((a, b) -> Integer.compare(a.getValue(), b.getValue()));
     for (Map.Entry<Integer, Integer> e : count.entrySet()) {
         heap.offer(e);
         if (heap.size() > k) heap.poll();
@@ -182,7 +181,7 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
     Map<Character, Integer> count = new HashMap<>();
     for (char c : s.toCharArray()) count.merge(c, 1, Integer::sum);
 
-    PriorityQueue<Map.Entry<Character, Integer>> heap = new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+    PriorityQueue<Map.Entry<Character, Integer>> heap = new PriorityQueue<>((a, b) -> Integer.compare(b.getValue(), a.getValue()));
     heap.addAll(count.entrySet());
 
     StringBuilder sb = new StringBuilder();
@@ -210,7 +209,7 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
     for (String w : words) count.merge(w, 1, Integer::sum);
 
     PriorityQueue<String> heap = new PriorityQueue<>((a, b) -> {
-        int diff = count.get(a) - count.get(b);
+        int diff = Integer.compare(count.get(a), count.get(b));
         return diff != 0 ? diff : b.compareTo(a);   // freq ASC; lex DESC khi tie
     });
     for (String w : count.keySet()) {
@@ -236,7 +235,7 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
       solution: {
         code: `public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
     PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) ->
-        (nums1[a[0]] + nums2[a[1]]) - (nums1[b[0]] + nums2[b[1]]));
+        Integer.compare(nums1[a[0]] + nums2[a[1]], nums1[b[0]] + nums2[b[1]]));
     for (int i = 0; i < Math.min(nums1.length, k); i++) pq.offer(new int[]{i, 0});
 
     List<List<Integer>> res = new ArrayList<>();
@@ -354,7 +353,7 @@ private int distSq(int[] p) { return p[0] * p[0] + p[1] * p[1]; }`,
     Map<Character, Integer> count = new HashMap<>();
     for (char c : s.toCharArray()) count.merge(c, 1, Integer::sum);
 
-    PriorityQueue<Map.Entry<Character, Integer>> heap = new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+    PriorityQueue<Map.Entry<Character, Integer>> heap = new PriorityQueue<>((a, b) -> Integer.compare(b.getValue(), a.getValue()));
     heap.addAll(count.entrySet());
 
     Queue<Map.Entry<Character, Integer>> cooldown = new ArrayDeque<>();

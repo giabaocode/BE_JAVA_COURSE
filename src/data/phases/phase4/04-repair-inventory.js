@@ -20,7 +20,7 @@ export default {
 Đây KHÔNG phải tutorial blog — nó là nghiệp vụ THẬT bạn gặp ở công ty. Mục tiêu: một backend "production-shape" bạn có thể (1) demo cho sếp, (2) đưa vào CV như project backend doanh nghiệp.`
       },
       underTheHood: {
-        vi: `<h3>Domain model (10 bảng cốt lõi)</h3>
+        vi: `<h3>Domain model (11 bảng cốt lõi)</h3>
 <ul>
   <li><code>customers</code>, <code>technicians</code> (kèm role).</li>
   <li><code>products</code>/<code>components</code> (catalog), <code>inventory_items</code> (tồn kho), <code>serial_numbers</code> (theo dõi từng máy/linh kiện).</li>
@@ -110,7 +110,7 @@ Java 21 · Spring Boot 3.x · PostgreSQL 16 · Docker Compose · Flyway · Sprin
         },
         {
           id: 's2', title: 'Schema (Flyway V1)',
-          description: { vi: 'Tạo 10 bảng: customers, technicians, products, inventory_items, serial_numbers, repair_tickets, diagnostic_logs, warranty_records, quotes, orders, audit_log.' },
+          description: { vi: 'Tạo 11 bảng: customers, technicians, products, inventory_items, serial_numbers, repair_tickets, diagnostic_logs, warranty_records, quotes, orders, audit_log.' },
           hints: ['serial_numbers.serial UNIQUE.', 'Tiền lưu BIGINT cents.', 'Index FK (Postgres KHÔNG tự tạo).'],
           deliverable: { vi: 'Migration tạo đủ bảng + ràng buộc UNIQUE/FK + index FK. Có seed data mẫu (V2).' }
         },

@@ -308,7 +308,7 @@ while (i < nums.length) {
   ],
   references: [
     { title: 'LeetCode Cyclic Sort discuss', url: 'https://leetcode.com/discuss/study-guide/2188531/Cyclic-sort-pattern' },
-    { title: 'Find Missing Number (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Find_first_set' }
+    { title: 'LeetCode 268 — Missing Number', url: 'https://leetcode.com/problems/missing-number/' }
   ]
 
 }

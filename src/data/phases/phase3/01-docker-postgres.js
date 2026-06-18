@@ -523,11 +523,10 @@ INSERT INTO orders (user_id, amount)
 VALUES (1, 100), (2, 200), (3, 300), ...;
 -- 1 round trip, parse 1 lần.
 
--- GREAT: COPY (10× nhanh hơn INSERT batch)
-COPY orders (user_id, amount) FROM STDIN;
-1\\t100
-2\\t200
-\\.</pre>
+-- GREAT: COPY (nhanh hơn nhiều so với INSERT từng dòng). Nạp từ file CSV:
+COPY orders (user_id, amount) FROM '/data/orders.csv' WITH (FORMAT csv, HEADER true);
+-- Lưu ý: 'COPY ... FROM STDIN' chỉ chạy trong psql CLI, KHÔNG chạy trong
+-- pgAdmin/Query Tool. File CSV phải nằm trên máy chạy Postgres (trong container).</pre>
 
 Java code (JDBC batch):
 <pre>String sql = "INSERT INTO orders (user_id, amount) VALUES (?, ?)";

@@ -212,7 +212,7 @@ MailHog cùng container cho cả 2 project — không cần dựng riêng. Port 
 <li>BIGINT cents range: ±9.2 quintillion. Đủ cho mọi business.</li>
 <li>@Version JPA: Hibernate auto-increment trong UPDATE, throw OptimisticLockException nếu version trong WHERE clause không match.</li>
 <li>VARCHAR cho status thay vì Postgres ENUM: dễ ALTER thêm trạng thái mới. ENUM Postgres khó migrate.</li>
-<li>Composite UNIQUE (post_id, user_id) cho likes — chống race.</li>
+<li>Composite UNIQUE (cart_id, product_id) cho cart_items — mỗi sản phẩm 1 dòng/giỏ, chống trùng khi add cùng lúc.</li>
 </ul>
 
 <strong>Junior Pitfalls</strong>:
