@@ -192,7 +192,8 @@ MailHog cùng container cho cả 2 project — không cần dựng riêng. Port 
             'Compose project name: <code>docker compose -p shopcore up</code>.',
             'Tạo DB mới: <code>docker exec bootcamp-db createdb -U bootcamp shopcore</code>.',
             'Reuse MailHog từ compose Devlog hoặc dựng riêng container.'
-          ]
+          ],
+          deliverable: { vi: 'ShopCore chạy local (DB <code>shopcore</code> riêng + MailHog); app start; Flyway V1 chạy thành công; <code>/actuator/health</code> = UP.' }
         },
         {
           id: 's2',
@@ -240,7 +241,8 @@ MailHog cùng container cho cả 2 project — không cần dựng riêng. Port 
             'inventory.version cho optimistic lock; @Version annotation phía JPA.',
             'orders thêm <code>tracking_number</code> + <code>shipped_at</code> cho email shipped notification.',
             'payments table tách riêng — 1 order có thể nhiều payment attempt.'
-          ]
+          ],
+          deliverable: { vi: 'Migration tạo đủ bảng (products/variants/inventory/orders/order_items/payments...); tiền lưu BIGINT cents (KHÔNG double); inventory có cột <code>version</code>; UNIQUE(cart_id, product_id); order_items snapshot unit_price_cents.' }
         },
         {
           id: 's3',
@@ -283,7 +285,8 @@ MailHog cùng container cho cả 2 project — không cần dựng riêng. Port 
             'CaffeineCacheManager bean với <code>expireAfterWrite(60, SECONDS)</code>.',
             'Eager-fetch variants + inventory cho single product detail; lazy cho list.',
             'Filter price/category dùng JPA Specifications (như Devlog s8).'
-          ]
+          ],
+          deliverable: { vi: 'GET /products có phân trang + filter; KHÔNG N+1 khi load variants (kiểm log SQL); lần gọi thứ 2 hit cache (đo độ trễ); admin update product → @CacheEvict làm mới.' }
         },
         {
           id: 's4',
@@ -324,7 +327,8 @@ MailHog cùng container cho cả 2 project — không cần dựng riêng. Port 
             'Spring: <code>hasRole("ADMIN")</code> → internally <code>hasAuthority("ROLE_ADMIN")</code>.',
             'Seed admin user qua Flyway repeatable migration.',
             'Refresh token có TTL ngắn cho role change apply nhanh.'
-          ]
+          ],
+          deliverable: { vi: 'CUSTOMER gọi endpoint admin → 403; ADMIN → 200; chưa đăng nhập → 401; role lưu bằng enum + có trong JWT claim.' }
         },
         {
           id: 's5',
@@ -367,7 +371,8 @@ MailHog cùng container cho cả 2 project — không cần dựng riêng. Port 
             'Cart status: OPEN, CONVERTED, ABANDONED.',
             'Cleanup job @Scheduled: ABANDONED carts &gt; 90 ngày → DELETE.',
             'Cart total tính realtime trong service, KHÔNG store.'
-          ]
+          ],
+          deliverable: { vi: '1 user chỉ có 1 cart OPEN (UNIQUE partial index); add/update/remove item hoạt động; tổng giỏ tính realtime đúng; add vượt tồn → cảnh báo (best-effort, KHÔNG lock stock ở cart).' }
         },
         {
           id: 's6',
@@ -427,7 +432,8 @@ Naive: <code>if (stock &gt;= qty) stock -= qty</code> — KHÔNG atomic. A và B
             'Optimistic: @Version trên entity + try-catch OptimisticLockException + retry.',
             '@Transactional(rollbackFor = Exception.class) để rollback cả checked.',
             'Concurrent test: spawn 100 thread cùng checkout 50 stock → assert đúng 50 thành công.'
-          ]
+          ],
+          deliverable: { vi: '100 thread cùng checkout 50 tồn → ĐÚNG 50 đơn thành công, phần còn lại trả 409, tồn kho KHÔNG âm (không oversold); @Transactional đặt ở Service; hết hàng → 409 (không 500).' }
         },
         {
           id: 's7',
@@ -470,7 +476,8 @@ Naive: <code>if (stock &gt;= qty) stock -= qty</code> — KHÔNG atomic. A và B
             'Strategy + Factory: PaymentGatewayFactory chọn gateway theo type.',
             'IdempotencyKey table: (key, response_json, expires_at).',
             'Webhook handler: verify HMAC signature trước parse payload.'
-          ]
+          ],
+          deliverable: { vi: 'POST /orders/{id}/pay với header <code>Idempotency-Key</code>: gọi 2 lần cùng key → CHỈ charge 1 lần, trả cùng response; FakePaymentGateway qua interface; webhook verify HMAC trước khi parse.' }
         },
         {
           id: 's8',
@@ -545,7 +552,8 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
             'Thymeleaf template: <code>resources/templates/order-shipped.html</code> với placeholders.',
             'Spring ApplicationEventPublisher tự inject — không cần config thêm.',
             'Email listener @Async("emailExecutor") + @TransactionalEventListener.'
-          ]
+          ],
+          deliverable: { vi: 'Mark SHIPPED hợp lệ → 200 + email "order shipped" xuất hiện trong MailHog (gửi SAU commit, async); chuyển trạng thái sai (vd CANCELLED→SHIPPED) → 409; CANCELLED khi đang PAID → restock tồn kho.' }
         },
         {
           id: 's9',
@@ -586,7 +594,8 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
             'Index <code>(status, created_at)</code> cho filter + sort.',
             'CSV qua <code>StreamingResponseBody</code> tránh OOM.',
             'Limit report range 365 ngày — block query 5 năm.'
-          ]
+          ],
+          deliverable: { vi: 'GET /admin/reports/sales?from&to trả số liệu đúng (aggregate GROUP BY ở DB, không load hết ra Java); export CSV stream không OOM; timezone explicit; giới hạn range ≤ 365 ngày.' }
         },
         {
           id: 's10',
@@ -627,7 +636,8 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
             'Run test 10 iterations → catch flaky.',
             '@SpringBootTest + Testcontainers Postgres cho concurrency test.',
             'Mock email listener trong test — không cần MailHog cho mọi test.'
-          ]
+          ],
+          deliverable: { vi: 'Concurrency test (CountDownLatch + Testcontainers Postgres, chạy nhiều iteration): số đơn thành công = đúng số tồn, tồn KHÔNG âm; <code>mvn test</code> xanh, không flaky.' }
         },
         {
           id: 's11',
@@ -647,7 +657,8 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
           },
           socraticPrompts: [
             { title: 'API contract testing', prompt: 'KHÔNG cho đáp án. Hỏi tôi: 1) Contract test là gì? 2) Pact framework giải quyết gì? 3) Đổi API — break frontend ra sao? Document có cảnh báo được? 4) Versioning: deprecate cũ + serve cả 2 cùng lúc — implement?' }
-          ]
+          ],
+          deliverable: { vi: 'Swagger UI <code>/swagger-ui.html</code> liệt kê đủ endpoint + auth bearer; export được Postman collection từ swagger.json để QA dùng.' }
         },
         {
           id: 's12',
@@ -694,7 +705,8 @@ Encode allowed transitions trong <code>EnumMap&lt;Status, Set&lt;Status&gt;&gt;<
             'Tag images với git commit SHA.',
             'MeterRegistry inject + <code>counter("orders.shipped").increment()</code>.',
             'Test email manual qua MailHog UI sau khi mark SHIPPED.'
-          ]
+          ],
+          deliverable: { vi: '<code>docker compose up</code> (db+app+mailhog) chạy trên máy sạch; <code>/actuator/prometheus</code> expose metrics; demo end-to-end: tạo order → pay → ship → email hiện trong MailHog (cổng 8025).' }
         }
       ],
       stretchGoals: [

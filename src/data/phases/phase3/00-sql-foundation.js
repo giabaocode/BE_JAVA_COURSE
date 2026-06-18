@@ -76,6 +76,19 @@ Engine thực thi theo thứ tự:
   <li><strong>Implicit JOIN</strong> (<code>FROM a, b WHERE a.id = b.aid</code>) → khó đọc, dễ quên condition → CROSS JOIN ngầm. Dùng <code>JOIN ... ON</code> explicit.</li>
   <li><strong>NULL = NULL</strong> nhầm là TRUE → query trả 0 row. Dùng <code>IS NULL</code>.</li>
   <li><strong>SELECT count(*) FROM huge_table</strong> mỗi request → chậm. Cache hoặc đếm sample.</li>
+</ul>
+
+<h3>Bảo mật: SQL Injection — KHÔNG BAO GIỜ nối chuỗi SQL</h3>
+Đây là lỗ hổng nguy hiểm và cực phổ biến. Nếu bạn ghép input của người dùng thẳng vào câu SQL bằng phép nối chuỗi, kẻ xấu "tiêm" được lệnh SQL của họ vào:
+<pre>-- ❌ NGUY HIỂM: nếu name người dùng gửi = '; DROP TABLE users; --
+"SELECT * FROM users WHERE name = '" + name + "'"   -- biến thành lệnh xoá cả bảng!
+
+-- ✅ AN TOÀN: dùng THAM SỐ ($1 / ? ) — giá trị truyền RIÊNG, DB không coi nó là lệnh
+SELECT * FROM users WHERE name = $1;</pre>
+<ul>
+  <li><strong>Quy tắc cứng:</strong> input của user/khách KHÔNG BAO GIỜ nối thẳng vào câu SQL. Luôn dùng <strong>tham số</strong> (PreparedStatement trong JDBC; <code>$1, $2</code> trong psql/Postgres).</li>
+  <li>Spring Data JPA mặc định an toàn (tự tham số hoá). NHƯNG <code>@Query</code> tự viết kiểu nối chuỗi vẫn dính → dùng named/positional parameter (<code>:name</code> hoặc <code>?1</code>).</li>
+  <li>Tham số hoá còn NHANH hơn (DB cache lại query plan) — xem module Database Optimization.</li>
 </ul>`
       },
       socraticPrompts: [

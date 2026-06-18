@@ -5,7 +5,13 @@ export default {
   id: 'dp1',
   title: 'Pattern 16 — Dynamic Programming (1D)',
   prerequisites: { vi: 'Hoàn thành <strong>Phase 1 + 12 pattern đầu Phase 2</strong>. Đã quen recursion + state thinking.' },
-  mental: `DP = <strong>brute force recursion + memoization</strong>. 4 bước:
+  mental: `Ý tưởng gốc cực đơn giản: <strong>việc gì tính rồi thì GHI LẠI, lần sau cần lấy ra dùng — đừng tính lại</strong>. Giống làm toán mà ghi kết quả phép phụ ra nháp để tái dùng.
+<br/><br/>
+Ví dụ Fibonacci: cách ngây thơ tính lại fib(3) rất nhiều lần (phí). DP = ghi mỗi <code>fib(i)</code> vào một ô bảng <code>dp[i]</code>, tính 1 lần dùng mãi.
+<br/><br/>
+Hai chữ hay nghe: "ghi lại để tái dùng" = <em>memoization</em>; "điền dần một bảng từ nhỏ → lớn" = <em>tabulation</em>. Cùng một ý, chỉ khác cách viết.
+<br/><br/>
+Công thức 4 bước:
 <ol>
 <li>Định nghĩa state: <code>dp[i]</code> nghĩa là gì?</li>
 <li>Transition: <code>dp[i]</code> tính từ các state nào?</li>

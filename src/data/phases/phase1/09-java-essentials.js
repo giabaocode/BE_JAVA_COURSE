@@ -8,7 +8,7 @@ export default
     {
       id: 'mod-1-9',
       title: 'Java Core Essentials — Exception, Lambda, Stream & Concurrency',
-  prerequisites: { vi: 'Hoàn thành <strong>OOP Pillars</strong> (class, interface, OOP) và Phase 0 (collections). 📌 Module này dạy 4 công cụ Java — Exception, Lambda, Stream, Concurrency — mà bạn sẽ gặp liên tục trong phần solution của các module data structure phía sau và cả Phase 2/3. Học chắc ở đây để về sau không bỡ ngỡ cú pháp.' },
+  prerequisites: { vi: 'Hoàn thành <strong>OOP Pillars</strong> (class, interface, OOP) và Phase 0 (collections). 📌 Module này dạy các công cụ Java cốt lõi — Exception, Lambda, Stream, Concurrency, và null/NPE + enum — mà bạn sẽ gặp liên tục trong phần solution của các module data structure phía sau và cả Phase 2/3. Học chắc ở đây để về sau không bỡ ngỡ cú pháp.' },
       lessons: [
 
         // ----- l-1-9-1: Exception Handling -----
@@ -627,6 +627,109 @@ class OrderService2 {
               'synchronized = mutual exclusion + visibility; Atomic = CAS không khoá cho counter; ConcurrentHashMap thay HashMap chung.',
               'Dùng ExecutorService (thread pool) thay vì new Thread() cho mỗi việc; nhớ shutdown().',
               'Quy tắc vàng backend: @Service Spring nên STATELESS — state mutable trong singleton = bug đa luồng.'
+            ]
+          }
+        },
+
+        // ----- l-1-9-5: null / NPE + enum -----
+        {
+          id: 'l-1-9-5',
+          type: 'theory',
+          title: 'null & NullPointerException + enum — hai thứ cơ bản hay bị bỏ qua',
+          subtitle: { en: 'The #1 beginner crash, and the clean way to model fixed sets.', vi: 'Lỗi sập chương trình số 1 của người mới (NPE) và cách "đẹp" để biểu diễn tập giá trị cố định (enum).' },
+          mentalModel: {
+            vi: `<strong>null</strong> nghĩa là "ô trống — chưa trỏ tới object nào". Biến kiểu object (String, List, Product...) chưa được gán thì là <code>null</code>.
+<br/><br/>
+<strong>NullPointerException (NPE)</strong> xảy ra khi bạn cố "làm gì đó" với ô trống — gọi method hoặc đọc field trên một biến <code>null</code>. Ví như mở một cái hộp rỗng rồi đòi lấy đồ bên trong → chương trình sập. Đây là lỗi runtime <strong>phổ biến NHẤT</strong> với người mới Java.
+<br/><br/>
+<strong>enum</strong> là cách khai báo một <strong>tập giá trị cố định, có tên</strong> (vd trạng thái đơn: PENDING/PAID/SHIPPED). Thay vì dùng chuỗi <code>"PAID"</code> dễ gõ sai, enum cho compiler kiểm tra giúp.`
+          },
+          underTheHood: {
+            vi: `<h3>null & NPE — bản chất</h3>
+<strong>1) Khi nào một biến là null?</strong>
+<ul>
+  <li>Biến object khai báo nhưng chưa gán: <code>String s;</code> (field) → null.</li>
+  <li>Method trả null (vd <code>map.get(key)</code> khi key không có).</li>
+  <li>Tham số truyền vào là null.</li>
+</ul>
+<strong>2) NPE xảy ra ở đâu?</strong> Khi <em>dereference</em> null — tức gọi <code>.method()</code> hoặc <code>.field</code> trên null: <code>s.length()</code> với <code>s == null</code> → NPE.
+<br/><br/>
+<strong>3) Cách phòng (quan trọng cho người mới):</strong>
+<ul>
+  <li><strong>Kiểm tra trước khi dùng</strong>: <code>if (s != null) { ... }</code>.</li>
+  <li><strong>Fail-fast</strong> ở đầu method: <code>Objects.requireNonNull(x, "x không được null")</code> — sập NGAY với thông báo rõ, thay vì NPE bí ẩn sâu bên trong.</li>
+  <li><strong>Đừng TRẢ VỀ null</strong> cho collection — trả list rỗng <code>List.of()</code> để caller không phải null-check.</li>
+  <li><strong>Optional</strong> (đã gặp ở Stream) cho "có thể không có giá trị": <code>Optional&lt;User&gt; findByEmail(...)</code> — buộc caller xử lý trường hợp rỗng.</li>
+  <li>Cẩn thận <strong>autounboxing</strong>: <code>Integer i = map.get(k); int x = i;</code> — nếu i null → NPE lúc unbox.</li>
+</ul>
+
+<h3>enum — vì sao tốt hơn String/hằng số</h3>
+<ul>
+  <li><strong>Compiler bắt lỗi</strong>: dùng <code>Status.PAID</code> gõ sai thành <code>Status.PA</code> → lỗi biên dịch ngay. Dùng chuỗi <code>"PA"</code> thì tới runtime mới biết.</li>
+  <li><strong>switch exhaustive</strong>: switch trên enum, IDE/compiler nhắc nếu thiếu nhánh.</li>
+  <li>enum <strong>có thể có field + method</strong> (không chỉ là tên suông) — vd mỗi trạng thái mang theo nhãn hiển thị.</li>
+  <li>Đây là lý do ở domain model (Module tiếp theo) ta dùng <code>enum RepairStatus</code> thay vì String tự do.</li>
+</ul>
+
+<h3>Ghi chú nhỏ: vì sao <code>==</code> đôi khi "true" với String?</h3>
+Java có <strong>String pool</strong>: hai literal <code>"abc"</code> trỏ CÙNG một object trong pool → <code>"abc" == "abc"</code> trả true. NHƯNG <code>new String("abc") == "abc"</code> trả false (object khác). Vì thế <strong>luôn so String bằng <code>.equals()</code></strong>, đừng bao giờ rely vào <code>==</code>.`
+          },
+          codeExamples: [
+            {
+              title: 'Null-safe + enum có field/method',
+              code: `import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+public class Demo {
+    // KHÔNG trả null cho list — trả rỗng
+    static List<String> tags(String raw) {
+        if (raw == null || raw.isBlank()) return List.of();   // caller khỏi null-check
+        return List.of(raw.split(","));
+    }
+
+    // fail-fast: sập ngay với message rõ nếu null
+    static void process(String id) {
+        Objects.requireNonNull(id, "id không được null");
+        System.out.println("xử lý " + id.trim());
+    }
+
+    public static void main(String[] args) {
+        for (String t : tags(null)) System.out.println(t);   // an toàn, không NPE
+        Optional<String> maybe = Optional.ofNullable(System.getenv("HOME"));
+        System.out.println(maybe.orElse("(không có)"));        // xử lý rỗng tường minh
+        System.out.println(OrderStatus.PAID.label());          // enum có method
+    }
+}
+
+// enum mang theo dữ liệu + hành vi (hơn hẳn String "PAID")
+enum OrderStatus {
+    PENDING("Chờ thanh toán"), PAID("Đã thanh toán"), SHIPPED("Đang giao");
+    private final String label;
+    OrderStatus(String label) { this.label = label; }
+    public String label() { return label; }
+}`,
+              lang: 'java',
+              description: 'Không trả null cho collection; Objects.requireNonNull fail-fast; Optional cho giá trị có-thể-rỗng; enum có field + method.'
+            }
+          ],
+          socraticPrompts: [
+            {
+              title: 'Truy vết một NullPointerException',
+              prompt: `KHÔNG cho đáp án. Hỏi tôi:
+1. Cho <code>user.getAddress().getCity()</code> ném NPE — có MẤY chỗ có thể null? Làm sao biết chỗ nào?
+2. Vì sao "trả List rỗng thay vì null" giúp caller bớt bug?
+3. <code>Objects.requireNonNull</code> ở đầu method giúp gì so với để NPE xảy ra sâu bên trong?
+4. Khi nào dùng enum thay vì String cho "trạng thái"? Lợi gì khi compiler kiểm tra?
+5. <code>"abc" == "abc"</code> vs <code>new String("abc") == "abc"</code> — khác nhau vì sao?`
+            }
+          ],
+          keyTakeaways: {
+            vi: [
+              'null = "ô trống"; NPE = gọi method/field trên null — lỗi runtime #1 của người mới.',
+              'Phòng NPE: null-check, Objects.requireNonNull (fail-fast), KHÔNG trả null cho collection (trả rỗng), Optional cho giá trị có-thể-rỗng.',
+              'enum = tập giá trị cố định có tên; compiler bắt gõ sai, switch exhaustive, có thể mang field/method — tốt hơn String/hằng.',
+              'String luôn so bằng <code>.equals()</code>, KHÔNG dùng <code>==</code> (String pool làm == đôi khi true gây hiểu nhầm).'
             ]
           }
         }
